@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Comercial — Daniel Azevedo</title>
+<script>
+(function(){
+  try{
+    const s=localStorage.getItem('daniel-theme');
+    const p=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+    document.documentElement.dataset.theme=s||p;
+  }catch(e){}
+})();
+</script>
+<style>
+:root{
+  --bg:#0B1220;--nav:#0F172A;--surface:#111827;--surface2:#1F2937;--surface3:#243041;
+  --text:#F8FAFC;--text2:#CBD5E1;--muted:#94A3B8;--muted2:#64748B;--border:#243041;
+  --gold:#C8A951;--goldbg:#241C0E;--teal:#0D9488;--tealbg:#0D1F1A;
+  --red:#F08070;--redbg:#2A1215;--purple:#534AB7;--purplebg:#1A1740;
+  --shadow:0 16px 34px rgba(2,6,23,.18);
+}
+html[data-theme="light"]{
+  --bg:#F8FAFC;--nav:#FFFFFF;--surface:#FFFFFF;--surface2:#EEF2F7;--surface3:#E2E8F0;
+  --text:#0F172A;--text2:#334155;--muted:#64748B;--muted2:#94A3B8;--border:#E2E8F0;
+  --gold:#8F6A15;--goldbg:#FFF7E2;--teal:#0D9488;--tealbg:#ECFDF5;
+  --red:#C0392B;--redbg:#FEF2F2;--purple:#534AB7;--purplebg:#EFF6FF;
+  --shadow:0 14px 32px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .22s,color .22s}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+
+.nav{background:var(--nav);border-bottom:1px solid var(--border);padding:11px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.nav-brand{font-size:12px;font-weight:800;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.nav-center{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.nav-tab{padding:7px 15px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid var(--border);color:var(--muted);background:transparent;transition:.2s}
+.nav-tab:hover{border-color:var(--purple);color:var(--text)}
+.nav-tab.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.whatsapp{display:inline-flex;align-items:center;gap:7px;background:#16A34A;color:#fff;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap;transition:.2s}
+.whatsapp:hover{filter:brightness(1.08)}
+.theme-switch{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+.theme-switch input{position:absolute;opacity:0;pointer-events:none}
+.switch-track{width:52px;height:28px;border-radius:18px;background:var(--surface2);border:1px solid var(--border);position:relative;display:flex;align-items:center;justify-content:space-between;padding:0 6px}
+.switch-icon{font-size:11px;z-index:1}
+.switch-thumb{position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;left:3px;top:2px;box-shadow:0 2px 6px rgba(0,0,0,.22);transition:transform .22s}
+.theme-switch input:checked + .switch-track .switch-thumb{transform:translateX(23px)}
+
+.page{display:none;padding:22px;max-width:1400px;margin:0 auto}
+.page.active{display:block}
+
+.prop-header{background:var(--surface);border-radius:14px;padding:18px 22px;margin-bottom:20px;border:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow)}
+.prop-empresa{font-size:22px;font-weight:800}
+.prop-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.prop-meta{text-align:right}
+.prop-data{font-size:11px;color:var(--muted);margin-bottom:4px}
+.prop-contact{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--purple)}
+
+.perfil{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:20px}
+.perfil-title{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.perfil-grid{display:flex;gap:10px;flex-wrap:wrap}
+.perfil-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center;flex:1;min-width:100px}
+.perfil-val{font-size:15px;font-weight:800}
+.perfil-key{font-size:10px;color:var(--muted2);margin-top:3px}
+
+/* Hospitais preferencia */
+.pref-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:20px}
+.pref-title{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.pref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.pref-item{background:var(--surface2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pref-name{font-size:13px;font-weight:600}
+.pref-badges{display:flex;gap:5px;flex-wrap:wrap}
+.pb{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px}
+.pb-ok{background:var(--tealbg);color:var(--teal)}
+.pb-no{background:var(--redbg);color:var(--red)}
+
+.section-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;margin-top:24px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Plano atual */
+.atual-box{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--red);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.atual-label{font-size:10px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.atual-nome{font-size:18px;font-weight:800}
+.atual-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.atual-valor{text-align:right}
+.atual-num{font-size:28px;font-weight:900;color:var(--red)}
+.atual-note{font-size:11px;color:var(--muted);margin-top:4px}
+.atual-alerta{font-size:12px;color:var(--red);font-weight:700;margin-top:6px}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.card{background:var(--surface);border-radius:16px;border:1px solid var(--border);padding:20px;position:relative;transition:.2s;box-shadow:0 4px 14px rgba(0,0,0,.04)}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.card.rec{border-color:rgba(13,148,136,.4);background:linear-gradient(160deg,rgba(13,148,136,.07),transparent 40%),var(--surface)}
+.card.mid{border-color:rgba(200,169,81,.2)}
+.card-tag{position:absolute;top:14px;right:14px;font-size:9px;font-weight:800;padding:4px 9px;border-radius:999px}
+.tag-rec{background:var(--teal);color:#fff}
+.tag-mid{background:var(--goldbg);color:var(--gold);border:1px solid var(--gold)}
+.card-op{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.card-nome{font-size:18px;font-weight:800;padding-right:110px;line-height:1.2;margin-bottom:4px}
+.card-sub{font-size:11px;color:var(--muted);margin-bottom:14px}
+.card-valor{font-size:28px;font-weight:900}
+.card-valor small{font-size:13px;font-weight:500;color:var(--muted)}
+.card-pv{font-size:11px;color:var(--muted2);margin-top:4px}
+.eco{font-size:12px;font-weight:700;margin-top:6px}
+.eco-pos{color:var(--teal)}
+.divider{height:1px;background:var(--border);margin:14px 0}
+.attrs{display:flex;flex-direction:column;gap:7px}
+.attr{display:flex;align-items:flex-start;justify-content:space-between;font-size:11.5px;gap:8px}
+.al{color:var(--muted2);flex-shrink:0}
+.av{font-weight:700;text-align:right}
+.av-g{color:var(--teal)}.av-a{color:var(--gold)}.av-p{color:var(--purple)}.av-r{color:var(--red)}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:999px}
+.b-apto{background:var(--purplebg);color:var(--purple)}
+.b-sem{background:var(--tealbg);color:var(--teal)}
+.b-nac{background:var(--goldbg);color:var(--gold)}
+.b-cop{background:var(--redbg);color:var(--red)}
+.price-btn{width:100%;margin-top:14px;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:11px;font-weight:800;transition:.2s}
+.price-btn:hover{background:var(--purplebg);border-color:var(--purple);color:var(--purple)}
+
+.highlight-bar{background:linear-gradient(90deg,rgba(13,148,136,.12),transparent);border-left:3px solid var(--teal);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:var(--text2);line-height:1.7}
+.highlight-bar strong{color:var(--teal)}
+
+.twrap{background:var(--surface);border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:22px;overflow-x:auto}
+table.comp{width:100%;border-collapse:collapse;min-width:560px}
+table.comp thead tr{background:var(--surface2)}
+table.comp th{padding:11px 14px;font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;text-align:left}
+table.comp th.r{text-align:right}
+table.comp tbody tr{border-bottom:1px solid var(--surface3)}
+table.comp tbody tr:hover{background:#162033}
+table.comp tbody tr.rec-row{background:rgba(13,148,136,.05)}
+table.comp td{padding:11px 14px;font-size:12.5px}
+table.comp td.r{text-align:right}
+.td-op{font-weight:800}
+.td-pl{font-size:10px;color:var(--muted2);margin-top:2px}
+.td-val{font-size:15px;font-weight:800}
+.td-ep{font-size:11px;color:var(--teal);font-weight:700}
+.td-en{font-size:11px;color:var(--red);font-weight:700}
+.td-mid{font-size:11px;color:var(--gold);font-weight:700}
+
+.insight{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-size:12.5px;color:var(--text2);line-height:1.8;margin-bottom:14px}
+.insight strong{color:var(--text)}
+.insight.teal{border-left:4px solid var(--teal)}
+.insight.gold{border-left:4px solid var(--gold)}
+.insight.purple{border-left:4px solid var(--purple)}
+.insight.red{border-left:4px solid var(--red)}
+.insight.grey{border-left:4px solid var(--muted2)}
+
+.rede-wrap{background:var(--surface);border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:18px;overflow-x:auto}
+table.rede{width:100%;border-collapse:collapse;min-width:600px}
+table.rede thead tr:first-child th{padding:9px 12px;font-size:11px;font-weight:800;text-align:center;border-right:1px solid var(--surface3);border-bottom:1px solid var(--surface3)}
+table.rede thead tr:last-child th{padding:8px 12px;font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;text-align:center;border-right:1px solid var(--surface3);background:var(--surface2)}
+table.rede tbody td{padding:8px 12px;font-size:11.5px;text-align:center;border-right:1px solid var(--surface3);border-bottom:1px solid var(--surface3)}
+table.rede tbody td:first-child{text-align:left;color:var(--text2);font-weight:600;padding-left:14px;min-width:210px}
+table.rede tbody td:last-child{border-right:none}
+table.rede tbody tr.reg-row td{background:var(--nav);color:var(--muted);font-size:10px;font-style:italic;font-weight:800;letter-spacing:.04em;text-align:left;border-right:none;padding:7px 14px}
+table.rede tbody tr.pref-row td:first-child{color:var(--gold);font-weight:800}
+table.rede tbody tr:not(.reg-row):hover td{background:#162033}
+.cg{background:rgba(13,148,136,.15);color:var(--teal);font-weight:700;border-radius:4px;padding:3px 7px;display:inline-block;font-size:10px}
+.ca{background:var(--goldbg);color:var(--gold);border-radius:4px;padding:3px 7px;display:inline-block;font-size:10px}
+.cs{background:var(--purplebg);color:var(--purple);border-radius:4px;padding:3px 7px;display:inline-block;font-size:10px}
+.cn{color:var(--muted2);font-size:11px}
+.leg-row{display:flex;flex-wrap:wrap;gap:12px;padding:11px 14px;border-top:1px solid var(--border);background:var(--nav)}
+.leg{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.ld{width:10px;height:10px;border-radius:3px}
+
+.note{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.8);z-index:300;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.open{display:flex}
+.modal-card{width:min(680px,100%);max-height:90vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2}
+.modal-title{font-size:18px;font-weight:800}
+.modal-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.close-btn{border:1px solid var(--border);background:var(--surface2);color:var(--text);width:34px;height:34px;border-radius:50%;font-size:18px;flex-shrink:0}
+.modal-body{padding:18px 20px 24px}
+.price-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:10px}
+.price-table{width:100%;border-collapse:collapse;min-width:360px}
+.price-table th{background:var(--surface2);color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em;padding:9px 10px;text-align:left}
+.price-table th.r,.price-table td.r{text-align:right}
+.price-table td{padding:10px;border-bottom:1px solid var(--border);font-size:12.5px}
+.price-table tfoot td{font-weight:800;background:var(--surface2)}
+.modal-note{font-size:11px;color:var(--muted);line-height:1.7;margin-top:12px}
+
+.footer{padding:6px 6px 28px;text-align:center;font-size:10px;color:var(--muted2);line-height:1.7;margin-top:8px}
+
+@media(max-width:760px){
+  .nav{padding:10px 12px}
+  .nav-brand{width:100%;text-align:center}
+  .nav-center{order:3;width:100%}
+  .nav-actions{margin:0 auto}
+  .page{padding:14px}
+  .prop-meta{text-align:left}
+  .cards{grid-template-columns:1fr}
+  .whatsapp span{display:none}
+  .whatsapp{width:36px;height:36px;justify-content:center;padding:0}
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-brand">Open Corporate · Daniel Azevedo</div>
+  <div class="nav-center">
+    <button class="nav-tab active" onclick="showPage('comp',this)">Comparativo</button>
+    <button class="nav-tab" onclick="showPage('rede',this)">Rede Credenciada</button>
+    <button class="nav-tab" onclick="showPage('rec',this)">Por que esta opção?</button>
+  </div>
+  <div class="nav-actions">
+    <label class="theme-switch" title="Alternar tema">
+      <input id="theme-toggle" type="checkbox">
+      <span class="switch-track"><span class="switch-icon">☀️</span><span class="switch-icon">🌙</span><span class="switch-thumb"></span></span>
+    </label>
+    <a class="whatsapp" href="https://wa.me/5561983016973?text=Ol%C3%A1%2C%20Matheus%21%20Analisei%20a%20proposta%20e%20gostaria%20de%20conversar." target="_blank" rel="noopener">
+      <b>✆</b><span>Falar com Matheus</span>
+    </a>
+  </div>
+</div>
+
+<!-- COMPARATIVO -->
+<div class="page active" id="page-comp">
+  <div class="prop-header">
+    <div>
+      <div class="prop-empresa">Daniel Azevedo</div>
+      <div class="prop-sub">Proposta Comercial · Plano de Saúde · 3 vidas · Junho 2026</div>
+    </div>
+    <div class="prop-meta">
+      <div class="prop-data">Open Corporate · Assessoria em Benefícios Corporativos</div>
+      <a class="prop-contact" href="https://wa.me/5561983016973" target="_blank">Matheus Doro · (61) 98301-6973 ↗</a>
+    </div>
+  </div>
+
+  <!-- PLANO ATUAL -->
+  <div class="atual-box">
+    <div>
+      <div class="atual-label">Plano atual — há mais de 3 anos</div>
+      <div class="atual-nome">Bradesco Saúde — Premium Top Nacional</div>
+      <div class="atual-sub">Apartamento · Cobertura nacional · 3 vidas</div>
+      <div class="atual-alerta">Reajuste aplicado recentemente — valor atual superior ao informado inicialmente</div>
+    </div>
+    <div class="atual-valor">
+      <div class="atual-num">R$ 5.000+</div>
+      <div class="atual-note">por mês estimado</div>
+    </div>
+  </div>
+
+  <!-- PERFIL -->
+  <div class="perfil">
+    <div class="perfil-title">Perfil do grupo</div>
+    <div class="perfil-grid">
+      <div class="perfil-item"><div class="perfil-val">3</div><div class="perfil-key">Vidas</div></div>
+      <div class="perfil-item"><div class="perfil-val">1x 0–18</div><div class="perfil-key">Faixa 1</div></div>
+      <div class="perfil-item"><div class="perfil-val">2x 44–48</div><div class="perfil-key">Faixa 2</div></div>
+      <div class="perfil-item"><div class="perfil-val">Apartamento</div><div class="perfil-key">Acomodação</div></div>
+      <div class="perfil-item"><div class="perfil-val">Nacional</div><div class="perfil-key">Abrangência</div></div>
+      <div class="perfil-item"><div class="perfil-val">+3 anos</div><div class="perfil-key">Tempo no Bradesco</div></div>
+    </div>
+  </div>
+
+  <!-- HOSPITAIS DE PREFERÊNCIA -->
+  <div class="pref-box">
+    <div class="pref-title">Hospitais de preferência declarados</div>
+    <div class="pref-grid">
+      <div class="pref-item">
+        <span class="pref-name">Sta. Lúcia Sul</span>
+        <div class="pref-badges">
+          <span class="pb pb-ok">Amil S750 ✓</span>
+          <span class="pb pb-ok">Unimed Superior ✓</span>
+        </div>
+      </div>
+      <div class="pref-item">
+        <span class="pref-name">Sta. Lúcia Gama</span>
+        <div class="pref-badges">
+          <span class="pb pb-ok">Amil S750 ✓</span>
+          <span class="pb pb-ok">Unimed Superior ✓</span>
+        </div>
+      </div>
+      <div class="pref-item">
+        <span class="pref-name">H Sta. Helena</span>
+        <div class="pref-badges">
+          <span class="pb pb-ok">Amil S750 ✓</span>
+          <span class="pb pb-ok">Unimed Superior ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-bar">
+    <strong>Recomendação:</strong> Amil S750 R1 — mantém os três hospitais de preferência, cobertura nacional com apartamento, sem coparticipação exceto terapias, e economia de mais de R$ 1.500/mês em relação ao Bradesco atual.
+  </div>
+
+  <div class="section-title">Opções cotadas</div>
+  <div class="cards">
+
+    <!-- UNIMED SUPERIOR -->
+    <div class="card mid">
+      <span class="card-tag tag-mid">Alternativa</span>
+      <div class="card-op">Seguros Unimed</div>
+      <div class="card-nome">Superior</div>
+      <div class="card-sub">Saúde PME · Apartamento · Nacional</div>
+      <div class="card-valor">R$ 3.992,00<small>/mês</small></div>
+      <div class="card-pv">R$ 1.330,67 por vida · média mensal</div>
+      <div class="eco eco-pos">Economia estimada de R$ 1.000+/mês vs Bradesco</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">Coparticipação</span><span class="av av-g">Sem</span></div>
+        <div class="attr"><span class="al">Abrangência</span><span class="av">Nacional</span></div>
+        <div class="attr"><span class="al">Sta. Lúcia Sul</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">Sta. Lúcia Gama</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">H Sta. Helena</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">Sírio Libanês DF</span><span class="av av-g">✓ H,PSA</span></div>
+        <div class="attr"><span class="al">Lab. Sabin DF</span><span class="av av-g">✓</span></div>
+      </div>
+      <div class="badges">
+        <span class="badge b-apto">Apartamento</span>
+        <span class="badge b-sem">Sem copart.</span>
+        <span class="badge b-nac">Nacional</span>
+      </div>
+      <button class="price-btn" onclick="openModal('unimed')">Ver composição por faixa etária</button>
+    </div>
+
+    <!-- AMIL - RECOMENDADO -->
+    <div class="card rec">
+      <span class="card-tag tag-rec">Recomendado</span>
+      <div class="card-op">Amil</div>
+      <div class="card-nome">S750 R1</div>
+      <div class="card-sub">Saúde PME · Apartamento · Nacional</div>
+      <div class="card-valor">R$ 3.454,12<small>/mês</small></div>
+      <div class="card-pv">R$ 1.151,37 por vida · média mensal</div>
+      <div class="eco eco-pos">Economia estimada de R$ 1.500+/mês vs Bradesco</div>
+      <div class="eco eco-pos">R$ 537,88/mês a menos que o Unimed Superior</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">Coparticipação</span><span class="av av-a">Sem, exceto terapias</span></div>
+        <div class="attr"><span class="al">Abrangência</span><span class="av">Nacional</span></div>
+        <div class="attr"><span class="al">Sta. Lúcia Sul</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">Sta. Lúcia Gama</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">H Sta. Helena</span><span class="av av-g">✓ H,M</span></div>
+        <div class="attr"><span class="al">H e Mat Brasília</span><span class="av av-g">✓ H,M,PS¹</span></div>
+        <div class="attr"><span class="al">Lab. Sabin DF</span><span class="av av-g">✓</span></div>
+      </div>
+      <div class="badges">
+        <span class="badge b-apto">Apartamento</span>
+        <span class="badge b-sem">Sem copart.*</span>
+        <span class="badge b-nac">Nacional</span>
+      </div>
+      <button class="price-btn" onclick="openModal('amil')">Ver composição por faixa etária</button>
+    </div>
+
+  </div>
+
+  <!-- COMPARATIVO FINANCEIRO -->
+  <div class="section-title">Comparativo financeiro</div>
+  <div class="twrap">
+    <table class="comp">
+      <thead>
+        <tr>
+          <th>Plano</th>
+          <th class="r">Mensalidade</th>
+          <th class="r">Por vida/mês</th>
+          <th class="r">Economia mensal estimada</th>
+          <th class="r">Economia anual estimada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="td-op">Bradesco Saúde — Premium Top Nacional</div><div class="td-pl">Plano atual · mais de 3 anos · reajuste recente aplicado</div></td>
+          <td class="r"><div class="td-val" style="color:var(--red)">R$ 5.000+</div></td>
+          <td class="r"><div class="td-en">R$ 1.667+</div></td>
+          <td class="r"><div class="td-mid">— referência</div></td>
+          <td class="r"><div class="td-mid">— referência</div></td>
+        </tr>
+        <tr>
+          <td><div class="td-op">Seguros Unimed — Superior</div><div class="td-pl">Sem coparticipação · Sírio Libanês na rede · Sabin</div></td>
+          <td class="r"><div class="td-val">R$ 3.992,00</div></td>
+          <td class="r"><div class="td-mid">R$ 1.330,67</div></td>
+          <td class="r"><div class="td-ep">R$ 1.008+/mês</div></td>
+          <td class="r"><div class="td-ep">R$ 12.096+/ano</div></td>
+        </tr>
+        <tr class="rec-row">
+          <td><div class="td-op">Amil — S750 R1 (Recomendado)</div><div class="td-pl">Sem copart. exceto terapias · 3 hospitais de preferência · Sabin</div></td>
+          <td class="r"><div class="td-val">R$ 3.454,12</div></td>
+          <td class="r"><div class="td-ep">R$ 1.151,37</div></td>
+          <td class="r"><div class="td-ep">R$ 1.546+/mês</div></td>
+          <td class="r"><div class="td-ep">R$ 18.552+/ano</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DIFERENCIAL -->
+  <div class="section-title">O que muda entre as opções</div>
+  <div class="twrap">
+    <table class="comp">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Bradesco Premium</th>
+          <th>Unimed Superior</th>
+          <th>Amil S750 R1</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-op">Mensalidade estimada</td><td style="color:var(--red);font-weight:700">R$ 5.000+</td><td>R$ 3.992,00</td><td><strong style="color:var(--teal)">R$ 3.454,12</strong></td></tr>
+        <tr><td class="td-op">Acomodação</td><td>Apartamento</td><td>Apartamento</td><td>Apartamento</td></tr>
+        <tr><td class="td-op">Coparticipação</td><td><span style="color:var(--teal)">Sem</span></td><td><span style="color:var(--teal)">Sem</span></td><td><span style="color:var(--gold)">Sem (exceto terapias)</span></td></tr>
+        <tr><td class="td-op">Sta. Lúcia Sul</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td></tr>
+        <tr><td class="td-op">Sta. Lúcia Gama</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td></tr>
+        <tr><td class="td-op">H Sta. Helena</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td></tr>
+        <tr><td class="td-op">Sírio Libanês DF</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td></tr>
+        <tr><td class="td-op">Lab. Sabin DF</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td></tr>
+        <tr><td class="td-op">H e Mat Brasília</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--teal)">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Valores baseados em comparativo oficial das operadoras — junho 2026. O valor do Bradesco é estimado com base nas informações fornecidas. Todos os valores sujeitos a alteração conforme análise e tabela vigente na contratação.<br>
+    Open Corporate · Matheus Doro · comercial01@opencorretoradeseguros.com · (61) 98301-6973
+  </div>
+</div>
+
+<!-- REDE -->
+<div class="page" id="page-rede">
+  <div class="prop-header">
+    <div>
+      <div class="prop-empresa">Daniel Azevedo · Rede Credenciada</div>
+      <div class="prop-sub">Amil S750 R1 vs Seguros Unimed Superior · Distrito Federal e Goiás</div>
+    </div>
+    <div class="prop-meta">
+      <div class="prop-data">Open Corporate</div>
+      <a class="prop-contact" href="https://wa.me/5561983016973" target="_blank">Matheus Doro · (61) 98301-6973 ↗</a>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong style="color:var(--gold)">Hospitais de preferência</strong> estão destacados em dourado. H = Internação · M = Maternidade · PS = Pronto Socorro · PA = Pronto Atendimento · LAB = Laboratório · H¹/PS¹ = Com especialidade, confirmar junto à operadora.
+  </div>
+
+  <div class="rede-wrap">
+    <table class="rede">
+      <thead>
+        <tr>
+          <th style="background:var(--nav);text-align:left;min-width:210px" rowspan="2">Hospital / Laboratório</th>
+          <th style="background:var(--tealbg);color:var(--teal)">Amil (Recomendado)</th>
+          <th style="background:var(--goldbg);color:var(--gold)">Seguros Unimed</th>
+        </tr>
+        <tr>
+          <th>S750 R1</th>
+          <th>Superior</th>
+        </tr>
+      </thead>
+      <tbody id="rede-tbody"></tbody>
+    </table>
+    <div class="leg-row">
+      <div class="leg"><div class="ld" style="background:var(--gold)"></div>Hospitais de preferência declarados</div>
+      <div class="leg"><div class="ld" style="background:var(--teal)"></div>Presente nos dois planos</div>
+      <div class="leg"><div class="ld" style="background:var(--purple)"></div>Presente em apenas um</div>
+      <div class="leg">H=Internação · M=Maternidade · PS=PS Geral · PA=Pronto Atend. · LAB=Laboratório · ¹=confirmar especialidade</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Rede credenciada baseada em comparativo oficial junho 2026. Dinâmica e sujeita a alteração — confirme antes de utilizar.<br>
+    Open Corporate · Matheus Doro · (61) 98301-6973
+  </div>
+</div>
+
+<!-- POR QUE ESTA OPÇÃO -->
+<div class="page" id="page-rec">
+  <div class="prop-header">
+    <div>
+      <div class="prop-empresa">Por que o Amil S750 R1?</div>
+      <div class="prop-sub">A lógica por trás da recomendação para Daniel Azevedo</div>
+    </div>
+    <div class="prop-meta">
+      <div class="prop-data">Open Corporate</div>
+      <a class="prop-contact" href="https://wa.me/5561983016973" target="_blank">Matheus Doro · (61) 98301-6973 ↗</a>
+    </div>
+  </div>
+
+  <div class="insight teal">
+    <strong>1. Mantém os três hospitais que importam</strong><br>
+    Sta. Lúcia Sul, Sta. Lúcia Gama e H Sta. Helena estão todos na rede do Amil S750 R1. A principal preocupação em uma troca de plano — perder acesso aos hospitais de confiança — não se aplica aqui.
+  </div>
+
+  <div class="insight gold">
+    <strong>2. Economia real, sem perda de cobertura</strong><br>
+    Com base no valor atual do Bradesco Premium, a troca para o Amil S750 representa uma economia estimada de <strong>R$ 1.500+ por mês</strong> — mais de <strong>R$ 18.000 por ano</strong> — mantendo apartamento, cobertura nacional e rede sólida no DF.
+  </div>
+
+  <div class="insight purple">
+    <strong>3. Coparticipação apenas em terapias — sem surpresa no dia a dia</strong><br>
+    Consultas, exames, internações e cirurgias não geram coparticipação. O único momento em que há custo adicional é em sessões de terapia (fisioterapia, psicoterapia, fonoaudiologia). Para quem usa o plano principalmente para consultas e exames, o impacto prático é zero.
+  </div>
+
+  <div class="insight grey">
+    <strong>Por que não o Seguros Unimed Superior?</strong><br>
+    O Unimed Superior é uma opção sólida — sem coparticipação em nada, Sírio Libanês na rede e Sabin incluído. Mas custa R$ 537,88/mês a mais que o Amil sem entregar os hospitais de preferência com vantagem adicional. Para o perfil do Daniel, o Amil entrega o essencial com maior eficiência financeira.
+  </div>
+
+  <div class="insight red">
+    <strong>O Bradesco Premium após o reajuste</strong><br>
+    Planos com mais de 3 anos acumulam reajustes anuais sobre uma base cada vez mais alta. O Bradesco Premium Top já estava em R$ 5.000+ antes do último reajuste. Permanecer no plano atual significa continuar nessa curva de crescimento, sem revisão competitiva do mercado.
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:8px">
+    <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Resumo da decisão</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8">
+      Mesmos hospitais de preferência · Apartamento · Nacional · Sem coparticipação exceto terapias · Economia de R$ 1.500+/mês
+      <span style="color:var(--teal);font-weight:700;font-size:14px;margin-top:8px;display:block">Amil S750 R1 — R$ 3.454,12/mês</span>
+    </div>
+    <a href="https://wa.me/5561983016973?text=Daniel%2C%20analisei%20a%20proposta%20e%20minha%20recomenda%C3%A7%C3%A3o%20%C3%A9%20o%20Amil%20S750%20R1.%20Posso%20te%20apresentar%20em%2010%20minutos%3F" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:#16A34A;color:#fff;padding:10px 18px;border-radius:10px;font-size:12px;font-weight:800">
+      Falar com Matheus para avançar
+    </a>
+  </div>
+
+  <div class="footer">
+    Open Corporate · Matheus Doro · comercial01@opencorretoradeseguros.com · (61) 98301-6973
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="price-modal" onclick="backdropClose(event)">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><div class="modal-title" id="modal-title"></div><div class="modal-sub" id="modal-sub"></div></div>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="price-scroll">
+        <table class="price-table">
+          <thead><tr><th>Faixa etária</th><th class="r">Vidas</th><th class="r">Valor/vida</th><th class="r">Subtotal</th></tr></thead>
+          <tbody id="modal-rows"></tbody>
+          <tfoot id="modal-foot"></tfoot>
+        </table>
+      </div>
+      <div class="modal-note" id="modal-note"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BRL = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+
+const PRODUCTS = {
+  amil:{
+    name:'Amil — S750 R1',
+    sub:'Apartamento · Sem coparticipação exceto terapias · Nacional',
+    bands:[{l:'0 – 18 anos',n:1,v:580.92},{l:'44 – 48 anos',n:2,v:1436.60}],
+    total:3454.12
+  },
+  unimed:{
+    name:'Seguros Unimed — Superior',
+    sub:'Apartamento · Sem coparticipação · Nacional',
+    bands:[{l:'0 – 18 anos',n:1,v:665.02},{l:'44 – 48 anos',n:2,v:1663.49}],
+    total:3992.00
+  }
+};
+
+function openModal(id){
+  const p=PRODUCTS[id];
+  document.getElementById('modal-title').textContent=p.name;
+  document.getElementById('modal-sub').textContent=p.sub;
+  let sum=0;
+  document.getElementById('modal-rows').innerHTML=p.bands.map(b=>{
+    const st=b.n*b.v;sum+=st;
+    return `<tr><td>${b.l}</td><td class="r">${b.n}</td><td class="r">${BRL(b.v)}</td><td class="r">${BRL(st)}</td></tr>`;
+  }).join('');
+  document.getElementById('modal-foot').innerHTML=
+    `<tr><td colspan="3" style="color:var(--gold)">Total mensal</td><td class="r" style="color:var(--gold)">${BRL(p.total)}</td></tr>`;
+  document.getElementById('modal-note').textContent='Valores baseados em comparativo oficial junho 2026. Sujeitos a alteração conforme tabela vigente na contratação.';
+  document.getElementById('price-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('price-modal').classList.remove('open');document.body.style.overflow='';}
+function backdropClose(e){if(e.target.id==='price-modal')closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// PREFERÊNCIA
+const PREF = ['H Sta Helena','Sta Lúcia Sul','Sta Lúcia Gama'];
+
+const REDE_DATA = [
+  // Asa Norte
+  {r:'Asa Norte',n:'H Sta Helena',a:'H,M',u:'H,M,PS',pref:true},
+  {r:'Asa Norte',n:'Sta Lúcia Norte',a:'H,M,PS',u:'H,PS',pref:false},
+  // Asa Sul
+  {r:'Asa Sul',n:'CBV - Asa Sul',a:'PA',u:'H¹,PS¹',pref:false},
+  {r:'Asa Sul',n:'H Alvorada - Brasília',a:'H,PS',u:'H,PA¹,PSA',pref:false},
+  {r:'Asa Sul',n:'H do Coração do Brasil',a:null,u:'H¹,PS¹',pref:false},
+  {r:'Asa Sul',n:'H Home',a:'H¹,PA',u:'H¹,PS¹',pref:false},
+  {r:'Asa Sul',n:'H Pacini - Asa Sul',a:null,u:'H¹,PA¹',pref:false},
+  {r:'Asa Sul',n:'H Sta Luzia',a:'H',u:'H,M,PS',pref:false},
+  {r:'Asa Sul',n:'H Urológico de Brasília',a:'H',u:'H¹,PS¹',pref:false},
+  {r:'Asa Sul',n:'HOB - Brasília',a:null,u:'H¹,PS¹',pref:false},
+  {r:'Asa Sul',n:'Oftalmed',a:null,u:'H¹,PA¹',pref:false},
+  {r:'Asa Sul',n:'Otoface',a:'LAB',u:null,pref:false},
+  {r:'Asa Sul',n:'PAI',a:'PA',u:null,pref:false},
+  {r:'Asa Sul',n:'Sírio Libanês - Brasília IV',a:null,u:'H,PSA',pref:false},
+  {r:'Asa Sul',n:'Sta Lúcia Sul',a:'H,M,PS',u:'H,M,PS',pref:true},
+  {r:'Asa Sul',n:'Sta Lúcia Taguatinga',a:'PA',u:null,pref:false},
+  {r:'Asa Sul',n:'Sta Marta - Asa Norte',a:'H,PS¹',u:'H,PS',pref:false},
+  {r:'Asa Sul',n:'Visão Institutos Oftalmológicos',a:null,u:'H¹,PS¹',pref:false},
+  // Ceilândia
+  {r:'Ceilândia',n:'Clin Recanto Unid Ceilândia',a:null,u:'H¹,PS¹',pref:false},
+  {r:'Ceilândia',n:'H Anchieta Ceilândia',a:'H,M,PS',u:'H,M,PA¹,PS',pref:false},
+  {r:'Ceilândia',n:'H das Clín e PS de Fraturas',a:null,u:'H,M,PA¹,PS',pref:false},
+  {r:'Ceilândia',n:'Proctomed',a:'LAB',u:null,pref:false},
+  // Cruzeiro / Planaltina
+  {r:'Cruzeiro / Planaltina',n:'H São Mateus',a:'H,PS',u:'H,PSA',pref:false},
+  {r:'Cruzeiro / Planaltina',n:'Clín Estância Resiliência - DF',a:'H,PA',u:'H¹',pref:false},
+  // Samambaia / Gama
+  {r:'Samambaia / Gama',n:'Mansão Vida',a:'H,PS',u:null,pref:false},
+  {r:'Samambaia / Gama',n:'Policlin Gabriela - DF',a:'LAB',u:null,pref:false},
+  {r:'Samambaia / Gama',n:'Sta Lúcia Gama',a:'H,M,PS',u:'H,M,PS',pref:true},
+  // Hab. Sul / Sudoeste
+  {r:'Hab. Sul / Sudoeste',n:'H Brasília',a:'H,PS',u:'H,PA¹,PS',pref:false},
+  {r:'Hab. Sul / Sudoeste',n:'H Daher Lago Sul',a:'H,PS',u:'H,PS',pref:false},
+  {r:'Hab. Sul / Sudoeste',n:'H e Mat Brasília',a:'H,M,PS¹',u:null,pref:false},
+  {r:'Hab. Sul / Sudoeste',n:'M Brasília',a:null,u:'M,PS',pref:false},
+  // Águas Claras / Taguatinga
+  {r:'Águas Claras / Taguatinga',n:'H Brasília Águas Claras - DF',a:'H,PS',u:'H,PS',pref:false},
+  {r:'Águas Claras / Taguatinga',n:'H Anchieta - Brasília',a:'H,M,PS',u:null,pref:false},
+  {r:'Águas Claras / Taguatinga',n:'ISOB',a:'H,PS',u:'H¹,PS¹',pref:false},
+  {r:'Águas Claras / Taguatinga',n:'HOB - Taguatinga',a:null,u:'H¹,PS¹',pref:false},
+  {r:'Águas Claras / Taguatinga',n:'Sta Marta',a:'PA',u:null,pref:false},
+  {r:'Águas Claras / Taguatinga',n:'Sta Marta - Taguatinga',a:'H,M,PS',u:'H,M,PS',pref:false},
+  {r:'Águas Claras / Taguatinga',n:'H Mantevida Taguatinga',a:'H',u:'H',pref:false},
+  {r:'Águas Claras / Taguatinga',n:'H Anchieta - Taguatinga',a:null,u:'H,M,PS',pref:false},
+  // RM Sobradinho
+  {r:'Sobradinho',n:'RM Clín de Reabilitação e Hotel - DF',a:null,u:'H¹,PS¹',pref:false},
+  // Goiás
+  {r:'Goiás',n:'Anima Centro Hospitalar (Anápolis)',a:'H,M,PS',u:null,pref:false},
+  {r:'Goiás',n:'Cootrame (Anápolis)',a:'PA',u:null,pref:false},
+  {r:'Goiás',n:'H de Olhos Camargo Zambrin (Anápolis)',a:'H',u:null,pref:false},
+  {r:'Goiás',n:'H Espírita de Psiquiatria (Anápolis)',a:'H',u:null,pref:false},
+  {r:'Goiás',n:'H Evangélico Goiano (Anápolis)',a:'H,PS',u:null,pref:false},
+  {r:'Goiás',n:'SOS Criança (Anápolis)',a:'PA',u:null,pref:false},
+  {r:'Goiás',n:'H São Silvestre (Aparecida de Goiânia)',a:'H,PS',u:null,pref:false},
+  {r:'Goiás',n:'H Sta Mônica (Aparecida de Goiânia)',a:'H,PS',u:null,pref:false},
+  {r:'Goiás',n:'H e Mat N S Aparecida (Caldas Novas)',a:'H,PS',u:null,pref:false},
+  {r:'Goiás',n:'H São Nicolau (Catalão)',a:'H,PS',u:null,pref:false},
+  {r:'Goiás',n:'H Sagrado Coração de Jesus (Nerópolis)',a:'H,PS',u:null,pref:false},
+  {r:'Goiás',n:'H Sta Terezinha (Rio Verde)',a:'H,PS',u:null,pref:false},
+];
+
+const LABS = [
+  {n:'Anchieta Diagnósticos',a:null,u:'LAB'},
+  {n:'Base',a:'LAB',u:null},
+  {n:'CDS Diagnóstico',a:null,u:'LAB'},
+  {n:'Centro Radiológico do Gama - CRG',a:null,u:'LAB'},
+  {n:'CIAP',a:null,u:'LAB'},
+  {n:'Clínica Vila Rica',a:null,u:'LAB'},
+  {n:'CRB - DF',a:null,u:'LAB'},
+  {n:'Digimed - DF',a:null,u:'LAB'},
+  {n:'Exame - DF',a:null,u:'LAB'},
+  {n:'Imeb - DF',a:'LAB',u:'LAB'},
+  {n:'IMEN - GO',a:'LAB',u:null},
+  {n:'Lâmina - DF',a:null,u:'LAB'},
+  {n:'Lapac - DF',a:null,u:'LAB'},
+  {n:'Medceu - DF',a:'LAB',u:null},
+  {n:'Micra - DF',a:'LAB',u:null},
+  {n:'Núcleos',a:'LAB',u:'LAB'},
+  {n:'Padrão - GO',a:'LAB',u:null},
+  {n:'Perfecta',a:null,u:'LAB'},
+  {n:'Perfil - DF',a:'LAB',u:null},
+  {n:'Sabin - DF',a:'LAB',u:'LAB'},
+  {n:'Sabin - GO',a:'LAB',u:null},
+  {n:'Sta Paula - DF',a:null,u:'LAB'},
+  {n:'Tatiana Med e Imag',a:'LAB',u:null},
+  {n:'Tesla',a:null,u:'LAB'},
+  {n:'Uniprocto',a:'LAB',u:'LAB'},
+];
+
+function cell(v,both){
+  if(!v) return '<span class="cn">—</span>';
+  const cls=both?'cg':'cs';
+  return `<span class="${cls}">${v}</span>`;
+}
+
+function buildRede(){
+  let html='';let curReg='';
+  for(const h of REDE_DATA){
+    if(h.r!==curReg){curReg=h.r;html+=`<tr><td colspan="3" class="reg-row">${curReg}</td></tr>`;}
+    const both=!!(h.a&&h.u);
+    const rowClass=h.pref?'pref-row':'';
+    html+=`<tr class="${rowClass}"><td>${h.n}${h.pref?' ★':''}</td><td>${cell(h.a,both)}</td><td>${cell(h.u,both)}</td></tr>`;
+  }
+  html+=`<tr><td colspan="3" class="reg-row">Laboratórios</td></tr>`;
+  for(const l of LABS){
+    const both=!!(l.a&&l.u);
+    html+=`<tr><td>${l.n}</td><td>${cell(l.a,both)}</td><td>${cell(l.u,both)}</td></tr>`;
+  }
+  document.getElementById('rede-tbody').innerHTML=html;
+}
+
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+  if(id==='rede'&&!document.getElementById('rede-tbody').innerHTML) buildRede();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const toggle=document.getElementById('theme-toggle');
+function syncTheme(){toggle.checked=document.documentElement.dataset.theme==='dark';}
+syncTheme();
+toggle.addEventListener('change',()=>{
+  const t=toggle.checked?'dark':'light';
+  document.documentElement.dataset.theme=t;
+  try{localStorage.setItem('daniel-theme',t);}catch(e){}
+});
+</script>
+</body>
+</html>
