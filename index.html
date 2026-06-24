@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Comercial — Simone Amaral</title>
+<script>
+(function(){
+  try{
+    const s=localStorage.getItem('simone-theme');
+    const p=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+    document.documentElement.dataset.theme=s||p;
+  }catch(e){}
+})();
+</script>
+<style>
+:root{
+  --bg:#06101A;--nav:#0B1829;--surface:#0F1F30;--surface2:#162438;--surface3:#1D2E44;
+  --text:#F4F0E8;--text2:#CBD5E1;--muted:#7A90A8;--muted2:#4A6070;--border:#1D2E44;
+  --gold:#C8A951;--goldbg:rgba(200,169,81,.10);--goldl:rgba(200,169,81,.22);
+  --teal:#0D9488;--tealbg:rgba(13,148,136,.10);
+  --red:#F08070;--redbg:rgba(240,128,112,.10);
+  --purple:#7C6FCD;--purplebg:rgba(124,111,205,.10);
+  --amber:#E8A040;--amberbg:rgba(232,160,64,.10);
+  --shadow:0 20px 40px rgba(0,0,0,.28);
+}
+html[data-theme="light"]{
+  --bg:#F0F4F8;--nav:#FFFFFF;--surface:#FFFFFF;--surface2:#EEF2F7;--surface3:#E2E8F0;
+  --text:#0F172A;--text2:#334155;--muted:#64748B;--muted2:#94A3B8;--border:#E2E8F0;
+  --gold:#8F6A15;--goldbg:rgba(143,106,21,.08);--goldl:rgba(143,106,21,.20);
+  --teal:#0D9488;--tealbg:rgba(13,148,136,.08);
+  --red:#C0392B;--redbg:rgba(192,57,43,.08);
+  --purple:#534AB7;--purplebg:rgba(83,74,183,.08);
+  --amber:#B45309;--amberbg:rgba(180,83,9,.08);
+  --shadow:0 14px 32px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .2s,color .2s}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none}
+
+/* NAV */
+.nav{background:var(--nav);border-bottom:1px solid var(--border);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.nav-brand{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.nav-tabs{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+.nav-tab{padding:7px 14px;border-radius:20px;font-size:11.5px;font-weight:700;border:1px solid var(--border);color:var(--muted);background:transparent;transition:.18s;white-space:nowrap}
+.nav-tab:hover{border-color:var(--gold);color:var(--text)}
+.nav-tab.active{background:var(--gold);color:#0B0800;border-color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.wabtn{display:inline-flex;align-items:center;gap:6px;background:#16A34A;color:#fff;padding:7px 13px;border-radius:20px;font-size:11px;font-weight:800;transition:.18s}
+.wabtn:hover{filter:brightness(1.08)}
+.theme-sw{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+.theme-sw input{position:absolute;opacity:0;pointer-events:none}
+.sw-track{width:48px;height:26px;border-radius:16px;background:var(--surface2);border:1px solid var(--border);position:relative;display:flex;align-items:center;justify-content:space-between;padding:0 5px}
+.sw-icon{font-size:10px;z-index:1}
+.sw-thumb{position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;left:3px;top:2px;box-shadow:0 2px 6px rgba(0,0,0,.22);transition:transform .2s}
+.theme-sw input:checked + .sw-track .sw-thumb{transform:translateX(21px)}
+
+/* PAGES */
+.page{display:none;padding:20px;max-width:1360px;margin:0 auto}
+.page.active{display:block}
+
+/* HEADER */
+.prop-head{background:var(--surface);border-radius:14px;padding:18px 22px;margin-bottom:18px;border:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:var(--shadow)}
+.prop-nome{font-size:21px;font-weight:800}
+.prop-sub{font-size:11.5px;color:var(--muted);margin-top:4px}
+.prop-meta{text-align:right}
+.prop-data{font-size:10.5px;color:var(--muted);margin-bottom:3px}
+.prop-contact{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;color:var(--purple)}
+
+/* ALERTA FAIXA */
+.alerta-faixa{background:var(--amberbg);border:1px solid var(--amber);border-radius:10px;padding:11px 16px;margin-bottom:18px;font-size:12px;color:var(--text2);line-height:1.7;display:flex;gap:12px;align-items:flex-start}
+.alerta-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.alerta-faixa strong{color:var(--amber)}
+
+/* PERFIL */
+.perfil{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 17px;margin-bottom:18px}
+.block-title{font-size:9.5px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:11px}
+.perfil-grid{display:flex;gap:8px;flex-wrap:wrap}
+.perfil-item{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 13px;text-align:center;flex:1;min-width:90px}
+.pv{font-size:14px;font-weight:800}
+.pk{font-size:9.5px;color:var(--muted2);margin-top:2px}
+
+/* SECTION */
+.sec-title{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:12px;margin-top:22px;display:flex;align-items:center;gap:8px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* OPERADORA HEADER */
+.op-header{border-radius:12px;padding:14px 18px;margin-bottom:16px;border:1px solid var(--border)}
+.op-header.sul{background:linear-gradient(135deg,rgba(0,120,212,.07),transparent);border-color:rgba(0,120,212,.25)}
+.op-header.porto{background:linear-gradient(135deg,rgba(0,100,180,.07),transparent);border-color:rgba(0,100,180,.25)}
+.op-header.plenum{background:linear-gradient(135deg,rgba(58,155,186,.07),transparent);border-color:rgba(58,155,186,.25)}
+.op-nome{font-size:17px;font-weight:800;margin-bottom:4px}
+.op-desc{font-size:11.5px;color:var(--muted);line-height:1.6}
+.op-badge{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px}
+.badge-rec{background:var(--tealbg);color:var(--teal);border:1px solid var(--teal)}
+.badge-reg{background:var(--amberbg);color:var(--amber);border:1px solid var(--amber)}
+.badge-nac{background:var(--purplebg);color:var(--purple);border:1px solid var(--purple)}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-bottom:22px}
+.card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:18px;position:relative;transition:.18s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.card.rec{border-color:rgba(13,148,136,.45);background:linear-gradient(160deg,rgba(13,148,136,.06),transparent 40%),var(--surface)}
+.card.anc{border-color:rgba(200,169,81,.2)}
+.card-tag{position:absolute;top:13px;right:13px;font-size:8.5px;font-weight:800;padding:4px 9px;border-radius:999px}
+.tag-rec{background:var(--teal);color:#fff}
+.tag-anc{background:var(--goldbg);color:var(--gold);border:1px solid var(--goldl)}
+.tag-alt{background:var(--purplebg);color:var(--purple);border:1px solid var(--purple)}
+.tag-reg{background:var(--amberbg);color:var(--amber);border:1px solid var(--amber)}
+.card-op{font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+.card-nome{font-size:16px;font-weight:800;padding-right:90px;line-height:1.2;margin-bottom:3px}
+.card-sub{font-size:10.5px;color:var(--muted);margin-bottom:12px}
+.card-valor{font-size:26px;font-weight:900;line-height:1}
+.card-valor small{font-size:12px;font-weight:500;color:var(--muted)}
+.card-pv{font-size:10.5px;color:var(--muted2);margin-top:4px}
+.card-nov{font-size:10.5px;color:var(--amber);margin-top:3px;font-weight:600}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.attrs{display:flex;flex-direction:column;gap:6px}
+.attr{display:flex;align-items:flex-start;justify-content:space-between;font-size:11px;gap:6px}
+.al{color:var(--muted2);flex-shrink:0}
+.av{font-weight:700;text-align:right}
+.av-g{color:var(--teal)}.av-a{color:var(--gold)}.av-r{color:var(--red)}.av-p{color:var(--purple)}.av-amber{color:var(--amber)}
+.badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.bdg{font-size:8.5px;font-weight:700;padding:3px 8px;border-radius:999px}
+.b-enf{background:var(--purplebg);color:var(--purple)}
+.b-apto{background:var(--goldbg);color:var(--gold)}
+.b-sem{background:var(--tealbg);color:var(--teal)}
+.b-nac{background:var(--surface2);color:var(--muted)}
+.b-reg{background:var(--amberbg);color:var(--amber)}
+.price-btn{width:100%;margin-top:12px;padding:9px;border-radius:9px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:10.5px;font-weight:800;transition:.18s}
+.price-btn:hover{background:var(--purplebg);border-color:var(--purple);color:var(--purple)}
+
+/* COMP TABLE */
+.twrap{background:var(--surface);border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:20px;overflow-x:auto}
+table.comp{width:100%;border-collapse:collapse;min-width:540px}
+table.comp thead tr{background:var(--surface2)}
+table.comp th{padding:10px 13px;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;text-align:left}
+table.comp th.r{text-align:right}
+table.comp tbody tr{border-bottom:1px solid var(--surface3)}
+table.comp tbody tr:hover{background:var(--surface2)}
+table.comp tbody tr.rec-row{background:rgba(13,148,136,.05)}
+table.comp td{padding:10px 13px;font-size:12px}
+table.comp td.r{text-align:right}
+.td-op{font-weight:800;font-size:13px}
+.td-pl{font-size:9.5px;color:var(--muted);margin-top:2px}
+.td-val{font-size:14px;font-weight:800}
+.td-g{color:var(--teal);font-size:10.5px;font-weight:700}
+.td-r{color:var(--red);font-size:10.5px;font-weight:700}
+.td-a{color:var(--amber);font-size:10.5px;font-weight:700}
+
+/* INSIGHT */
+.insight{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:13px 17px;font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:12px}
+.insight strong{color:var(--text)}
+.insight.teal{border-left:4px solid var(--teal)}
+.insight.gold{border-left:4px solid var(--gold)}
+.insight.purple{border-left:4px solid var(--purple)}
+.insight.amber{border-left:4px solid var(--amber)}
+.insight.grey{border-left:4px solid var(--muted2)}
+
+/* REDE */
+.rede-wrap{background:var(--surface);border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px;overflow-x:auto}
+table.rede{width:100%;border-collapse:collapse;min-width:580px}
+table.rede thead tr:first-child th{padding:9px 11px;font-size:11px;font-weight:800;text-align:center;border-right:1px solid var(--surface3);border-bottom:1px solid var(--surface3)}
+table.rede thead tr:last-child th{padding:7px 11px;font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;text-align:center;border-right:1px solid var(--surface3);background:var(--surface2)}
+table.rede tbody td{padding:7px 11px;font-size:11px;text-align:center;border-right:1px solid var(--surface3);border-bottom:1px solid var(--surface3)}
+table.rede tbody td:first-child{text-align:left;color:var(--text2);font-weight:600;padding-left:13px;min-width:200px}
+table.rede tbody td:last-child{border-right:none}
+table.rede tbody tr.reg-row td{background:var(--nav);color:var(--muted);font-size:9px;font-style:italic;font-weight:800;letter-spacing:.04em;text-align:left;border-right:none;padding:6px 13px}
+table.rede tbody tr:not(.reg-row):hover td{background:var(--surface2)}
+.cg{background:rgba(13,148,136,.15);color:var(--teal);font-weight:700;border-radius:4px;padding:2px 6px;display:inline-block;font-size:9.5px}
+.ca{background:var(--goldbg);color:var(--gold);border-radius:4px;padding:2px 6px;display:inline-block;font-size:9.5px}
+.cs{background:var(--purplebg);color:var(--purple);border-radius:4px;padding:2px 6px;display:inline-block;font-size:9.5px}
+.cn{color:var(--muted2);font-size:10px}
+.leg-row{display:flex;flex-wrap:wrap;gap:10px;padding:10px 13px;border-top:1px solid var(--border);background:var(--nav)}
+.leg{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--muted)}
+.ld{width:9px;height:9px;border-radius:3px}
+
+/* NOTE */
+.note{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:11px 15px;font-size:10.5px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.82);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modal-card{width:min(660px,100%);max-height:90vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2}
+.modal-title{font-size:17px;font-weight:800}
+.modal-sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+.close-btn{border:1px solid var(--border);background:var(--surface2);color:var(--text);width:32px;height:32px;border-radius:50%;font-size:17px;flex-shrink:0}
+.modal-body{padding:16px 18px 22px}
+.price-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:9px}
+.price-table{width:100%;border-collapse:collapse;min-width:340px}
+.price-table th{background:var(--surface2);color:var(--muted);font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;text-align:left}
+.price-table th.r,.price-table td.r{text-align:right}
+.price-table td{padding:9px 10px;border-bottom:1px solid var(--border);font-size:12px}
+.price-table tfoot td{font-weight:800;background:var(--surface2)}
+.modal-note{font-size:10.5px;color:var(--muted);line-height:1.7;margin-top:11px}
+
+.footer{padding:6px 6px 26px;text-align:center;font-size:9.5px;color:var(--muted2);line-height:1.7;margin-top:6px}
+
+@media(max-width:720px){
+  .nav{padding:9px 12px}
+  .nav-brand{width:100%;text-align:center}
+  .nav-tabs{order:3;width:100%}
+  .nav-right{margin:0 auto}
+  .page{padding:12px}
+  .prop-meta{text-align:left}
+  .cards{grid-template-columns:1fr}
+  .wabtn span{display:none}
+  .wabtn{width:34px;height:34px;justify-content:center;padding:0}
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-brand">Open Corporate · Simone Amaral</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('comp',this)">Comparativo</button>
+    <button class="nav-tab" onclick="showPage('sul',this)">SulAmérica</button>
+    <button class="nav-tab" onclick="showPage('porto',this)">Porto Saúde</button>
+    <button class="nav-tab" onclick="showPage('plenum',this)">Plenum Saúde</button>
+    <button class="nav-tab" onclick="showPage('rede',this)">Rede Credenciada</button>
+  </div>
+  <div class="nav-right">
+    <label class="theme-sw" title="Alternar tema">
+      <input id="theme-toggle" type="checkbox">
+      <span class="sw-track"><span class="sw-icon">☀️</span><span class="sw-icon">🌙</span><span class="sw-thumb"></span></span>
+    </label>
+    <a class="wabtn" href="https://wa.me/5561983016973?text=Ol%C3%A1%2C%20Matheus%21%20Analisei%20a%20proposta%20e%20gostaria%20de%20conversar." target="_blank" rel="noopener">
+      <b>✆</b><span>Falar com Matheus</span>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== COMPARATIVO ==================== -->
+<div class="page active" id="page-comp">
+  <div class="prop-head">
+    <div>
+      <div class="prop-nome">Simone Amaral</div>
+      <div class="prop-sub">Proposta Comercial · Plano de Saúde · 4 vidas · Águas Lindas de Goiás · Junho 2026</div>
+    </div>
+    <div class="prop-meta">
+      <div class="prop-data">Open Corporate · Assessoria em Benefícios Corporativos</div>
+      <a class="prop-contact" href="https://wa.me/5561983016973" target="_blank">Matheus Doro · (61) 98301-6973 ↗</a>
+    </div>
+  </div>
+
+  <div class="alerta-faixa">
+    <div class="alerta-icon">⚠️</div>
+    <div><strong>Atenção — mudança de faixa etária em novembro/2026:</strong> a titular (34–38 anos) completa 39 anos em novembro e migra para a faixa 39–43. Todos os planos sofrerão reajuste nessa data. Os valores abaixo refletem a faixa atual (34–38). O impacto varia entre R$ 15 e R$ 117/mês dependendo do plano escolhido — recomenda-se considerar esse ponto na decisão.</div>
+  </div>
+
+  <div class="perfil">
+    <div class="block-title">Perfil do grupo</div>
+    <div class="perfil-grid">
+      <div class="perfil-item"><div class="pv">4</div><div class="pk">Vidas</div></div>
+      <div class="perfil-item"><div class="pv">1x 0–18</div><div class="pk">Filho · 9 anos</div></div>
+      <div class="perfil-item"><div class="pv">1x 29–33</div><div class="pk">Marido · 32 anos</div></div>
+      <div class="perfil-item"><div class="pv">1x 34–38 ⚠️</div><div class="pk">Titular · faz 39 em nov</div></div>
+      <div class="perfil-item"><div class="pv">1x 59+</div><div class="pk">Pai · 63 anos</div></div>
+      <div class="perfil-item"><div class="pv">Enfermaria</div><div class="pk">Acomodação</div></div>
+    </div>
+  </div>
+
+  <div class="sec-title">Opções cotadas — do mais robusto ao mais acessível</div>
+
+  <div class="cards">
+
+    <!-- SulAmérica Especial RC -->
+    <div class="card anc">
+      <span class="card-tag tag-anc">Maior cobertura</span>
+      <div class="card-op">SulAmérica</div>
+      <div class="card-nome">Especial RC</div>
+      <div class="card-sub">Saúde PME · Apartamento · Nacional</div>
+      <div class="card-valor">R$ 7.127,07<small>/mês</small></div>
+      <div class="card-pv">R$ 1.781,77 por vida · média mensal</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">Acomodação</span><span class="av av-a">Apartamento</span></div>
+        <div class="attr"><span class="al">Coparticipação</span><span class="av av-g">Sem</span></div>
+        <div class="attr"><span class="al">Abrangência</span><span class="av">Nacional</span></div>
+        <div class="attr"><span class="al">Reembolso</span><span class="av av-a">Consultas R$ 150,30</span></div>
+      </div>
+      <div class="badges">
+        <span class="bdg b-apto">Apartamento</span>
+        <span class="bdg b-sem">Sem copart.</span>
+        <span class="bdg b-nac">Nacional</span>
+      </div>
+      <button class="price-btn" onclick="openModal('sul_rc')">Ver composição por faixa etária</button>
+    </div>
+
+    <!-- SulAmérica Direto Nacional -->
+    <div class="card">
+      <span class="card-tag tag-alt">Alternativa</span>
+      <div class="card-op">SulAmérica</div>
+      <div class="card-nome">Direto Nacional</div>
+      <div class="card-sub">Saúde PME · Enfermaria · Nacional</div>
+      <div class="card-valor">R$ 4.196,38<small>/mês</small></div>
+      <div class="card-pv">R$ 1.049,10 por vida · média mensal</div>
+      <div class="card-nov">Após novembro: R$ 4.313,42/mês</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">Acomodação</span><span class="av av-p">Enfermaria</span></div>
+        <div class="attr"><span class="al">Coparticipação</span><span class="av av-g">Sem</span></div>
+        <div class="attr"><span class="al">Abrangência</span><span class="av">Nacional</span></div>
+        <div class="attr"><span class="al">Reembolso</span><span class="av av-a">Urgência R$ 90,00</span></div>
+      </div>
+      <div class="badges">
+        <span class="bdg b-enf">Enfermaria</span>
+        <span class="bdg b-sem">Sem copart.</span>
+        <span class="bdg b-nac">Nacional</span>
+      </div>
+      <button class="price-btn" onclick="openModal('sul_dn')">Ver composição por faixa etária</button>
+    </div>
+
+    <!-- Porto Prata Pro - RECOMENDADO -->
+    <div class="card rec">
+      <span class="card-tag tag-rec">Recomendado</span>
+      <div class="card-op">Porto Saúde</div>
+      <div class="card-nome">Prata Brasília Pro</div>
+      <div class="card-sub">Saúde PME · Enfermaria · Regional DF</div>
+      <div class="card-valor">R$ 2.811,25<small>/mês</small></div>
+      <div class="card-pv">R$ 702,81 por vida · média mensal</div>
+      <div class="card-nov">Após novembro: R$ 2.827,41/mês</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">Acomodação</span><span class="av av-p">Enfermaria</span></div>
+        <div class="attr"><span class="al">Coparticipação</span><span class="av av-g">Sem</span></div>
+        <div class="attr"><span class="al">Abrangência</span><span class="av av-amber">Regional DF</span></div>
+        <div class="attr"><span class="al">Seguro Viagem</span><span class="av av-g">Incluído</span></div>
+        <div class="attr"><span class="al">H Anchieta Ceilândia</span><span class="av av-g">✓</span></div>
+        <div class="attr"><span class="al">H Brasília Águas Claras</span><span class="av av-g">✓</span></div>
+        <div class="attr"><span class="al">Sta. Marta Taguatinga</span><span class="av av-g">✓</span></div>
+      </div>
+      <div class="badges">
+        <span class="bdg b-enf">Enfermaria</span>
+        <span class="bdg b-sem">Sem copart.</span>
+        <span class="bdg b-reg">Regional DF</span>
+      </div>
+      <button class="price-btn" onclick="openModal('porto')">Ver composição por faixa etária</button>
+    </div>
+
+    <!-- Plenum Delta PJ -->
+    <div class="card">
+      <span class="card-tag tag-alt">Econômica</span>
+      <div class="card-op">Plenum Saúde</div>
+      <div class="card-nome">Delta PJ</div>
+      <div class="card-sub">Saúde PME · Enfermaria · Nacional</div>
+      <div class="card-valor">R$ 2.682,04<small>/mês</small></div>
+      <div class="card-pv">R$ 670,51 por vida · média mensal</div>
+      <div class="card-nov">Após novembro: R$ 2.698,04/mês</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">Acomodação</span><span class="av av-p">Enfermaria</span></div>
+        <div class="attr"><span class="al">Coparticipação</span><span class="av av-g">Sem</span></div>
+        <div class="attr"><span class="al">Abrangência</span><span class="av">Nacional</span></div>
+        <div class="attr"><span class="al">H Anchieta Ceilândia</span><span class="av av-g">✓</span></div>
+        <div class="attr"><span class="al">H Anchieta Taguatinga</span><span class="av av-g">✓</span></div>
+        <div class="attr"><span class="al">H Daher Lago Sul</span><span class="av av-g">✓</span></div>
+      </div>
+      <div class="badges">
+        <span class="bdg b-enf">Enfermaria</span>
+        <span class="bdg b-sem">Sem copart.</span>
+        <span class="bdg b-nac">Nacional</span>
+      </div>
+      <button class="price-btn" onclick="openModal('plenum')">Ver composição por faixa etária</button>
+    </div>
+
+  </div>
+
+  <!-- COMPARATIVO FINANCEIRO -->
+  <div class="sec-title">Comparativo financeiro</div>
+  <div class="twrap">
+    <table class="comp">
+      <thead>
+        <tr>
+          <th>Plano</th>
+          <th class="r">Mensalidade</th>
+          <th class="r">Por vida/mês</th>
+          <th class="r">Após novembro</th>
+          <th class="r">Economia mensal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="td-op">SulAmérica · Especial RC</div><div class="td-pl">Apartamento · Reembolso consultas R$ 150,30</div></td>
+          <td class="r"><div class="td-val">R$ 7.127,07</div></td>
+          <td class="r"><div class="td-r">R$ 1.781,77</div></td>
+          <td class="r"><div class="td-a">—</div></td>
+          <td class="r"><div class="td-a">— referência</div></td>
+        </tr>
+        <tr>
+          <td><div class="td-op">SulAmérica · Direto Nacional</div><div class="td-pl">Enfermaria · Reembolso urgência R$ 90,00</div></td>
+          <td class="r"><div class="td-val">R$ 4.196,38</div></td>
+          <td class="r"><div class="td-a">R$ 1.049,10</div></td>
+          <td class="r"><div class="td-a">R$ 4.313,42</div></td>
+          <td class="r"><div class="td-g">− R$ 2.930,69</div></td>
+        </tr>
+        <tr class="rec-row">
+          <td><div class="td-op">Porto Saúde · Prata Brasília Pro ⭐</div><div class="td-pl">Enfermaria · Regional DF · Seguro viagem incluído</div></td>
+          <td class="r"><div class="td-val">R$ 2.811,25</div></td>
+          <td class="r"><div class="td-g">R$ 702,81</div></td>
+          <td class="r"><div class="td-g">R$ 2.827,41</div></td>
+          <td class="r"><div class="td-g">− R$ 4.315,82</div></td>
+        </tr>
+        <tr>
+          <td><div class="td-op">Plenum Saúde · Delta PJ</div><div class="td-pl">Enfermaria · Nacional · H Anchieta Ceilândia e Taguatinga</div></td>
+          <td class="r"><div class="td-val">R$ 2.682,04</div></td>
+          <td class="r"><div class="td-g">R$ 670,51</div></td>
+          <td class="r"><div class="td-g">R$ 2.698,04</div></td>
+          <td class="r"><div class="td-g">− R$ 4.445,03</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DIFERENCIAIS -->
+  <div class="sec-title">O que muda entre os planos</div>
+  <div class="twrap">
+    <table class="comp">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Sul Especial RC</th>
+          <th>Sul Direto Nac.</th>
+          <th>Porto Prata Pro ⭐</th>
+          <th>Plenum Delta PJ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-op">Mensalidade</td><td style="color:var(--red);font-weight:700">R$ 7.127,07</td><td>R$ 4.196,38</td><td><strong style="color:var(--teal)">R$ 2.811,25</strong></td><td>R$ 2.682,04</td></tr>
+        <tr><td class="td-op">Acomodação</td><td>Apartamento</td><td>Enfermaria</td><td>Enfermaria</td><td>Enfermaria</td></tr>
+        <tr><td class="td-op">Coparticipação</td><td><span style="color:var(--teal)">Sem</span></td><td><span style="color:var(--teal)">Sem</span></td><td><span style="color:var(--teal)">Sem</span></td><td><span style="color:var(--teal)">Sem</span></td></tr>
+        <tr><td class="td-op">Abrangência</td><td>Nacional</td><td>Nacional</td><td><span style="color:var(--amber)">Regional DF</span></td><td>Nacional</td></tr>
+        <tr><td class="td-op">Seguro Viagem</td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td></tr>
+        <tr><td class="td-op">H Anchieta Ceilândia</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td></tr>
+        <tr><td class="td-op">H Brasília Águas Claras</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td></tr>
+        <tr><td class="td-op">Sta. Marta Taguatinga</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td></tr>
+        <tr><td class="td-op">H Anchieta Taguatinga</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--teal)">✓</span></td></tr>
+        <tr><td class="td-op">Sta. Lúcia Gama</td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td></tr>
+        <tr><td class="td-op">H DF Star</td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--teal)">✓</span></td><td><span style="color:var(--red)">✗</span></td><td><span style="color:var(--red)">✗</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Valores baseados em comparativo oficial das operadoras — junho 2026. A Prata Brasília Pro é produto regional: cobertura completa no DF, urgência/emergência fora do DF. Todos os valores sujeitos a alteração conforme análise e tabela vigente na contratação.<br>
+    Open Corporate · Matheus Doro · comercial01@opencorretoradeseguros.com · (61) 98301-6973
+  </div>
+</div>
+
+<!-- ==================== SULAMÉRICA ==================== -->
+<div class="page" id="page-sul">
+  <div class="prop-head">
+    <div><div class="prop-nome">SulAmérica Saúde</div><div class="prop-sub">Duas opções · Simone Amaral · 4 vidas · Junho 2026</div></div>
+    <div class="prop-meta"><div class="prop-data">Open Corporate</div><a class="prop-contact" href="https://wa.me/5561983016973" target="_blank">Matheus Doro · (61) 98301-6973 ↗</a></div>
+  </div>
+
+  <div class="op-header sul">
+    <div class="op-nome">SulAmérica Saúde</div>
+    <div class="op-desc">Produto 557 · Ambulatorial e Hospitalar com Obstetrícia · PME · Nacional + Entorno DF<br>Reembolso modular — Especial RC reembolsa consultas a R$ 150,30; Direto Nacional reembolsa apenas urgências a R$ 90,00.</div>
+    <span class="op-badge badge-nac">Nacional</span>
+  </div>
+
+  <div class="cards">
+    <div class="card anc">
+      <span class="card-tag tag-anc">Maior cobertura</span>
+      <div class="card-op">SulAmérica</div>
+      <div class="card-nome">Especial RC</div>
+      <div class="card-sub">Apartamento · Sem coparticipação · Nacional</div>
+      <div class="card-valor">R$ 7.127,07<small>/mês</small></div>
+      <div class="card-pv">R$ 1.781,77 por vida · média mensal</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">0–18 (filho)</span><span class="av">R$ 703,93</span></div>
+        <div class="attr"><span class="al">29–33 (marido)</span><span class="av">R$ 1.211,10</span></div>
+        <div class="attr"><span class="al">34–38 (titular)</span><span class="av">R$ 1.295,87</span></div>
+        <div class="attr"><span class="al">59+ (pai)</span><span class="av">R$ 4.223,36</span></div>
+        <div class="attr"><span class="al">Reembolso</span><span class="av av-a">Consultas R$ 150,30</span></div>
+        <div class="attr"><span class="al">DF Star na rede</span><span class="av av-g">✓</span></div>
+        <div class="attr"><span class="al">H Sta. Helena</span><span class="av av-g">✓</span></div>
+      </div>
+      <div class="badges"><span class="bdg b-apto">Apartamento</span><span class="bdg b-sem">Sem copart.</span><span class="bdg b-nac">Nacional</span></div>
+    </div>
+
+    <div class="card">
+      <span class="card-tag tag-alt">Alternativa</span>
+      <div class="card-op">SulAmérica</div>
+      <div class="card-nome">Direto Nacional</div>
+      <div class="card-sub">Enfermaria · Sem coparticipação · Nacional</div>
+      <div class="card-valor">R$ 4.196,38<small>/mês</small></div>
+      <div class="card-pv">R$ 1.049,10 por vida · média mensal</div>
+      <div class="card-nov">Após novembro: R$ 4.313,42/mês</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">0–18 (filho)</span><span class="av">R$ 388,10</span></div>
+        <div class="attr"><span class="al">29–33 (marido)</span><span class="av">R$ 667,72</span></div>
+        <div class="attr"><span class="al">34–38 (titular)</span><span class="av">R$ 714,46</span></div>
+        <div class="attr"><span class="al">59+ (pai)</span><span class="av">R$ 2.328,55</span></div>
+        <div class="attr"><span class="al">Reembolso</span><span class="av av-a">Urgência R$ 90,00</span></div>
+        <div class="attr"><span class="al">H Sta. Helena</span><span class="av av-g">✓</span></div>
+        <div class="attr"><span class="al">DF Star na rede</span><span class="av av-g">✓</span></div>
+      </div>
+      <div class="badges"><span class="bdg b-enf">Enfermaria</span><span class="bdg b-sem">Sem copart.</span><span class="bdg b-nac">Nacional</span></div>
+    </div>
+  </div>
+
+  <div class="insight grey">
+    <strong>O que muda entre as duas opções SulAmérica:</strong> R$ 2.930,69/mês de diferença. O Especial RC entrega apartamento e reembolso para consultas eletivas (R$ 150,30). O Direto Nacional é enfermaria e reembolsa apenas urgências. A rede credenciada é a mesma nas regiões de interesse — H Anchieta Ceilândia presente nas duas, H Brasília Águas Claras apenas no Especial RC.
+  </div>
+
+  <div class="footer">
+    Informativo referencial · Open Corporate · Matheus Doro · (61) 98301-6973
+  </div>
+</div>
+
+<!-- ==================== PORTO ==================== -->
+<div class="page" id="page-porto">
+  <div class="prop-head">
+    <div><div class="prop-nome">Porto Saúde — Recomendado</div><div class="prop-sub">Prata Brasília Pro · Simone Amaral · 4 vidas · Junho 2026</div></div>
+    <div class="prop-meta"><div class="prop-data">Open Corporate</div><a class="prop-contact" href="https://wa.me/5561983016973" target="_blank">Matheus Doro · (61) 98301-6973 ↗</a></div>
+  </div>
+
+  <div class="op-header porto">
+    <div class="op-nome">Porto Saúde · Prata Brasília Pro</div>
+    <div class="op-desc">Produto regional com foco no DF e entorno · Sem coparticipação · Seguro viagem nacional e internacional incluído · Telemedicina 24h · Time Médico Porto · Desconto em farmácias até 70%</div>
+    <span class="op-badge badge-rec">Recomendado</span>
+    <span class="op-badge badge-reg" style="margin-left:6px">Regional DF</span>
+  </div>
+
+  <div class="alerta-faixa">
+    <div class="alerta-icon">⚠️</div>
+    <div><strong>Produto regional:</strong> a cobertura completa aplica-se no Distrito Federal e entorno. Fora do DF, a cobertura fica restrita a urgência e emergência. O seguro viagem cobre despesas médicas no exterior conforme condições contratadas.</div>
+  </div>
+
+  <div class="cards">
+    <div class="card rec" style="max-width:420px;margin:0 auto">
+      <span class="card-tag tag-rec">Recomendado</span>
+      <div class="card-op">Porto Saúde</div>
+      <div class="card-nome">Prata Brasília Pro</div>
+      <div class="card-sub">Enfermaria · Sem coparticipação · Regional DF</div>
+      <div class="card-valor">R$ 2.811,25<small>/mês</small></div>
+      <div class="card-pv">R$ 702,81 por vida · média mensal</div>
+      <div class="card-nov">Após novembro (ela 39–43): R$ 2.827,41/mês · diferença: +R$ 16,16</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">0–18 (filho)</span><span class="av">R$ 289,20</span></div>
+        <div class="attr"><span class="al">29–33 (marido)</span><span class="av">R$ 484,36</span></div>
+        <div class="attr"><span class="al">34–38 (titular)</span><span class="av">R$ 524,80</span></div>
+        <div class="attr"><span class="al">59+ (pai)</span><span class="av">R$ 1.447,54</span></div>
+        <div class="attr"><span class="al">Coparticipação</span><span class="av av-g">Sem</span></div>
+        <div class="attr"><span class="al">Seguro Viagem</span><span class="av av-g">Incluído</span></div>
+        <div class="attr"><span class="al">Telemedicina 24h</span><span class="av av-g">Incluída</span></div>
+        <div class="attr"><span class="al">Desconto Farmácia</span><span class="av av-g">Até 70%</span></div>
+        <div class="attr"><span class="al">H Anchieta Ceilândia</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">H Brasília Águas Claras</span><span class="av av-g">✓ H,PS</span></div>
+        <div class="attr"><span class="al">Sta. Marta Taguatinga</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">Sta. Lúcia Gama</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">HOB Taguatinga</span><span class="av av-g">✓ H¹</span></div>
+      </div>
+      <div class="badges">
+        <span class="bdg b-enf">Enfermaria</span>
+        <span class="bdg b-sem">Sem copart.</span>
+        <span class="bdg b-reg">Regional DF</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight teal">
+    <strong>Por que recomendamos o Prata Brasília Pro:</strong> entrega a melhor relação entre custo e cobertura nas regiões prioritárias — Águas Claras, Taguatinga e Ceilândia estão todas contempladas. O seguro viagem incluído é um diferencial concreto que os demais planos não oferecem. A diferença de R$ 1.385 para o Direto Nacional da SulAmérica representa R$ 16.620/ano — para um produto regional onde a família mora e trabalha no DF, essa economia é consistente com a cobertura entregue.
+  </div>
+
+  <div class="insight amber">
+    <strong>Ponto de atenção — abrangência regional:</strong> fora do DF, a cobertura fica restrita a urgência e emergência. Se a família viaja frequentemente para outras cidades do Brasil com necessidade de atendimento eletivo, o Plenum Delta PJ ou a SulAmérica Direto Nacional são alternativas com cobertura nacional completa.
+  </div>
+
+  <div class="footer">
+    Informativo referencial · Open Corporate · Matheus Doro · (61) 98301-6973
+  </div>
+</div>
+
+<!-- ==================== PLENUM ==================== -->
+<div class="page" id="page-plenum">
+  <div class="prop-head">
+    <div><div class="prop-nome">Plenum Saúde</div><div class="prop-sub">Delta PJ · Simone Amaral · 4 vidas · Junho 2026</div></div>
+    <div class="prop-meta"><div class="prop-data">Open Corporate</div><a class="prop-contact" href="https://wa.me/5561983016973" target="_blank">Matheus Doro · (61) 98301-6973 ↗</a></div>
+  </div>
+
+  <div class="op-header plenum">
+    <div class="op-nome">Plenum Saúde · Delta PJ</div>
+    <div class="op-desc">Saúde PME · Enfermaria · Sem coparticipação · Cobertura nacional · Rede sólida em Ceilândia e Taguatinga</div>
+    <span class="op-badge badge-nac">Nacional</span>
+  </div>
+
+  <div class="cards">
+    <div class="card" style="max-width:420px;margin:0 auto">
+      <span class="card-tag tag-alt">Econômica</span>
+      <div class="card-op">Plenum Saúde</div>
+      <div class="card-nome">Delta PJ</div>
+      <div class="card-sub">Enfermaria · Sem coparticipação · Nacional</div>
+      <div class="card-valor">R$ 2.682,04<small>/mês</small></div>
+      <div class="card-pv">R$ 670,51 por vida · média mensal</div>
+      <div class="card-nov">Após novembro (ela 39–43): R$ 2.698,04/mês · diferença: +R$ 16,00</div>
+      <div class="divider"></div>
+      <div class="attrs">
+        <div class="attr"><span class="al">0–18 (filho)</span><span class="av">R$ 289,95</span></div>
+        <div class="attr"><span class="al">29–33 (marido)</span><span class="av">R$ 478,42</span></div>
+        <div class="attr"><span class="al">34–38 (titular)</span><span class="av">R$ 521,91</span></div>
+        <div class="attr"><span class="al">59+ (pai)</span><span class="av">R$ 1.391,76</span></div>
+        <div class="attr"><span class="al">Coparticipação</span><span class="av av-g">Sem</span></div>
+        <div class="attr"><span class="al">Abrangência</span><span class="av">Nacional</span></div>
+        <div class="attr"><span class="al">H Anchieta Ceilândia</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">H Anchieta Taguatinga</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">H Daher Lago Sul</span><span class="av av-g">✓ H,PS</span></div>
+        <div class="attr"><span class="al">M Brasília</span><span class="av av-g">✓ H,M,PS</span></div>
+        <div class="attr"><span class="al">H São Mateus</span><span class="av av-g">✓ H,PS</span></div>
+        <div class="attr"><span class="al">H Brasília Águas Claras</span><span class="av av-r">✗</span></div>
+        <div class="attr"><span class="al">Sta. Marta Taguatinga</span><span class="av av-r">✗</span></div>
+      </div>
+      <div class="badges">
+        <span class="bdg b-enf">Enfermaria</span>
+        <span class="bdg b-sem">Sem copart.</span>
+        <span class="bdg b-nac">Nacional</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight gold">
+    <strong>Plenum Delta PJ — o mais acessível do comparativo:</strong> menor mensalidade entre todos os planos nacionais, sem coparticipação e com H Anchieta Ceilândia e H Anchieta Taguatinga na rede. Ideal se a prioridade é cobertura nacional com custo reduzido. Não cobre H Brasília Águas Claras nem Sta. Marta Taguatinga — pontos relevantes se essas unidades forem prioritárias para a família.
+  </div>
+
+  <div class="footer">
+    Informativo referencial · Open Corporate · Matheus Doro · (61) 98301-6973
+  </div>
+</div>
+
+<!-- ==================== REDE ==================== -->
+<div class="page" id="page-rede">
+  <div class="prop-head">
+    <div><div class="prop-nome">Rede Credenciada</div><div class="prop-sub">Comparativo completo · Todas as operadoras · Distrito Federal</div></div>
+    <div class="prop-meta"><div class="prop-data">Open Corporate</div><a class="prop-contact" href="https://wa.me/5561983016973" target="_blank">Matheus Doro · (61) 98301-6973 ↗</a></div>
+  </div>
+
+  <div class="note">
+    H = Internação · M = Maternidade · PS = Pronto Socorro · PA = Pronto Atendimento · H¹ = Internação c/ especialidade (confirmar operadora) · PSA = PS Adulto · PSP = PS Pediátrico
+  </div>
+
+  <div class="rede-wrap">
+    <table class="rede">
+      <thead>
+        <tr>
+          <th style="background:var(--nav);text-align:left;min-width:200px" rowspan="2">Hospital</th>
+          <th style="background:rgba(0,120,212,.12);color:#60AAFF" colspan="2">SulAmérica</th>
+          <th style="background:rgba(0,100,180,.12);color:#60AAFF">Porto</th>
+          <th style="background:rgba(58,155,186,.12);color:var(--teal)">Plenum</th>
+        </tr>
+        <tr>
+          <th>Especial RC</th>
+          <th>Direto Nac.</th>
+          <th>Prata Pro ⭐</th>
+          <th>Delta PJ</th>
+        </tr>
+      </thead>
+      <tbody id="rede-tbody"></tbody>
+    </table>
+    <div class="leg-row">
+      <div class="leg"><div class="ld" style="background:var(--teal)"></div>Presente em todos</div>
+      <div class="leg"><div class="ld" style="background:var(--gold)"></div>Presente em 2 ou 3</div>
+      <div class="leg"><div class="ld" style="background:var(--purple)"></div>Presente em apenas 1</div>
+      <div class="leg">H=Internação · M=Maternidade · PS=PS Geral · PSA=PS Adulto</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Rede baseada em comparativo oficial junho 2026. Dinâmica e sujeita a alteração — confirme antes de utilizar.<br>
+    Open Corporate · Matheus Doro · (61) 98301-6973
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="price-modal" onclick="backdropClose(event)">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><div class="modal-title" id="modal-title"></div><div class="modal-sub" id="modal-sub"></div></div>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="price-scroll">
+        <table class="price-table">
+          <thead><tr><th>Beneficiário</th><th>Faixa</th><th class="r">Valor/vida</th></tr></thead>
+          <tbody id="modal-rows"></tbody>
+          <tfoot id="modal-foot"></tfoot>
+        </table>
+      </div>
+      <div class="modal-note" id="modal-note"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BRL=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+
+const PRODUCTS={
+  sul_rc:{name:'SulAmérica — Especial RC',sub:'Apartamento · Sem coparticipação · Nacional',
+    bands:[{b:'Filho',f:'0–18',v:703.93},{b:'Marido',f:'29–33',v:1211.10},{b:'Titular',f:'34–38',v:1295.87},{b:'Pai',f:'59+',v:4223.36}],total:7127.07},
+  sul_dn:{name:'SulAmérica — Direto Nacional',sub:'Enfermaria · Sem coparticipação · Nacional',
+    bands:[{b:'Filho',f:'0–18',v:388.10},{b:'Marido',f:'29–33',v:667.72},{b:'Titular',f:'34–38',v:714.46},{b:'Pai',f:'59+',v:2328.55}],total:4196.38},
+  porto:{name:'Porto Saúde — Prata Brasília Pro',sub:'Enfermaria · Sem coparticipação · Regional DF · Seguro viagem incluído',
+    bands:[{b:'Filho',f:'0–18',v:289.20},{b:'Marido',f:'29–33',v:484.36},{b:'Titular',f:'34–38',v:524.80},{b:'Pai',f:'59+',v:1447.54}],total:2811.25},
+  plenum:{name:'Plenum Saúde — Delta PJ',sub:'Enfermaria · Sem coparticipação · Nacional',
+    bands:[{b:'Filho',f:'0–18',v:289.95},{b:'Marido',f:'29–33',v:478.42},{b:'Titular',f:'34–38',v:521.91},{b:'Pai',f:'59+',v:1391.76}],total:2682.04},
+};
+
+function openModal(id){
+  const p=PRODUCTS[id];
+  document.getElementById('modal-title').textContent=p.name;
+  document.getElementById('modal-sub').textContent=p.sub;
+  document.getElementById('modal-rows').innerHTML=p.bands.map(b=>
+    `<tr><td>${b.b}</td><td style="color:var(--muted)">${b.f}</td><td class="r">${BRL(b.v)}</td></tr>`
+  ).join('');
+  document.getElementById('modal-foot').innerHTML=
+    `<tr><td colspan="2" style="color:var(--gold)">Total mensal</td><td class="r" style="color:var(--gold)">${BRL(p.total)}</td></tr>`;
+  document.getElementById('modal-note').textContent='Valores de referência junho 2026 · sujeitos a alteração conforme análise da operadora.';
+  document.getElementById('price-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('price-modal').classList.remove('open');document.body.style.overflow='';}
+function backdropClose(e){if(e.target.id==='price-modal')closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// REDE
+const REDE=[
+  {r:'Asa Norte',n:'H Sta Helena',sr:'H,M,PS',sdn:'H,M,PS',pp:null,dpj:null},
+  {r:'Asa Norte',n:'HOB - Asa Norte',sr:null,sdn:null,pp:'H¹',dpj:'H¹,PS¹'},
+  {r:'Asa Norte',n:'Sta Lúcia Norte',sr:'H,M,PS',sdn:null,pp:'H,PS',dpj:null},
+  {r:'Asa Sul',n:'H Alvorada - Brasília',sr:'H,PSA',sdn:null,pp:null,dpj:'H,PS'},
+  {r:'Asa Sul',n:'H DF Star',sr:'H,PSA',sdn:'H¹',pp:null,dpj:null},
+  {r:'Asa Sul',n:'H do Coração do Brasil',sr:'H¹',sdn:'H¹',pp:null,dpj:null},
+  {r:'Asa Sul',n:'H Home',sr:'H¹',sdn:null,pp:null,dpj:'H,PS'},
+  {r:'Asa Sul',n:'H Sta Luzia',sr:'H,M,PS',sdn:'H,M,PS',pp:null,dpj:null},
+  {r:'Asa Sul',n:'H Urológico de Brasília',sr:'H¹',sdn:null,pp:null,dpj:null},
+  {r:'Asa Sul',n:'HOB - Brasília',sr:null,sdn:null,pp:'H¹',dpj:'H¹,PS¹'},
+  {r:'Asa Sul',n:'Sta Lúcia Sul',sr:'H,PS',sdn:null,pp:null,dpj:null},
+  {r:'Asa Sul',n:'Sta Lúcia Taguatinga',sr:'PSP',sdn:null,pp:'H¹',dpj:null},
+  {r:'Ceilândia',n:'H Anchieta Ceilândia',sr:'H,M,PS',sdn:'H,M,PS',pp:'H,M,PS',dpj:'H,M,PS'},
+  {r:'Ceilândia',n:'Visão H de Olhos - Ceilândia',sr:null,sdn:null,pp:null,dpj:'H¹,PS¹'},
+  {r:'Cruzeiro / Planaltina',n:'H São Mateus',sr:null,sdn:null,pp:null,dpj:'H,PS'},
+  {r:'Cruzeiro / Planaltina',n:'Clín Estância Resiliência - DF',sr:'H¹',sdn:'H¹',pp:null,dpj:null},
+  {r:'Riacho Fundo',n:'Clin Crescer',sr:'H¹',sdn:null,pp:null,dpj:null},
+  {r:'São Sebastião',n:'Hpaes',sr:null,sdn:null,pp:null,dpj:'H'},
+  {r:'Hab. Sul / Lago Sul',n:'Clínica Carpaneda - Brasília',sr:'H¹',sdn:null,pp:null,dpj:null},
+  {r:'Hab. Sul / Lago Sul',n:'H Brasília',sr:'H,PS',sdn:null,pp:null,dpj:'H,PS'},
+  {r:'Hab. Sul / Lago Sul',n:'H Daher Lago Sul',sr:'H,PS',sdn:'PS',pp:null,dpj:'H,PS'},
+  {r:'Samambaia / Gama',n:'Visão H de Olhos - Taguatinga',sr:null,sdn:null,pp:null,dpj:'H¹,PS¹'},
+  {r:'Samambaia / Gama',n:'Sta Lúcia Gama',sr:null,sdn:null,pp:'H,M,PS',dpj:null},
+  {r:'Sudoeste',n:'M Brasília',sr:'M',sdn:null,pp:null,dpj:'H,M,PS'},
+  {r:'Sobradinho',n:'RM Clín de Reabilitação',sr:null,sdn:null,pp:null,dpj:'H¹,PS¹'},
+  {r:'Águas Claras',n:'H Brasília Águas Claras - DF',sr:'H,PS',sdn:null,pp:'H,PS',dpj:'H,PS'},
+  {r:'Águas Claras',n:'H Olhos de Gama',sr:'H¹',sdn:'H¹',pp:'H¹,PS¹',dpj:'H¹,PS¹'},
+  {r:'Taguatinga',n:'Clín Recanto Unid Taguatinga',sr:'H¹',sdn:null,pp:null,dpj:null},
+  {r:'Taguatinga',n:'Clín Sta Maria Auxiliadora - DF',sr:'H,M,PS',sdn:'H,M,PS',pp:null,dpj:null},
+  {r:'Taguatinga',n:'H Anchieta - Brasília (Taguatinga Norte)',sr:'H,M,PS',sdn:null,pp:null,dpj:null},
+  {r:'Taguatinga',n:'CC Amma',sr:null,sdn:null,pp:null,dpj:'H'},
+  {r:'Taguatinga',n:'HOB - Taguatinga',sr:'H¹',sdn:'H¹',pp:'H¹',dpj:'H¹,PS¹'},
+  {r:'Taguatinga',n:'Sta Marta - Taguatinga',sr:'H,M,PS',sdn:'H,M,PS',pp:'H,M,PS',dpj:null},
+  {r:'Distrito Federal',n:'Sta Maria (Cidade Ocidental)',sr:null,sdn:null,pp:null,dpj:'H'},
+  {r:'Distrito Federal',n:'H Anchieta - Taguatinga',sr:null,sdn:null,pp:null,dpj:'H,M,PS'},
+  {r:'Goiás / Valparaíso',n:'Cerrado (Valparaíso)',sr:null,sdn:null,pp:null,dpj:'H'},
+];
+
+const LABS=[
+  {n:'Exame - DF',sr:null,sdn:null,pp:'LAB',dpj:null},
+  {n:'Exato - DF',sr:null,sdn:null,pp:null,dpj:null},
+  {n:'Sabin - DF',sr:null,sdn:null,pp:'LAB',dpj:null},
+  {n:'Sta Paula - DF',sr:null,sdn:null,pp:null,dpj:null},
+];
+
+function countPresent(row){return[row.sr,row.sdn,row.pp,row.dpj].filter(Boolean).length;}
+function cellClass(v,count){
+  if(!v)return'<span class="cn">—</span>';
+  const cls=count===4?'cg':count>=2?'ca':'cs';
+  return`<span class="${cls}">${v}</span>`;
+}
+
+function buildRede(){
+  let html='';let curR='';
+  for(const h of REDE){
+    if(h.r!==curR){curR=h.r;html+=`<tr><td colspan="5" class="reg-row">${curR}</td></tr>`;}
+    const c=countPresent(h);
+    html+=`<tr><td>${h.n}</td><td>${cellClass(h.sr,c)}</td><td>${cellClass(h.sdn,c)}</td><td>${cellClass(h.pp,c)}</td><td>${cellClass(h.dpj,c)}</td></tr>`;
+  }
+  html+=`<tr><td colspan="5" class="reg-row">Laboratórios</td></tr>`;
+  for(const l of LABS){
+    const c=countPresent(l);
+    html+=`<tr><td>${l.n}</td><td>${cellClass(l.sr,c)}</td><td>${cellClass(l.sdn,c)}</td><td>${cellClass(l.pp,c)}</td><td>${cellClass(l.dpj,c)}</td></tr>`;
+  }
+  document.getElementById('rede-tbody').innerHTML=html;
+}
+
+// NAV
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+  if(id==='rede'&&!document.getElementById('rede-tbody').innerHTML)buildRede();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// THEME
+const toggle=document.getElementById('theme-toggle');
+function syncTheme(){toggle.checked=document.documentElement.dataset.theme==='dark';}
+syncTheme();
+toggle.addEventListener('change',()=>{
+  const t=toggle.checked?'dark':'light';
+  document.documentElement.dataset.theme=t;
+  try{localStorage.setItem('simone-theme',t);}catch(e){}
+});
+</script>
+</body>
+</html>
