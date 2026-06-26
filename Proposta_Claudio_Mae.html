@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta — Mãe do Claudio</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0D1B40;color:#fff;min-height:100vh;padding:20px 16px 100px}
+.container{max-width:860px;margin:0 auto}
+
+/* HEADER */
+.header{background:#142050;border-radius:14px;padding:18px 22px;margin-bottom:20px;border:1px solid #1E3060;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
+.h-left .h-nome{font-size:21px;font-weight:700;color:#fff}
+.h-left .h-sub{font-size:12px;color:#9EB4D4;margin-top:4px}
+.h-right{text-align:right}
+.h-corretor{font-size:12px;font-weight:700;color:#C8A951}
+.h-tel{font-size:11px;color:#9EB4D4;margin-top:3px}
+.h-wa{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:#25D366;color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;text-decoration:none}
+
+/* PERFIL */
+.perfil{background:#1A1200;border:1px solid #C8A951;border-radius:12px;padding:13px 18px;margin-bottom:24px;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+.perfil-item{text-align:center}
+.perfil-val{font-size:15px;font-weight:700;color:#fff}
+.perfil-key{font-size:10px;color:#9EB4D4;margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.perfil-divider{width:1px;height:36px;background:#2A2000}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #1E3060;background:#142050;color:#9EB4D4;transition:all .2s}
+.tab.active{background:#C8A951;color:#0D1B40;border-color:#C8A951}
+
+/* SECTION LABEL */
+.section-label{font-size:10px;font-weight:700;color:#5ECFB8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+
+/* PLAN CARDS */
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:16px}
+.plan-card{background:#142050;border:1px solid #1E3060;border-radius:12px;padding:16px;position:relative;transition:border-color .2s}
+.plan-card.recommended{border-color:#C8A951}
+.plan-card.anchor{border-color:#534AB7}
+.rec-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#C8A951;color:#0D1B40;font-size:9px;font-weight:800;padding:3px 12px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em}
+.anc-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#534AB7;color:#fff;font-size:9px;font-weight:800;padding:3px 12px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em}
+.plan-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+.plan-acom{font-size:10px;color:#9EB4D4;margin-bottom:10px}
+.plan-price{font-size:22px;font-weight:800;color:#fff;line-height:1}
+.plan-price span{font-size:11px;font-weight:400;color:#9EB4D4}
+.plan-copay{font-size:10px;color:#5ECFB8;margin-top:4px;margin-bottom:12px}
+.btn-rede{display:inline-flex;align-items:center;gap:5px;margin-top:4px;background:#0D1B40;border:1px solid #2A3A6A;color:#9EB4D4;font-size:10px;font-weight:600;padding:5px 12px;border-radius:8px;cursor:pointer;transition:all .2s;width:100%;justify-content:center}
+.btn-rede:hover{border-color:#5ECFB8;color:#5ECFB8}
+.national-pill{display:inline-block;background:#0D2820;border:1px solid #1A5C40;color:#5ECFB8;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;margin-top:6px}
+
+/* PS ALERT */
+.ps-bar{border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:11px;line-height:1.5}
+.ps-ok{background:#0D2820;border:1px solid #1A5C40;color:#5ECFB8}
+.ps-warn{background:#1A1200;border:1px solid #3A2A00;color:#C8A951}
+.ps-label{font-weight:700;margin-bottom:3px}
+
+/* REDE TABLE */
+.rede-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px}
+.rede-table th{background:#0A1430;color:#9EB4D4;font-weight:700;padding:8px 10px;text-align:left;border-bottom:1px solid #1E3060;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+.rede-table td{padding:8px 10px;border-bottom:1px solid #0F1E3A;color:#CBD5E8;vertical-align:top}
+.rede-table tr:last-child td{border-bottom:none}
+.rede-table .h-name{color:#fff;font-weight:600}
+.rede-table .local{font-size:10px;color:#6B7FA0;margin-top:2px}
+.cov-pill{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;margin:2px 2px 0 0}
+.cov-h{background:#0D2820;color:#5ECFB8;border:1px solid #1A5C40}
+.cov-ps{background:#1A1A00;color:#D4C200;border:1px solid #3A3A00}
+.cov-ps1{background:#1A0800;color:#E08040;border:1px solid #3A1800}
+.cov-amb{background:#0A1830;color:#6EB4FF;border:1px solid #1A3060}
+.cov-lab{background:#1A0D20;color:#B080FF;border:1px solid #3A1A50}
+.cov-none{background:#1A1A1A;color:#555;border:1px solid #2A2A2A}
+
+/* DIVIDER */
+.divider{height:1px;background:#1E3060;margin:24px 0}
+
+/* INSIGHT BOX */
+.insight{background:#0A1430;border:1px solid #5ECFB8;border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.7;color:#CBD5E8;margin-top:16px}
+.insight strong{color:#fff}
+
+/* TAB CONTENT */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* STICKY CTA */
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;background:#0D1B40;border-top:1px solid #1E3060;padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:12px;z-index:100}
+.sticky-cta a{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-size:13px;font-weight:700;padding:10px 22px;border-radius:25px;text-decoration:none}
+.sticky-cta .cta-txt{font-size:11px;color:#9EB4D4}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:#9EB4D4}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,10,25,.85);z-index:500;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal-box{background:#0F1E48;border:1px solid #2A3A6A;border-radius:16px;width:100%;max-width:640px;max-height:85vh;overflow-y:auto;position:relative}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #1E3060;position:sticky;top:0;background:#0F1E48;z-index:10}
+.modal-title{font-size:15px;font-weight:700;color:#fff}
+.modal-sub{font-size:11px;color:#9EB4D4;margin-top:2px}
+.modal-close{background:none;border:none;color:#9EB4D4;font-size:20px;cursor:pointer;padding:4px 8px;line-height:1}
+.modal-close:hover{color:#fff}
+.modal-body{padding:16px 20px 20px}
+.modal-section{font-size:10px;font-weight:700;color:#5ECFB8;text-transform:uppercase;letter-spacing:.1em;margin:14px 0 8px}
+.modal-section:first-child{margin-top:0}
+.national-tag{display:inline-flex;align-items:center;gap:5px;background:#0D2820;border:1px solid #1A5C40;color:#5ECFB8;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+
+/* LIGHT MODE */
+body.light{background:#F0F4FA;color:#0D1B40}
+body.light .header{background:#fff;border-color:#D0DAEA}
+body.light .h-left .h-nome{color:#0D1B40}
+body.light .h-sub,body.light .h-tel,body.light .perfil-key{color:#5A6F8A}
+body.light .perfil{background:#FFF8E8;border-color:#C8A951}
+body.light .perfil-val{color:#0D1B40}
+body.light .perfil-divider{background:#EAD990}
+body.light .tab{background:#fff;border-color:#D0DAEA;color:#5A6F8A}
+body.light .tab.active{background:#C8A951;color:#0D1B40;border-color:#C8A951}
+body.light .plan-card{background:#fff;border-color:#D0DAEA}
+body.light .plan-card.recommended{border-color:#C8A951}
+body.light .plan-card.anchor{border-color:#534AB7}
+body.light .plan-name{color:#0D1B40}
+body.light .plan-price{color:#0D1B40}
+body.light .btn-rede{background:#F0F4FA;border-color:#C0CEDD;color:#5A6F8A}
+body.light .btn-rede:hover{border-color:#5ECFB8;color:#2A8070}
+body.light .rede-table th{background:#E8EEF8;color:#5A6F8A}
+body.light .rede-table td{color:#2A3A5A;border-color:#D0DAEA}
+body.light .rede-table .h-name{color:#0D1B40}
+body.light .rede-table .local{color:#8A9AB0}
+body.light .insight{background:#EEF4FF;border-color:#5ECFB8;color:#2A3A5A}
+body.light .insight strong{color:#0D1B40}
+body.light .sticky-cta{background:#F0F4FA;border-color:#D0DAEA}
+body.light .sticky-cta .cta-txt{color:#5A6F8A}
+body.light .divider{background:#D0DAEA}
+body.light .ps-ok{background:#E8FFF4;color:#1A7A50}
+body.light .ps-warn{background:#FFF8E0;color:#8A6000}
+body.light .modal-box{background:#fff;border-color:#D0DAEA}
+body.light .modal-head{background:#fff;border-color:#D0DAEA}
+body.light .modal-title{color:#0D1B40}
+body.light .modal-close{color:#5A6F8A}
+body.light .modal-close:hover{color:#0D1B40}
+
+/* THEME TOGGLE */
+.theme-toggle{position:fixed;top:16px;right:16px;background:#142050;border:1px solid #1E3060;color:#9EB4D4;font-size:11px;padding:6px 12px;border-radius:20px;cursor:pointer;z-index:200}
+body.light .theme-toggle{background:#fff;border-color:#D0DAEA;color:#5A6F8A}
+
+@media(max-width:480px){
+  .plans-grid{grid-template-columns:1fr 1fr}
+  .plan-price{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="document.body.classList.toggle('light')">☀ / ☾</button>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="h-left">
+      <div class="h-nome">Proposta — Mãe do Claudio</div>
+      <div class="h-sub">1 vida · 79 anos · Brasília-DF · Sem coparticipação</div>
+    </div>
+    <div class="h-right">
+      <div class="h-corretor">Matheus Doro · Open Corretora</div>
+      <div class="h-tel">(61) 98301-6973</div>
+      <a class="h-wa" href="https://wa.me/5561983016973" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.862L0 24l6.292-1.508A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.374l-.36-.214-3.733.894.944-3.642-.235-.374A9.818 9.818 0 1112 21.818z"/></svg>
+        Falar com corretor
+      </a>
+    </div>
+  </div>
+
+  <!-- PERFIL -->
+  <div class="perfil">
+    <div class="perfil-item">
+      <div class="perfil-val">79 anos</div>
+      <div class="perfil-key">Idade</div>
+    </div>
+    <div class="perfil-divider"></div>
+    <div class="perfil-item">
+      <div class="perfil-val">1 vida</div>
+      <div class="perfil-key">Beneficiários</div>
+    </div>
+    <div class="perfil-divider"></div>
+    <div class="perfil-item">
+      <div class="perfil-val">Brasília-DF</div>
+      <div class="perfil-key">Localidade</div>
+    </div>
+    <div class="perfil-divider"></div>
+    <div class="perfil-item">
+      <div class="perfil-val">Sem</div>
+      <div class="perfil-key">Coparticipação</div>
+    </div>
+    <div class="perfil-divider"></div>
+    <div class="perfil-item">
+      <div class="perfil-val">Águas Claras / Taguatinga</div>
+      <div class="perfil-key">Região de referência</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('medsênior', this)">MedSênior</div>
+    <div class="tab" onclick="showTab('bestsenior', this)">Best Senior</div>
+    <div class="tab" onclick="showTab('rede', this)">Rede Credenciada</div>
+    <div class="tab" onclick="showTab('recomendacao', this)">Recomendação</div>
+  </div>
+
+  <!-- TAB: MEDSÊNIOR -->
+  <div class="tab-content active" id="tab-medsênior">
+    <div class="section-label">MedSênior · Faixa 59+ · Sem coparticipação</div>
+
+    <div class="plans-grid">
+
+      <!-- INFINITE -->
+      <div class="plan-card">
+        <div class="plan-name">Infinite</div>
+        <div class="plan-acom">Apartamento</div>
+        <div class="plan-price">R$ 2.858<span>,37/mês</span></div>
+        <div class="plan-copay">Sem coparticipação</div>
+        <button class="btn-rede" onclick="openModal('modal-infinite')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Ver rede credenciada
+        </button>
+      </div>
+
+      <!-- BLACK -->
+      <div class="plan-card recommended">
+        <div class="rec-badge">Melhor custo-benefício</div>
+        <div class="plan-name">Black</div>
+        <div class="plan-acom">Apartamento</div>
+        <div class="plan-price">R$ 1.895<span>,70/mês</span></div>
+        <div class="plan-copay">Sem coparticipação</div>
+        <div class="national-pill">Nacional · DF + SP · RJ · MG · ES · RS · Recife</div>
+        <button class="btn-rede" onclick="openModal('modal-black')" style="margin-top:8px">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Ver rede credenciada
+        </button>
+      </div>
+
+      <!-- DF APT -->
+      <div class="plan-card">
+        <div class="plan-name">DF</div>
+        <div class="plan-acom">Apartamento</div>
+        <div class="plan-price">R$ 1.515<span>,71/mês</span></div>
+        <div class="plan-copay">Sem coparticipação</div>
+        <button class="btn-rede" onclick="openModal('modal-df-apt')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Ver rede credenciada
+        </button>
+      </div>
+
+      <!-- DF ENF -->
+      <div class="plan-card">
+        <div class="plan-name">DF</div>
+        <div class="plan-acom">Enfermaria</div>
+        <div class="plan-price">R$ 1.263<span>,10/mês</span></div>
+        <div class="plan-copay">Sem coparticipação</div>
+        <button class="btn-rede" onclick="openModal('modal-df-enf')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Ver rede credenciada
+        </button>
+      </div>
+
+    </div>
+
+    <!-- PS por plano -->
+    <div class="section-label" style="margin-top:20px">Pronto-socorro por plano</div>
+    <div class="ps-bar ps-ok">
+      <div class="ps-label">Infinite — PS amplo</div>
+      Rede aberta de pronto-socorro em qualquer hospital da rede MedSênior, exceto Sírio Libanês. Inclui Sta. Marta Taguatinga e H Brasília Águas Claras com PS.
+    </div>
+    <div class="ps-bar ps-ok">
+      <div class="ps-label">Black — PS nos principais</div>
+      PS no Sta. Marta Taguatinga, H Home e H Daher Lago Sul (PS com especialidade). H Brasília Águas Claras: internação, sem PS.
+    </div>
+    <div class="ps-bar ps-warn">
+      <div class="ps-label">DF Apartamento — PS restrito</div>
+      Pronto-socorro apenas no H Daher Lago Sul (PS com especialidade). Sta. Marta e demais hospitais: internação eletiva apenas.
+    </div>
+    <div class="ps-bar ps-warn">
+      <div class="ps-label">DF Enfermaria — PS restrito</div>
+      Igual ao DF Apartamento. Pronto-socorro apenas no H Daher Lago Sul (PS com especialidade).
+    </div>
+  </div>
+
+  <!-- TAB: BEST SENIOR -->
+  <div class="tab-content" id="tab-bestsenior">
+    <div class="section-label">Best Senior · Faixa 59+ · Sem coparticipação · 15% desconto aplicado</div>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">Prime</div>
+        <div class="plan-acom">Apartamento</div>
+        <div class="plan-price">R$ 2.186<span>,69/mês</span></div>
+        <div class="plan-copay">Sem coparticipação</div>
+      </div>
+      <div class="plan-card anchor">
+        <div class="anc-badge">Mais completo</div>
+        <div class="plan-name">Platinum</div>
+        <div class="plan-acom">Apartamento</div>
+        <div class="plan-price">R$ 2.648<span>,33/mês</span></div>
+        <div class="plan-copay">Sem coparticipação</div>
+      </div>
+    </div>
+    <div class="insight" style="margin-top:8px">
+      <strong>Nota sobre rede Best Senior no DF:</strong> A rede local é mais enxuta que a MedSênior. Os principais hospitais com cobertura Best Senior na região de Taguatinga são Unidade Avançada Santa Lúcia (H+PS) e Anchieta Ceilândia São Francisco. Prime e Platinum ampliam cobertura em Asa Norte e Asa Sul.
+    </div>
+  </div>
+
+  <!-- TAB: REDE COMPLETA -->
+  <div class="tab-content" id="tab-rede">
+
+    <div class="section-label">MedSênior · Rede no Distrito Federal</div>
+    <table class="rede-table">
+      <thead>
+        <tr><th>Hospital / Unidade</th><th>Região</th><th>Infinite</th><th>Black</th><th>DF APT</th><th>DF ENF</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><div class="h-name">Sta. Marta Taguatinga</div></td><td><div class="local">Taguatinga</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-h">H</span></td><td><span class="cov-pill cov-h">H</span></td></tr>
+        <tr><td><div class="h-name">H Brasília Águas Claras</div></td><td><div class="local">Águas Claras</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-h">H</span></td><td><span class="cov-pill cov-none">—</span></td><td><span class="cov-pill cov-none">—</span></td></tr>
+        <tr><td><div class="h-name">CO MedSênior Águas Claras</div><div class="local">Ambulatório / Oftalmologia</div></td><td><div class="local">Águas Claras</div></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">MedSênior Taguatinga Sul</div><div class="local">Areal</div></td><td><div class="local">Águas Claras</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+        <tr><td><div class="h-name">H Daher Lago Sul</div></td><td><div class="local">Lago Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-ps1">PS¹</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps1">PS¹</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps1">PS¹</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps1">PS¹</span></td></tr>
+        <tr><td><div class="h-name">Sírio Libanês Lago Sul</div></td><td><div class="local">Lago Sul</div></td><td><span class="cov-pill cov-h">H</span></td><td><span class="cov-pill cov-h">H</span></td><td><span class="cov-pill cov-none">—</span></td><td><span class="cov-pill cov-none">—</span></td></tr>
+        <tr><td><div class="h-name">H Alvorada Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-h">H</span></td><td><span class="cov-pill cov-h">H</span></td><td><span class="cov-pill cov-h">H</span></td></tr>
+        <tr><td><div class="h-name">H Home</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-h">H</span></td><td><span class="cov-pill cov-h">H</span></td></tr>
+        <tr><td><div class="h-name">CM MedSênior Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">CM MedSênior Taguatinga Norte</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">Sabin DF</div></td><td><div class="local">Várias unidades</div></td><td><span class="cov-pill cov-lab">LAB</span></td><td><span class="cov-pill cov-lab">LAB</span></td><td><span class="cov-pill cov-lab">LAB</span></td><td><span class="cov-pill cov-lab">LAB</span></td></tr>
+        <tr><td><div class="h-name">MedSênior SIG</div></td><td><div class="local">Zona Industrial</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+      </tbody>
+    </table>
+    <div class="legend">
+      <div class="legend-item"><span class="cov-pill cov-h">H</span> Internação</div>
+      <div class="legend-item"><span class="cov-pill cov-ps">PS</span> Pronto-socorro</div>
+      <div class="legend-item"><span class="cov-pill cov-ps1">PS¹</span> PS com especialidade</div>
+      <div class="legend-item"><span class="cov-pill cov-amb">AMB</span> Ambulatório</div>
+      <div class="legend-item"><span class="cov-pill cov-lab">LAB</span> Laboratório</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Best Senior · Rede no Distrito Federal</div>
+    <table class="rede-table">
+      <thead>
+        <tr><th>Hospital / Unidade</th><th>Região</th><th>Prime</th><th>Platinum</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><div class="h-name">H Santa Lúcia Gama</div></td><td><div class="local">Gama</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">H Anchieta Ceilândia São Francisco</div></td><td><div class="local">Ceilândia</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">Unid. Avançada Santa Lúcia Taguatinga</div></td><td><div class="local">Taguatinga</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-amb">AMB</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">H Santa Lúcia Norte</div></td><td><div class="local">Asa Norte</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">H Anchieta Taguatinga</div></td><td><div class="local">Taguatinga</div></td><td><span class="cov-pill cov-none">—</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">H Santa Lúcia Sul</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-none">—</span></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-amb">AMB</span></td></tr>
+        <tr><td><div class="h-name">Laboratório Sabin</div></td><td><div class="local">Várias unidades</div></td><td><span class="cov-pill cov-lab">LAB</span></td><td><span class="cov-pill cov-lab">LAB</span></td></tr>
+      </tbody>
+    </table>
+    <div class="legend" style="margin-top:12px">
+      <div class="legend-item"><span class="cov-pill cov-h">H</span> Internação</div>
+      <div class="legend-item"><span class="cov-pill cov-ps">PS</span> Pronto-socorro</div>
+      <div class="legend-item"><span class="cov-pill cov-amb">AMB</span> Ambulatório</div>
+      <div class="legend-item"><span class="cov-pill cov-lab">LAB</span> Laboratório</div>
+    </div>
+  </div>
+
+  <!-- TAB: RECOMENDAÇÃO -->
+  <div class="tab-content" id="tab-recomendacao">
+    <div class="section-label">Leitura executiva</div>
+    <div class="insight">
+      <strong>Contexto:</strong> Senhora de 79 anos, mudança definitiva do RJ para Brasília. Região de referência: Águas Claras e Taguatinga. Nessa faixa etária, pronto-socorro em hospital próximo não é detalhe — é o critério principal de escolha.<br><br>
+      <strong>Minha indicação: MedSênior Black — R$ 1.895,70/mês</strong><br><br>
+      É o ponto de equilíbrio entre cobertura real e custo. O Black entrega pronto-socorro no Sta. Marta Taguatinga — hospital de referência mais próximo da região — e no H Home, além de internação no H Daher com especialidade. Isso resolve 100% do cenário de urgência para o perfil dela. Além disso, o Black tem cobertura em outros estados (SP, RJ, MG, ES, RS e Recife) — útil para eventuais viagens ou deslocamentos.<br><br>
+      <strong>Por que não o Infinite?</strong><br>
+      O Infinite amplia o PS para toda a rede (incluindo H Brasília Águas Claras), mas o diferencial de R$ 962,67/mês por esse acréscimo raramente se justifica. O Black já cobre os hospitais relevantes da região com PS.<br><br>
+      <strong>Por que não o DF?</strong><br>
+      Os planos DF (APT e ENF) não têm PS no Sta. Marta — o hospital mais estratégico para a localização dela. Para uma paciente de 79 anos, abrir mão de PS em hospital próximo é o risco que mais pesa.<br><br>
+      <strong>E o Best Senior?</strong><br>
+      Rede menor no DF. Os hospitais Best Senior com PS mais próximos ficam em Taguatinga (Unidade Avançada Santa Lúcia) e Ceilândia (Anchieta São Francisco). Para quem mora em Águas Claras, o MedSênior tem cobertura mais conveniente e rede própria consolidada para essa faixa etária.
+    </div>
+  </div>
+
+</div>
+
+<!-- STICKY CTA -->
+<div class="sticky-cta">
+  <span class="cta-txt">Dúvidas ou para avançar:</span>
+  <a href="https://wa.me/5561983016973" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.862L0 24l6.292-1.508A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.374l-.36-.214-3.733.894.944-3.642-.235-.374A9.818 9.818 0 1112 21.818z"/></svg>
+    Falar com Matheus
+  </a>
+</div>
+
+<!-- ============ MODAIS ============ -->
+
+<!-- MODAL INFINITE -->
+<div class="modal-overlay" id="modal-infinite" onclick="closeModalOutside(event, 'modal-infinite')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">MedSênior Infinite — Rede Credenciada DF</div><div class="modal-sub">Apartamento · Sem coparticipação · PS amplo em toda a rede</div></div>
+      <button class="modal-close" onclick="closeModal('modal-infinite')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">Hospitais — Região Águas Claras / Taguatinga</div>
+      <table class="rede-table">
+        <thead><tr><th>Hospital</th><th>Cobertura</th></tr></thead>
+        <tbody>
+          <tr><td><div class="h-name">Sta. Marta Taguatinga</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">H Brasília Águas Claras</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">CO MedSênior Águas Claras</div><div class="local">Ambulatório / Oftalmologia</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">MedSênior Taguatinga Sul</div><div class="local">Areal</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+        </tbody>
+      </table>
+      <div class="modal-section">Hospitais — Demais regiões do DF</div>
+      <table class="rede-table">
+        <thead><tr><th>Hospital</th><th>Região</th><th>Cobertura</th></tr></thead>
+        <tbody>
+          <tr><td><div class="h-name">H Daher Lago Sul</div></td><td><div class="local">Lago Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span><span class="cov-pill cov-ps1">PS¹</span></td></tr>
+          <tr><td><div class="h-name">Sírio Libanês Lago Sul</div></td><td><div class="local">Lago Sul</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">H Alvorada Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">H Home</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">CM MedSênior Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">CM MedSênior Taguatinga Norte</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">MedSênior SIG</div></td><td><div class="local">Zona Industrial</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">Sabin DF</div></td><td><div class="local">Várias unidades</div></td><td><span class="cov-pill cov-lab">LAB</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL BLACK -->
+<div class="modal-overlay" id="modal-black" onclick="closeModalOutside(event, 'modal-black')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">MedSênior Black — Rede Credenciada</div><div class="modal-sub">Apartamento · Sem coparticipação · Cobertura nacional</div></div>
+      <button class="modal-close" onclick="closeModal('modal-black')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="national-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        Nacional — DF · SP · RJ · MG · ES · RS · Recife
+      </div>
+      <div class="modal-section">Hospitais — Região Águas Claras / Taguatinga</div>
+      <table class="rede-table">
+        <thead><tr><th>Hospital</th><th>Cobertura</th></tr></thead>
+        <tbody>
+          <tr><td><div class="h-name">Sta. Marta Taguatinga</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">H Brasília Águas Claras</div><div class="local">Internação apenas, sem PS</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">CO MedSênior Águas Claras</div><div class="local">Ambulatório / Oftalmologia</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">MedSênior Taguatinga Sul</div><div class="local">Areal</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+        </tbody>
+      </table>
+      <div class="modal-section">Hospitais — Demais regiões do DF</div>
+      <table class="rede-table">
+        <thead><tr><th>Hospital</th><th>Região</th><th>Cobertura</th></tr></thead>
+        <tbody>
+          <tr><td><div class="h-name">H Daher Lago Sul</div></td><td><div class="local">Lago Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps1">PS¹</span></td></tr>
+          <tr><td><div class="h-name">Sírio Libanês Lago Sul</div></td><td><div class="local">Lago Sul</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">H Alvorada Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">H Home</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">CM MedSênior Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">CM MedSênior Taguatinga Norte</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">MedSênior SIG</div></td><td><div class="local">Zona Industrial</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">Sabin DF</div></td><td><div class="local">Várias unidades</div></td><td><span class="cov-pill cov-lab">LAB</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DF APT -->
+<div class="modal-overlay" id="modal-df-apt" onclick="closeModalOutside(event, 'modal-df-apt')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">MedSênior DF — Rede Credenciada DF</div><div class="modal-sub">Apartamento · Sem coparticipação · PS restrito ao H Daher</div></div>
+      <button class="modal-close" onclick="closeModal('modal-df-apt')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">Hospitais — Região Águas Claras / Taguatinga</div>
+      <table class="rede-table">
+        <thead><tr><th>Hospital</th><th>Cobertura</th></tr></thead>
+        <tbody>
+          <tr><td><div class="h-name">Sta. Marta Taguatinga</div><div class="local">Internação apenas, sem PS</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">H Brasília Águas Claras</div><div class="local">Não disponível neste plano</div></td><td><span class="cov-pill cov-none">—</span></td></tr>
+          <tr><td><div class="h-name">CO MedSênior Águas Claras</div><div class="local">Ambulatório / Oftalmologia</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">MedSênior Taguatinga Sul</div><div class="local">Areal</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+        </tbody>
+      </table>
+      <div class="modal-section">Hospitais — Demais regiões do DF</div>
+      <table class="rede-table">
+        <thead><tr><th>Hospital</th><th>Região</th><th>Cobertura</th></tr></thead>
+        <tbody>
+          <tr><td><div class="h-name">H Daher Lago Sul</div></td><td><div class="local">Lago Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps1">PS¹</span></td></tr>
+          <tr><td><div class="h-name">H Alvorada Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">H Home</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">CM MedSênior Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">CM MedSênior Taguatinga Norte</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">MedSênior SIG</div></td><td><div class="local">Zona Industrial</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">Sabin DF</div></td><td><div class="local">Várias unidades</div></td><td><span class="cov-pill cov-lab">LAB</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DF ENF -->
+<div class="modal-overlay" id="modal-df-enf" onclick="closeModalOutside(event, 'modal-df-enf')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">MedSênior DF — Rede Credenciada DF</div><div class="modal-sub">Enfermaria · Sem coparticipação · PS restrito ao H Daher</div></div>
+      <button class="modal-close" onclick="closeModal('modal-df-enf')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">Hospitais — Região Águas Claras / Taguatinga</div>
+      <table class="rede-table">
+        <thead><tr><th>Hospital</th><th>Cobertura</th></tr></thead>
+        <tbody>
+          <tr><td><div class="h-name">Sta. Marta Taguatinga</div><div class="local">Internação apenas, sem PS</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">H Brasília Águas Claras</div><div class="local">Não disponível neste plano</div></td><td><span class="cov-pill cov-none">—</span></td></tr>
+          <tr><td><div class="h-name">CO MedSênior Águas Claras</div><div class="local">Ambulatório / Oftalmologia</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">MedSênior Taguatinga Sul</div><div class="local">Areal</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+        </tbody>
+      </table>
+      <div class="modal-section">Hospitais — Demais regiões do DF</div>
+      <table class="rede-table">
+        <thead><tr><th>Hospital</th><th>Região</th><th>Cobertura</th></tr></thead>
+        <tbody>
+          <tr><td><div class="h-name">H Daher Lago Sul</div></td><td><div class="local">Lago Sul</div></td><td><span class="cov-pill cov-h">H</span><span class="cov-pill cov-ps1">PS¹</span></td></tr>
+          <tr><td><div class="h-name">H Alvorada Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">H Home</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-h">H</span></td></tr>
+          <tr><td><div class="h-name">CM MedSênior Brasília</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">CM MedSênior Taguatinga Norte</div></td><td><div class="local">Asa Sul</div></td><td><span class="cov-pill cov-amb">AMB</span></td></tr>
+          <tr><td><div class="h-name">MedSênior SIG</div></td><td><div class="local">Zona Industrial</div></td><td><span class="cov-pill cov-lab">LAB</span><span class="cov-pill cov-ps">PS</span></td></tr>
+          <tr><td><div class="h-name">Sabin DF</div></td><td><div class="local">Várias unidades</div></td><td><span class="cov-pill cov-lab">LAB</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(name, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+}
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e, id) {
+  if (e.target === document.getElementById(id)) closeModal(id);
+}
+</script>
+</body>
+</html>
