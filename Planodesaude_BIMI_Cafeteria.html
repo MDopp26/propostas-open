@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Comercial — BIMI Cafeteria</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07112E;--surface:#0C1A3A;--surface2:#101F45;--border:#1B2E5A;
+  --gold:#C8A951;--teal:#3ECFB8;--blue:#4A90D9;--text:#E8EEF8;
+  --muted:#6B7FA0;--white:#fff;
+}
+body{font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 100px}
+
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
+.topbar-brand{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.topbar-client{font-size:14px;font-weight:700;color:var(--white)}
+.topbar-wa{display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;font-size:10px;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;letter-spacing:.04em}
+
+.hero{padding:36px 28px 28px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px}
+.hero-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.hero-title{font-size:30px;font-weight:800;color:var(--white);letter-spacing:-.02em;line-height:1.1;margin-bottom:6px}
+.hero-sub{font-size:12px;color:var(--muted);line-height:1.6}
+.hero-right{display:flex;gap:24px;flex-wrap:wrap}
+.hero-stat{text-align:right}
+.hero-stat-val{font-size:17px;font-weight:800;color:var(--white)}
+.hero-stat-key{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+.tabs-wrap{padding:0 28px;border-bottom:1px solid var(--border);display:flex;gap:0;overflow-x:auto}
+.tab{padding:14px 20px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--white);border-bottom-color:var(--gold)}
+.tab-content{display:none;padding:28px}
+.tab-content.active{display:block}
+
+.section-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.group{margin-bottom:32px}
+.group-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.group-line{width:3px;height:18px;border-radius:2px}
+.line-a{background:var(--gold)}
+.line-b{background:var(--blue)}
+.line-c{background:var(--teal)}
+.group-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.la{color:var(--gold)}.lb{color:var(--blue)}.lc{color:var(--teal)}
+.group-sub{font-size:10px;color:var(--muted);margin-left:auto}
+
+/* CARD */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;transition:border-color .2s,transform .15s}
+.card:hover{transform:translateY(-2px)}
+.card.ca{border-color:rgba(200,169,81,.25)} .card.ca:hover{border-color:var(--gold)}
+.card.cb{border-color:rgba(74,144,217,.25)} .card.cb:hover{border-color:var(--blue)}
+.card.cc{border-color:rgba(62,207,184,.25)} .card.cc:hover{border-color:var(--teal)}
+
+.card-op{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.card-name{font-size:15px;font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-.01em}
+
+/* TOGGLE ACOMODACAO */
+.acom-toggle{display:flex;background:var(--surface2);border-radius:8px;padding:3px;gap:3px;margin-bottom:14px}
+.acom-btn{flex:1;padding:6px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .2s;text-align:center}
+.acom-btn.active{background:var(--surface);color:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+
+.card-copay{font-size:9px;margin-bottom:4px}
+.copay-ok{color:var(--teal)}.copay-exc{color:var(--gold)}
+.copay-note{font-size:8px;color:var(--muted);margin-bottom:12px;font-style:italic}
+
+.price-block{margin-bottom:14px}
+.price-main{font-size:26px;font-weight:900;color:var(--white);letter-spacing:-.03em;line-height:1}
+.price-sub{font-size:10px;color:var(--muted);margin-top:3px}
+.faixas{border-top:1px solid var(--border);padding-top:10px;margin-bottom:14px}
+.faixa{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:5px}
+.faixa span{color:var(--text);font-weight:600}
+
+.difs{margin-bottom:14px}
+.dif{display:flex;align-items:center;gap:6px;font-size:9px;color:var(--muted);margin-top:4px}
+.dif::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--teal);flex-shrink:0}
+
+.card-btn{width:100%;padding:8px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s}
+.card-btn:hover{border-color:var(--teal);color:var(--teal)}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(4,8,20,.85);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:18px;width:100%;max-width:580px;max-height:85vh;overflow-y:auto}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:10;border-radius:18px 18px 0 0}
+.modal-title{font-size:14px;font-weight:800;color:var(--white);margin-bottom:2px}
+.modal-sub{font-size:10px;color:var(--muted)}
+.modal-close{background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal-close:hover{color:var(--white)}
+.modal-body{padding:18px 22px}
+.msec{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.msec::after{content:'';flex:1;height:1px;background:var(--border)}
+.msec:first-child{margin-top:0}
+.mt{width:100%;border-collapse:collapse;font-size:10px}
+.mt td{padding:6px 8px;border-bottom:1px solid rgba(27,46,90,.5);color:var(--text);vertical-align:middle}
+.mt tr:last-child td{border-bottom:none}
+.mt .hn{color:var(--white);font-weight:600}
+.mt .hr{font-size:8px;color:var(--muted);margin-top:1px}
+.mp{display:inline-block;font-size:7.5px;font-weight:700;padding:1px 5px;border-radius:6px;margin:1px}
+.mh{background:rgba(62,207,184,.1);color:var(--teal);border:1px solid rgba(62,207,184,.25)}
+.mps{background:rgba(212,194,0,.1);color:#D4C200;border:1px solid rgba(212,194,0,.2)}
+.mm{background:rgba(200,169,81,.1);color:var(--gold);border:1px solid rgba(200,169,81,.2)}
+.mpa{background:rgba(224,128,64,.1);color:#E08040;border:1px solid rgba(224,128,64,.2)}
+.mlab{background:rgba(176,128,255,.1);color:#B080FF;border:1px solid rgba(176,128,255,.2)}
+.mnone{color:var(--border);font-size:9px}
+
+/* REDE COMPLETA */
+.rede-wrap{overflow-x:auto;margin-bottom:12px}
+.rede-table{width:100%;border-collapse:collapse;font-size:10px;min-width:600px}
+.rede-table th{background:var(--surface2);color:var(--muted);font-weight:700;padding:8px 10px;text-align:center;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.rede-table th.left{text-align:left}
+.rede-table td{padding:7px 10px;border-bottom:1px solid rgba(27,46,90,.5);color:var(--text);text-align:center;vertical-align:middle}
+.rede-table td.left{text-align:left}
+.rede-table tr:last-child td{border-bottom:none}
+.rede-table .hname{color:var(--white);font-weight:600;font-size:10px}
+.rede-table .hreg{font-size:8px;color:var(--muted);margin-top:1px}
+.rede-table .reg-row td{background:rgba(200,169,81,.04);color:var(--gold);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px}
+.pill{display:inline-block;font-size:8px;font-weight:700;padding:1px 5px;border-radius:6px;margin:1px}
+.ph{background:rgba(62,207,184,.1);color:var(--teal);border:1px solid rgba(62,207,184,.25)}
+.pps{background:rgba(212,194,0,.1);color:#D4C200;border:1px solid rgba(212,194,0,.2)}
+.pm{background:rgba(200,169,81,.1);color:var(--gold);border:1px solid rgba(200,169,81,.2)}
+.ppa{background:rgba(224,128,64,.1);color:#E08040;border:1px solid rgba(224,128,64,.2)}
+.plab{background:rgba(176,128,255,.1);color:#B080FF;border:1px solid rgba(176,128,255,.2)}
+.pnone{color:var(--border);font-size:9px}
+
+/* INSIGHT */
+.insight{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:14px}
+.insight-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.idot{width:8px;height:8px;border-radius:50%}
+.idot-g{background:var(--gold)}.idot-b{background:var(--blue)}.idot-t{background:var(--teal)}
+.insight-title{font-size:13px;font-weight:800;color:var(--white)}
+.insight-body{font-size:11px;color:var(--muted);line-height:1.7}
+.insight-body strong{color:var(--text)}
+.ihl{background:rgba(62,207,184,.06);border-left:2px solid var(--teal);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:11px;color:var(--text);line-height:1.6}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted)}
+
+.theme-btn{position:fixed;top:16px;right:16px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:10px;padding:5px 11px;border-radius:20px;cursor:pointer;z-index:200}
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;background:rgba(7,17,46,.95);border-top:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;justify-content:center;gap:14px;z-index:100;backdrop-filter:blur(8px)}
+.cta-txt{font-size:10px;color:var(--muted)}
+.sticky-cta a{display:inline-flex;align-items:center;gap:7px;background:#25D366;color:#fff;font-size:11px;font-weight:700;padding:10px 22px;border-radius:25px;text-decoration:none}
+
+/* LIGHT */
+body.light{--bg:#F2F5FA;--surface:#fff;--surface2:#EEF2F8;--border:#D8E0EE;--text:#1A2540;--muted:#6B7FA0;--white:#0D1B3E}
+body.light .topbar,body.light .sticky-cta{background:rgba(255,255,255,.95)}
+body.light .modal-box,body.light .modal-head{background:#fff}
+body.light .mt td,body.light .rede-table td{border-color:#E8EEF8}
+body.light .rede-table .reg-row td{background:#FFF8E8}
+body.light .acom-btn.active{background:#E8EEF8}
+
+@media(max-width:540px){
+  .hero,.tab-content{padding:24px 16px}
+  .tabs-wrap{padding:0 16px}
+  .topbar,.sticky-cta{padding:12px 16px}
+  .cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<button class="theme-btn" onclick="document.body.classList.toggle('light')">☀ / ☾</button>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-brand">Open Corretora de Seguros</div>
+    <div class="topbar-client">BIMI Cafeteria</div>
+  </div>
+  <a class="topbar-wa" href="https://wa.me/5561983016973" target="_blank">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.862L0 24l6.292-1.508A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.374l-.36-.214-3.733.894.944-3.642-.235-.374A9.818 9.818 0 1112 21.818z"/></svg>
+    (61) 98301-6973
+  </a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-tag">Proposta Comercial · Planos de Saúde Empresarial</div>
+    <div class="hero-title">BIMI Cafeteria</div>
+    <div class="hero-sub">3 vidas · Faixas 29–33 · 39–43 · 49–53 · Brasília-DF<br>Preferência de rede: Asa Norte e Plano Piloto</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat"><div class="hero-stat-val">3</div><div class="hero-stat-key">Vidas</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">4</div><div class="hero-stat-key">Operadoras</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">Jul/26</div><div class="hero-stat-key">Vigência</div></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tab active" onclick="showTab('planos',this)">Planos & Preços</div>
+  <div class="tab" onclick="showTab('rede',this)">Rede Credenciada</div>
+  <div class="tab" onclick="showTab('rec',this)">Recomendação</div>
+</div>
+
+<!-- ===== PLANOS ===== -->
+<div class="tab-content active" id="tab-planos">
+
+  <!-- ÂNCORA -->
+  <div class="group">
+    <div class="group-header">
+      <div class="group-line line-a"></div>
+      <div class="group-label la">Opção mais robusta de rede</div>
+      <div class="group-sub">Máxima cobertura · diferenciais premium</div>
+    </div>
+    <div class="cards">
+      <div class="card ca">
+        <div class="card-op">SulAmérica</div>
+        <div class="card-name">Especial RC</div>
+        <div class="acom-toggle"><div class="acom-btn active" style="cursor:default">Apartamento</div></div>
+        <div class="card-copay copay-ok">Sem coparticipação</div>
+        <div class="copay-note">&nbsp;</div>
+        <div class="price-block">
+          <div class="price-main">R$ 5.428<small style="font-size:13px;font-weight:600;color:var(--muted)">,55</small></div>
+          <div class="price-sub">total mensal · 3 vidas</div>
+        </div>
+        <div class="faixas">
+          <div class="faixa">Faixa 29–33<span>R$ 1.332,21</span></div>
+          <div class="faixa">Faixa 39–43<span>R$ 1.653,54</span></div>
+          <div class="faixa">Faixa 49–53<span>R$ 2.316,60</span></div>
+        </div>
+        <div class="difs">
+          <div class="dif">Rede D'Or inclusa</div>
+          <div class="dif">Cobertura nacional</div>
+          <div class="dif">Desconto em farmácias</div>
+          <div class="dif">Odontológico incluso</div>
+          <div class="dif">Seguro de vida</div>
+        </div>
+        <button class="card-btn" onclick="openModal('m-sulam')">Ver rede credenciada →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERMEDIÁRIO -->
+  <div class="group">
+    <div class="group-header">
+      <div class="group-line line-b"></div>
+      <div class="group-label lb">Opção intermediária</div>
+      <div class="group-sub">Equilíbrio entre cobertura e investimento</div>
+    </div>
+    <div class="cards">
+      <!-- BRADESCO card único com toggle -->
+      <div class="card cb" id="card-brad">
+        <div class="card-op">Bradesco Saúde</div>
+        <div class="card-name">Efetivo Plus</div>
+        <div class="acom-toggle">
+          <div class="acom-btn active" onclick="setBrad('apt',this)">Apartamento</div>
+          <div class="acom-btn" onclick="setBrad('enf',this)">Enfermaria</div>
+        </div>
+        <div class="card-copay copay-ok">Sem coparticipação</div>
+        <div class="copay-note">&nbsp;</div>
+        <div class="price-block">
+          <div class="price-main" id="brad-price">R$ 3.457<small style="font-size:13px;font-weight:600;color:var(--muted)">,48</small></div>
+          <div class="price-sub">total mensal · 3 vidas</div>
+        </div>
+        <div class="faixas" id="brad-faixas">
+          <div class="faixa">Faixa 29–33<span>R$ 896,71</span></div>
+          <div class="faixa">Faixa 39–43<span>R$ 1.052,91</span></div>
+          <div class="faixa">Faixa 49–53<span>R$ 1.507,86</span></div>
+        </div>
+        <div class="difs">
+          <div class="dif">Programa Meu Doutor</div>
+          <div class="dif">Reembolso específico</div>
+          <div class="dif">Desconto em farmácias</div>
+          <div class="dif">Clube+ Saúde</div>
+        </div>
+        <button class="card-btn" id="brad-btn" onclick="openModal('m-brad-apt')">Ver rede credenciada →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTO-BENEFÍCIO -->
+  <div class="group">
+    <div class="group-header">
+      <div class="group-line line-c"></div>
+      <div class="group-label lc">Melhor custo-benefício · Rede de preferência</div>
+      <div class="group-sub">Cobertura nos hospitais solicitados</div>
+    </div>
+    <div class="cards">
+
+      <!-- AMIL -->
+      <div class="card cc">
+        <div class="card-op">Amil</div>
+        <div class="card-name">Prata</div>
+        <div class="acom-toggle">
+          <div class="acom-btn active" onclick="setAmil('enf',this)">Enfermaria</div>
+          <div class="acom-btn" onclick="setAmil('apt',this)">Apartamento</div>
+        </div>
+        <div class="card-copay copay-exc">Sem copart., exceto terapias</div>
+        <div class="copay-note">Copart. parcial · incide apenas em terapias</div>
+        <div class="price-block">
+          <div class="price-main" id="amil-price">R$ 2.478<small style="font-size:13px;font-weight:600;color:var(--muted)">,25</small></div>
+          <div class="price-sub">total mensal · 3 vidas</div>
+        </div>
+        <div class="faixas" id="amil-faixas">
+          <div class="faixa">Faixa 29–33<span>R$ 662,08</span></div>
+          <div class="faixa">Faixa 39–43<span>R$ 764,70</span></div>
+          <div class="faixa">Faixa 49–53<span>R$ 1.051,47</span></div>
+        </div>
+        <div class="difs">
+          <div class="dif">Cobertura nacional</div>
+          <div class="dif">Telemedicina inclusa</div>
+          <div class="dif">Desconto em farmácias</div>
+          <div class="dif">Odontológico incluso</div>
+          <div class="dif">Sta. Lúcia Norte · Sta. Marta · H Brasília</div>
+        </div>
+        <button class="card-btn" id="amil-btn" onclick="openModal('m-amil-enf')">Ver rede credenciada →</button>
+      </div>
+
+      <!-- UNIMED ESSENCIAL -->
+      <div class="card cc">
+        <div class="card-op">Seguros Unimed</div>
+        <div class="card-name">Novo Essencial PME DF</div>
+        <div class="acom-toggle">
+          <div class="acom-btn active" onclick="setUni('enf',this)">Enfermaria</div>
+          <div class="acom-btn" onclick="setUni('apt',this)">Apartamento</div>
+        </div>
+        <div class="card-copay copay-ok">Sem coparticipação</div>
+        <div class="copay-note">&nbsp;</div>
+        <div class="price-block">
+          <div class="price-main" id="uni-price">R$ 2.062<small style="font-size:13px;font-weight:600;color:var(--muted)">,81</small></div>
+          <div class="price-sub" id="uni-sub">total mensal · 3 vidas · menor preço</div>
+        </div>
+        <div class="faixas" id="uni-faixas">
+          <div class="faixa">Faixa 29–33<span>R$ 514,81</span></div>
+          <div class="faixa">Faixa 39–43<span>R$ 636,07</span></div>
+          <div class="faixa">Faixa 49–53<span>R$ 911,93</span></div>
+        </div>
+        <div class="difs">
+          <div class="dif">Sta. Lúcia Norte com PS</div>
+          <div class="dif">H Anchieta Ceilândia</div>
+          <div class="dif">Sabin DF</div>
+        </div>
+        <button class="card-btn" id="uni-btn" onclick="openModal('m-uni-enf')">Ver rede credenciada →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== REDE COMPLETA ===== -->
+<div class="tab-content" id="tab-rede">
+  <div class="section-label">Cobertura hospitalar · Asa Norte e Plano Piloto em destaque</div>
+  <div class="rede-wrap">
+  <table class="rede-table">
+    <thead>
+      <tr>
+        <th class="left" style="min-width:170px">Hospital / Unidade</th>
+        <th>SulAm.<br>Esp. RC</th>
+        <th>Brad.<br>Ef.Plus APT</th>
+        <th>Brad.<br>Ef.Plus ENF</th>
+        <th>Amil<br>Prata APT</th>
+        <th>Amil<br>Prata ENF</th>
+        <th>Unimed<br>Ess. APT</th>
+        <th>Unimed<br>Ess. ENF</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="reg-row"><td colspan="8">★ Asa Norte — preferência da empresa</td></tr>
+      <tr>
+        <td class="left"><div class="hname" style="color:var(--teal)">H Sta. Helena ★</div><div class="hreg">Asa Norte</div></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname" style="color:var(--teal)">Sta. Lúcia Norte ★</div><div class="hreg">Asa Norte</div></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">Sta. Marta — Asa Norte</div><div class="hreg">Asa Norte</div></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr class="reg-row"><td colspan="8">★ Asa Sul / Plano Piloto</td></tr>
+      <tr>
+        <td class="left"><div class="hname">H Alvorada Brasília</div><div class="hreg">Asa Sul</div></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">H DF Star</div><div class="hreg">Asa Sul</div></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">H Sta. Luzia</div><div class="hreg">Asa Sul</div></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">Sta. Lúcia Sul</div><div class="hreg">Asa Sul</div></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pnone">—</span></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">H Brasília Lago Sul</div><div class="hreg">Lago Sul</div></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">H Daher Lago Sul</div><div class="hreg">Lago Sul</div></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pill ph">H</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr class="reg-row"><td colspan="8">Ceilândia · Taguatinga</td></tr>
+      <tr>
+        <td class="left"><div class="hname">H Anchieta Ceilândia</div></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill ppa">PA</span><span class="pill pps">PS</span></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill ppa">PA</span><span class="pill pps">PS</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">Sta. Marta Taguatinga</div></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">H Anchieta Brasília</div><div class="hreg">Taguatinga Norte</div></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">H Anchieta Taguatinga</div></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pnone">—</span></td>
+        <td><span class="pill ph">H</span><span class="pill pm">M</span><span class="pill pps">PS</span></td>
+      </tr>
+      <tr class="reg-row"><td colspan="8">Laboratórios</td></tr>
+      <tr>
+        <td class="left"><div class="hname">Sabin DF</div></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pill plab">LAB</span></td>
+        <td><span class="pill plab">LAB</span></td>
+        <td><span class="pill plab">LAB</span></td>
+        <td><span class="pill plab">LAB</span></td>
+      </tr>
+      <tr>
+        <td class="left"><div class="hname">Base / Núcleos / Exame DF</div></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+        <td><span class="pill plab">LAB</span></td>
+        <td><span class="pill plab">LAB</span></td>
+        <td><span class="pnone">—</span></td><td><span class="pnone">—</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><span class="pill ph">H</span> Internação</div>
+    <div class="legend-item"><span class="pill pps">PS</span> Pronto-socorro</div>
+    <div class="legend-item"><span class="pill ppa">PA</span> Pronto atendimento</div>
+    <div class="legend-item"><span class="pill pm">M</span> Maternidade</div>
+    <div class="legend-item"><span class="pill plab">LAB</span> Laboratório</div>
+    <div class="legend-item" style="color:var(--teal)">★ Preferência da empresa</div>
+  </div>
+</div>
+
+<!-- ===== RECOMENDAÇÃO ===== -->
+<div class="tab-content" id="tab-rec">
+  <div class="section-label">Análise executiva · BIMI Cafeteria · 3 vidas</div>
+
+  <div class="insight">
+    <div class="insight-hd"><div class="idot idot-g"></div><div class="insight-title">SulAmérica Especial RC — R$ 5.428,55/mês</div></div>
+    <div class="insight-body">
+      A opção de maior abrangência. Única que cobre <strong>H Sta. Helena, H Sta. Luzia e H DF Star</strong> na região preferencial — hospitais de referência que nenhum outro produto da cotação entrega. Inclui rede D'Or, seguro de vida, odontológico e desconto em farmácias. Indicada se a empresa quer posicionar o benefício como diferencial competitivo para retenção de talentos.
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-hd"><div class="idot idot-b"></div><div class="insight-title">Bradesco Efetivo Plus — R$ 3.137,59 (ENF) · R$ 3.457,48 (APT)</div></div>
+    <div class="insight-body">
+      Sem coparticipação, com Programa Meu Doutor e reembolso específico de consultas. A rede na Asa Norte é mais enxuta — não cobre Sta. Lúcia Norte nem Sta. Marta diretamente — mas entrega os diferenciais do ecossistema Bradesco. Boa opção se a empresa já tem relacionamento com o banco ou valoriza os benefícios adicionais da operadora.
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-hd"><div class="idot idot-t"></div><div class="insight-title">Melhor custo-benefício — Amil Prata e Seguros Unimed Essencial</div></div>
+    <div class="insight-body">
+      <strong>Amil Prata ENF (R$ 2.478,25) / APT (R$ 2.750,92)</strong> — entrega Sta. Lúcia Norte, Sta. Marta Asa Norte e H Brasília na região preferencial, mais telemedicina e odontológico. Coparticipação apenas em terapias — consultas e internações sem custo adicional. Melhor rede dentre as opções de menor investimento.
+      <div class="ihl">
+        Para uma empresa de alimentação com equipe ativa, o Amil Prata entrega o melhor conjunto de cobertura + diferenciais na faixa acessível. A coparticipação restrita a terapias raramente impacta o uso cotidiano.
+      </div>
+      <strong>Seguros Unimed Essencial ENF (R$ 2.062,81) / APT (R$ 2.276,64)</strong> — menor investimento da cotação, sem coparticipação, apartamento disponível. Cobre Sta. Lúcia Norte com PS e H Anchieta Ceilândia. Rede mais enxuta que o Amil Prata na Asa Norte, mas sem coparticipação em nenhum procedimento. Indicado se orçamento é o critério principal e a empresa aceita rede mais focada.
+    </div>
+  </div>
+</div>
+
+<!-- MODAIS -->
+
+<!-- SulAmérica -->
+<div class="modal-overlay" id="m-sulam" onclick="closeOut(event,'m-sulam')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">SulAmérica · Especial RC</div><div class="modal-sub">Apartamento · Sem coparticipação · Nacional</div></div>
+      <button class="modal-close" onclick="closeModal('m-sulam')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Asa Norte · Asa Sul</div>
+      <table class="mt">
+        <tr><td><div class="hn" style="color:var(--teal)">H Sta. Helena ★</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn" style="color:var(--teal)">Sta. Lúcia Norte ★</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Alvorada Brasília</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H DF Star</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Sta. Luzia</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sta. Lúcia Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Brasília Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Taguatinga · Ceilândia</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Anchieta Ceilândia</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sta. Marta Taguatinga</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Anchieta Brasília</div><div class="hr">Taguatinga Norte</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Clín Sta. Maria Auxiliadora</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Bradesco APT -->
+<div class="modal-overlay" id="m-brad-apt" onclick="closeOut(event,'m-brad-apt')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">Bradesco · Efetivo Plus</div><div class="modal-sub">Apartamento · Sem coparticipação</div></div>
+      <button class="modal-close" onclick="closeModal('m-brad-apt')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Principais hospitais DF</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Brasília Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Brasília Águas Claras</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">ISOB</div><div class="hr">Taguatinga Norte</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H e Mat. Brasília</div><div class="hr">Setor Sudoeste</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Diferenciais</div>
+      <table class="mt">
+        <tr><td><div class="hn">Programa Meu Doutor</div></td><td style="color:var(--teal)">✓</td></tr>
+        <tr><td><div class="hn">Reembolso específico</div><div class="hr">R$ 109,76/consulta</div></td><td style="color:var(--teal)">✓</td></tr>
+        <tr><td><div class="hn">Desconto em farmácias</div></td><td style="color:var(--teal)">✓</td></tr>
+        <tr><td><div class="hn">Clube+ Saúde</div></td><td style="color:var(--teal)">✓</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Bradesco ENF -->
+<div class="modal-overlay" id="m-brad-enf" onclick="closeOut(event,'m-brad-enf')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">Bradesco · Efetivo Plus</div><div class="modal-sub">Enfermaria · Sem coparticipação</div></div>
+      <button class="modal-close" onclick="closeModal('m-brad-enf')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Principais hospitais DF</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Brasília Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Brasília Águas Claras</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">ISOB</div><div class="hr">Taguatinga Norte</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H e Mat. Brasília</div><div class="hr">Setor Sudoeste</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Diferenciais</div>
+      <table class="mt">
+        <tr><td><div class="hn">Programa Meu Doutor</div></td><td style="color:var(--teal)">✓</td></tr>
+        <tr><td><div class="hn">Reembolso específico</div><div class="hr">R$ 109,76/consulta</div></td><td style="color:var(--teal)">✓</td></tr>
+        <tr><td><div class="hn">Desconto em farmácias</div></td><td style="color:var(--teal)">✓</td></tr>
+        <tr><td><div class="hn">Clube+ Saúde</div></td><td style="color:var(--teal)">✓</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Amil ENF -->
+<div class="modal-overlay" id="m-amil-enf" onclick="closeOut(event,'m-amil-enf')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">Amil · Prata</div><div class="modal-sub">Enfermaria · Sem copart. exceto terapias · Nacional</div></div>
+      <button class="modal-close" onclick="closeModal('m-amil-enf')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Asa Norte · Plano Piloto</div>
+      <table class="mt">
+        <tr><td><div class="hn" style="color:var(--teal)">Sta. Lúcia Norte ★</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sta. Marta — Asa Norte</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Alvorada Brasília</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Brasília Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Brasília Águas Claras</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">Base · Núcleos · Exame DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Amil APT -->
+<div class="modal-overlay" id="m-amil-apt" onclick="closeOut(event,'m-amil-apt')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">Amil · Prata</div><div class="modal-sub">Apartamento · Sem copart. exceto terapias · Nacional</div></div>
+      <button class="modal-close" onclick="closeModal('m-amil-apt')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Asa Norte · Plano Piloto</div>
+      <table class="mt">
+        <tr><td><div class="hn" style="color:var(--teal)">Sta. Lúcia Norte ★</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sta. Marta — Asa Norte</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Alvorada Brasília</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Brasília Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Brasília Águas Claras</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">Base · Núcleos · Exame DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Unimed ENF -->
+<div class="modal-overlay" id="m-uni-enf" onclick="closeOut(event,'m-uni-enf')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">Seguros Unimed · Novo Essencial PME DF I</div><div class="modal-sub">Enfermaria · Sem coparticipação</div></div>
+      <button class="modal-close" onclick="closeModal('m-uni-enf')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Asa Norte · Plano Piloto</div>
+      <table class="mt">
+        <tr><td><div class="hn" style="color:var(--teal)">Sta. Lúcia Norte ★</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sta. Lúcia Sul</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Ceilândia · Taguatinga</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Anchieta Ceilândia</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mpa">PA</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Anchieta Taguatinga</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Unimed APT -->
+<div class="modal-overlay" id="m-uni-apt" onclick="closeOut(event,'m-uni-apt')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">Seguros Unimed · Novo Essencial PME DF II</div><div class="modal-sub">Apartamento · Sem coparticipação</div></div>
+      <button class="modal-close" onclick="closeModal('m-uni-apt')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Asa Norte · Plano Piloto</div>
+      <table class="mt">
+        <tr><td><div class="hn" style="color:var(--teal)">Sta. Lúcia Norte ★</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sta. Lúcia Sul</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Ceilândia · Taguatinga</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Anchieta Ceilândia</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mpa">PA</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Anchieta Taguatinga</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="sticky-cta">
+  <span class="cta-txt">Dúvidas ou para avançar:</span>
+  <a href="https://wa.me/5561983016973" target="_blank">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.862L0 24l6.292-1.508A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.374l-.36-.214-3.733.894.944-3.642-.235-.374A9.818 9.818 0 1112 21.818z"/></svg>
+    Falar com Matheus Doro
+  </a>
+</div>
+
+<script>
+function showTab(n,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');
+  el.classList.add('active');
+}
+function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden'}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow=''}
+function closeOut(e,id){if(e.target===document.getElementById(id))closeModal(id)}
+
+// Bradesco toggle
+function setBrad(tipo, el) {
+  el.parentElement.querySelectorAll('.acom-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const p = document.getElementById('brad-price');
+  const f = document.getElementById('brad-faixas');
+  const btn = document.getElementById('brad-btn');
+  if(tipo==='apt'){
+    p.innerHTML='R$ 3.457<small style="font-size:13px;font-weight:600;color:var(--muted)">,48</small>';
+    f.innerHTML='<div class="faixa">Faixa 29–33<span>R$ 896,71</span></div><div class="faixa">Faixa 39–43<span>R$ 1.052,91</span></div><div class="faixa">Faixa 49–53<span>R$ 1.507,86</span></div>';
+    btn.onclick=()=>openModal('m-brad-apt');
+  } else {
+    p.innerHTML='R$ 3.137<small style="font-size:13px;font-weight:600;color:var(--muted)">,59</small>';
+    f.innerHTML='<div class="faixa">Faixa 29–33<span>R$ 813,74</span></div><div class="faixa">Faixa 39–43<span>R$ 955,49</span></div><div class="faixa">Faixa 49–53<span>R$ 1.368,36</span></div>';
+    btn.onclick=()=>openModal('m-brad-enf');
+  }
+}
+
+// Amil toggle
+function setAmil(tipo, el) {
+  el.parentElement.querySelectorAll('.acom-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const p = document.getElementById('amil-price');
+  const f = document.getElementById('amil-faixas');
+  const btn = document.getElementById('amil-btn');
+  if(tipo==='apt'){
+    p.innerHTML='R$ 2.750<small style="font-size:13px;font-weight:600;color:var(--muted)">,92</small>';
+    f.innerHTML='<div class="faixa">Faixa 29–33<span>R$ 734,92</span></div><div class="faixa">Faixa 39–43<span>R$ 848,84</span></div><div class="faixa">Faixa 49–53<span>R$ 1.167,16</span></div>';
+    btn.onclick=()=>openModal('m-amil-apt');
+  } else {
+    p.innerHTML='R$ 2.478<small style="font-size:13px;font-weight:600;color:var(--muted)">,25</small>';
+    f.innerHTML='<div class="faixa">Faixa 29–33<span>R$ 662,08</span></div><div class="faixa">Faixa 39–43<span>R$ 764,70</span></div><div class="faixa">Faixa 49–53<span>R$ 1.051,47</span></div>';
+    btn.onclick=()=>openModal('m-amil-enf');
+  }
+}
+
+// Unimed toggle
+function setUni(tipo, el) {
+  el.parentElement.querySelectorAll('.acom-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const p = document.getElementById('uni-price');
+  const f = document.getElementById('uni-faixas');
+  const s = document.getElementById('uni-sub');
+  const btn = document.getElementById('uni-btn');
+  if(tipo==='apt'){
+    p.innerHTML='R$ 2.276<small style="font-size:13px;font-weight:600;color:var(--muted)">,64</small>';
+    f.innerHTML='<div class="faixa">Faixa 29–33<span>R$ 568,18</span></div><div class="faixa">Faixa 39–43<span>R$ 702,00</span></div><div class="faixa">Faixa 49–53<span>R$ 1.006,46</span></div>';
+    s.textContent='total mensal · 3 vidas · apartamento';
+    btn.onclick=()=>openModal('m-uni-apt');
+  } else {
+    p.innerHTML='R$ 2.062<small style="font-size:13px;font-weight:600;color:var(--muted)">,81</small>';
+    f.innerHTML='<div class="faixa">Faixa 29–33<span>R$ 514,81</span></div><div class="faixa">Faixa 39–43<span>R$ 636,07</span></div><div class="faixa">Faixa 49–53<span>R$ 911,93</span></div>';
+    s.textContent='total mensal · 3 vidas · menor preço';
+    btn.onclick=()=>openModal('m-uni-enf');
+  }
+}
+</script>
+</body>
+</html>
