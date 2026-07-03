@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta — BIMI Cafeteria</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07112E;--surface:#0C1A3A;--surface2:#101F45;--border:#1B2E5A;
+  --gold:#C8A951;--teal:#3ECFB8;--blue:#4A90D9;--text:#E8EEF8;
+  --muted:#6B7FA0;--white:#fff;--red:#E05555;
+}
+body{font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 100px}
+
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
+.topbar-brand{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.topbar-client{font-size:14px;font-weight:700;color:var(--white)}
+.topbar-wa{display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;font-size:10px;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none}
+
+.hero{padding:36px 28px 28px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px}
+.hero-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.hero-title{font-size:28px;font-weight:800;color:var(--white);letter-spacing:-.02em;line-height:1.1;margin-bottom:6px}
+.hero-sub{font-size:12px;color:var(--muted);line-height:1.6}
+.hero-right{display:flex;gap:24px;flex-wrap:wrap}
+.hero-stat{text-align:right}
+.hero-stat-val{font-size:17px;font-weight:800;color:var(--white)}
+.hero-stat-key{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+.tabs-wrap{padding:0 28px;border-bottom:1px solid var(--border);display:flex;gap:0;overflow-x:auto}
+.tab{padding:14px 20px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--white);border-bottom-color:var(--gold)}
+.tab-content{display:none;padding:28px}
+.tab-content.active{display:block}
+
+.slabel{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CENÁRIO HEADER */
+.scenario{margin-bottom:32px}
+.scenario-hd{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.sc-line{width:3px;height:20px;border-radius:2px}
+.sc-line-1{background:var(--teal)}
+.sc-line-2{background:var(--gold)}
+.sc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sc-t1{color:var(--teal)}.sc-t2{color:var(--gold)}
+.sc-sub{font-size:10px;color:var(--muted);margin-left:auto}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;transition:border-color .2s,transform .15s}
+.card:hover{transform:translateY(-2px)}
+.card.c1{border-color:rgba(62,207,184,.2)} .card.c1:hover{border-color:var(--teal)}
+.card.c2{border-color:rgba(200,169,81,.2)} .card.c2:hover{border-color:var(--gold)}
+.card.rec{border-color:rgba(62,207,184,.4)}
+
+.card-op{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.card-name{font-size:14px;font-weight:800;color:var(--white);margin-bottom:6px}
+.card-acom{display:inline-block;font-size:8px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:10px}
+.apt{background:rgba(74,144,217,.15);color:var(--blue);border:1px solid rgba(74,144,217,.3)}
+.enf{background:rgba(107,127,160,.12);color:var(--muted);border:1px solid var(--border)}
+.card-copay{font-size:9px;margin-bottom:3px}
+.copay-ok{color:var(--teal)}
+.copay-full{color:var(--red)}
+.copay-note{font-size:8px;color:var(--muted);margin-bottom:12px;font-style:italic}
+.price-main{font-size:26px;font-weight:900;color:var(--white);letter-spacing:-.03em;line-height:1}
+.price-sub{font-size:10px;color:var(--muted);margin-top:3px;margin-bottom:12px}
+.faixas{border-top:1px solid var(--border);padding-top:10px;margin-bottom:14px}
+.faixa{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:5px}
+.faixa span{color:var(--text);font-weight:600}
+.difs{margin-bottom:14px}
+.dif{display:flex;align-items:center;gap:6px;font-size:9px;color:var(--muted);margin-top:4px}
+.dif::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.card-btn{width:100%;padding:8px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s}
+.card-btn:hover{border-color:var(--teal);color:var(--teal)}
+
+/* COPART TABLE */
+.copt{width:100%;border-collapse:collapse;font-size:10px;margin-top:12px}
+.copt th{background:var(--surface2);color:var(--muted);font-weight:700;padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:.05em}
+.copt th.c{text-align:center}
+.copt td{padding:7px 10px;border-bottom:1px solid rgba(27,46,90,.4);font-size:9px;color:var(--text);vertical-align:middle}
+.copt td.c{text-align:center}
+.copt tr:last-child td{border-bottom:none}
+.copt .proc{color:var(--muted)}
+.copt .val{font-weight:700;color:var(--text)}
+.copt .free{color:var(--teal);font-weight:700}
+.copt .lim{background:rgba(62,207,184,.08);color:var(--teal);font-weight:800;font-size:10px}
+.copt .sec td{background:rgba(200,169,81,.04);color:var(--gold);font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(4,8,20,.85);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:18px;width:100%;max-width:560px;max-height:85vh;overflow-y:auto}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:10;border-radius:18px 18px 0 0}
+.modal-title{font-size:14px;font-weight:800;color:var(--white);margin-bottom:2px}
+.modal-sub{font-size:10px;color:var(--muted)}
+.modal-close{background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal-close:hover{color:var(--white)}
+.modal-body{padding:18px 22px}
+.msec{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.msec::after{content:'';flex:1;height:1px;background:var(--border)}
+.msec:first-child{margin-top:0}
+.mt{width:100%;border-collapse:collapse;font-size:10px}
+.mt td{padding:6px 8px;border-bottom:1px solid rgba(27,46,90,.5);color:var(--text);vertical-align:middle}
+.mt tr:last-child td{border-bottom:none}
+.mt .hn{color:var(--white);font-weight:600}
+.mt .hr{font-size:8px;color:var(--muted);margin-top:1px}
+.mp{display:inline-block;font-size:7.5px;font-weight:700;padding:1px 5px;border-radius:6px;margin:1px}
+.mh{background:rgba(62,207,184,.1);color:var(--teal);border:1px solid rgba(62,207,184,.25)}
+.mps{background:rgba(212,194,0,.1);color:#D4C200;border:1px solid rgba(212,194,0,.2)}
+.mm{background:rgba(200,169,81,.1);color:var(--gold);border:1px solid rgba(200,169,81,.2)}
+.mpa{background:rgba(224,128,64,.1);color:#E08040;border:1px solid rgba(224,128,64,.2)}
+.mlab{background:rgba(176,128,255,.1);color:#B080FF;border:1px solid rgba(176,128,255,.2)}
+.mamb{background:rgba(74,144,217,.1);color:var(--blue);border:1px solid rgba(74,144,217,.25)}
+
+/* INSIGHT */
+.insight{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:14px}
+.insight-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.idot{width:8px;height:8px;border-radius:50%}
+.idot-t{background:var(--teal)}.idot-g{background:var(--gold)}.idot-b{background:var(--blue)}
+.insight-title{font-size:13px;font-weight:800;color:var(--white)}
+.insight-body{font-size:11px;color:var(--muted);line-height:1.7}
+.insight-body strong{color:var(--text)}
+.ihl{background:rgba(62,207,184,.06);border-left:2px solid var(--teal);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:11px;color:var(--text);line-height:1.6}
+
+/* ALERT BOX */
+.alert{background:rgba(200,169,81,.06);border:1px solid rgba(200,169,81,.2);border-radius:10px;padding:12px 16px;font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.alert strong{color:var(--gold)}
+
+.theme-btn{position:fixed;top:16px;right:16px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:10px;padding:5px 11px;border-radius:20px;cursor:pointer;z-index:200}
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;background:rgba(7,17,46,.95);border-top:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;justify-content:center;gap:14px;z-index:100;backdrop-filter:blur(8px)}
+.cta-txt{font-size:10px;color:var(--muted)}
+.sticky-cta a{display:inline-flex;align-items:center;gap:7px;background:#25D366;color:#fff;font-size:11px;font-weight:700;padding:10px 22px;border-radius:25px;text-decoration:none}
+
+/* LIGHT */
+body.light{--bg:#F2F5FA;--surface:#fff;--surface2:#EEF2F8;--border:#D8E0EE;--text:#1A2540;--muted:#6B7FA0;--white:#0D1B3E}
+body.light .topbar,body.light .sticky-cta{background:rgba(255,255,255,.95)}
+body.light .modal-box,body.light .modal-head{background:#fff}
+body.light .mt td,body.light .copt td{border-color:#E8EEF8}
+body.light .copt .sec td{background:#FFF8E8}
+
+@media(max-width:540px){
+  .hero,.tab-content{padding:24px 16px}
+  .tabs-wrap{padding:0 16px}
+  .topbar,.sticky-cta{padding:12px 16px}
+  .cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<button class="theme-btn" onclick="document.body.classList.toggle('light')">☀ / ☾</button>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-brand">Open Corretora de Seguros</div>
+    <div class="topbar-client">BIMI Cafeteria</div>
+  </div>
+  <a class="topbar-wa" href="https://wa.me/5561983016973" target="_blank">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.862L0 24l6.292-1.508A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.374l-.36-.214-3.733.894.944-3.642-.235-.374A9.818 9.818 0 1112 21.818z"/></svg>
+    (61) 98301-6973
+  </a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-tag">Proposta Complementar · Planos de Saúde</div>
+    <div class="hero-title">BIMI Cafeteria</div>
+    <div class="hero-sub">2 cenários apresentados · Brasília-DF · julho/2026</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat"><div class="hero-stat-val">2</div><div class="hero-stat-key">Cenários</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">3</div><div class="hero-stat-key">Operadoras</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">Jul/26</div><div class="hero-stat-key">Vigência</div></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tab active" onclick="showTab('planos',this)">Planos & Preços</div>
+  <div class="tab" onclick="showTab('copart',this)">Coparticipações</div>
+  <div class="tab" onclick="showTab('rede',this)">Rede Credenciada</div>
+  <div class="tab" onclick="showTab('rec',this)">Recomendação</div>
+</div>
+
+<!-- ===== PLANOS ===== -->
+<div class="tab-content active" id="tab-planos">
+
+  <!-- CENÁRIO 1 -->
+  <div class="scenario">
+    <div class="scenario-hd">
+      <div class="sc-line sc-line-1"></div>
+      <div class="sc-title sc-t1">Cenário 1 — 3 vidas · Mesmo CNPJ</div>
+      <div class="sc-sub">Plenum Saúde e Seguros Unimed · Coparticipação completa · Enfermaria</div>
+    </div>
+
+    <div class="alert">
+      <strong>Coparticipação completa:</strong> Internações e cirurgias eletivas <strong>não geram coparticipação</strong> em nenhum dos dois produtos. Os valores de copart. incidem apenas em consultas, exames e procedimentos ambulatoriais. Veja a aba "Coparticipações" para detalhes.
+    </div>
+
+    <div class="cards">
+      <div class="card c1">
+        <div class="card-op">Plenum Saúde</div>
+        <div class="card-name">Ômega PJ</div>
+        <span class="card-acom enf">Enfermaria</span>
+        <div class="card-copay copay-full">Coparticipação completa</div>
+        <div class="copay-note">Internações e cirurgias: sem coparticipação</div>
+        <div class="price-main">R$ 1.451<small style="font-size:13px;font-weight:600;color:var(--muted)">,71</small></div>
+        <div class="price-sub">total mensal · 3 vidas</div>
+        <div class="faixas">
+          <div class="faixa">Faixa 29–33<span>R$ 395,92</span></div>
+          <div class="faixa">Faixa 39–43<span>R$ 455,91</span></div>
+          <div class="faixa">Faixa 49–53<span>R$ 599,88</span></div>
+        </div>
+        <div class="difs">
+          <div class="dif">HOB Asa Norte com PS</div>
+          <div class="dif">H Alvorada · H Home</div>
+          <div class="dif">H Anchieta Ceilândia</div>
+        </div>
+        <button class="card-btn" onclick="openModal('m-plenum')">Ver rede credenciada →</button>
+      </div>
+
+      <div class="card c1">
+        <div class="card-op">Seguros Unimed</div>
+        <div class="card-name">Novo Essencial PME DF III</div>
+        <span class="card-acom enf">Enfermaria</span>
+        <div class="card-copay copay-full">Coparticipação completa</div>
+        <div class="copay-note">Internações e cirurgias: sem coparticipação · Limite R$ 300/mês/segurado</div>
+        <div class="price-main">R$ 1.600<small style="font-size:13px;font-weight:600;color:var(--muted)">,18</small></div>
+        <div class="price-sub">total mensal · 3 vidas</div>
+        <div class="faixas">
+          <div class="faixa">Faixa 29–33<span>R$ 399,35</span></div>
+          <div class="faixa">Faixa 39–43<span>R$ 493,42</span></div>
+          <div class="faixa">Faixa 49–53<span>R$ 707,41</span></div>
+        </div>
+        <div class="difs">
+          <div class="dif">Sta. Lúcia Norte com PS</div>
+          <div class="dif">Sta. Lúcia Sul · H Anchieta Ceilândia</div>
+          <div class="dif">Limite mensal: R$ 300/segurado</div>
+          <div class="dif">APS Digital sem coparticipação</div>
+        </div>
+        <button class="card-btn" onclick="openModal('m-unimed')">Ver rede credenciada →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENÁRIO 2 -->
+  <div class="scenario">
+    <div class="scenario-hd">
+      <div class="sc-line sc-line-2"></div>
+      <div class="sc-title sc-t2">Cenário 2 — Sócia · Plano Individual · MedSênior</div>
+      <div class="sc-sub">1 vida · Faixa 49–53 · Sem coparticipação · Saúde PF</div>
+    </div>
+
+    <div class="alert">
+      <strong>Atenção DF3/DF4:</strong> Hospitais credenciados cobrem <strong>internação eletiva apenas</strong>. Pronto-socorro disponível exclusivamente nas unidades próprias MedSênior (SIG 24h e Taguatinga 24h). O <strong>Infinite</strong> tem PS aberto em praticamente toda a rede.
+    </div>
+
+    <div class="cards">
+      <div class="card c2">
+        <div class="card-op">MedSênior</div>
+        <div class="card-name">Infinite</div>
+        <span class="card-acom apt">Apartamento</span>
+        <div class="card-copay copay-ok">Sem coparticipação</div>
+        <div class="copay-note">PS amplo em toda a rede</div>
+        <div class="price-main">R$ 1.818<small style="font-size:13px;font-weight:600;color:var(--muted)">,30</small></div>
+        <div class="price-sub">por mês · 1 vida</div>
+        <div class="difs">
+          <div class="dif">Rede ampla com PS em todos os hospitais</div>
+          <div class="dif">H Brasília Águas Claras com PS</div>
+          <div class="dif">Sírio Libanês incluso</div>
+        </div>
+        <button class="card-btn" onclick="openModal('m-med-inf')">Ver rede credenciada →</button>
+      </div>
+
+      <div class="card c2 rec">
+        <div class="card-op">MedSênior</div>
+        <div class="card-name">Black</div>
+        <span class="card-acom apt">Apartamento</span>
+        <div class="card-copay copay-ok">Sem coparticipação</div>
+        <div class="copay-note">PS nos principais hospitais</div>
+        <div class="price-main">R$ 1.205<small style="font-size:13px;font-weight:600;color:var(--muted)">,92</small></div>
+        <div class="price-sub">por mês · 1 vida</div>
+        <div class="difs">
+          <div class="dif">Sta. Marta Taguatinga com PS</div>
+          <div class="dif">H Home · H Daher com PS</div>
+          <div class="dif">Sírio Libanês incluso</div>
+        </div>
+        <button class="card-btn" onclick="openModal('m-med-black')">Ver rede credenciada →</button>
+      </div>
+
+      <div class="card c2">
+        <div class="card-op">MedSênior</div>
+        <div class="card-name">DF</div>
+        <span class="card-acom apt">Apartamento</span>
+        <div class="card-copay copay-ok">Sem coparticipação</div>
+        <div class="copay-note">PS apenas nas unidades próprias MedSênior</div>
+        <div class="price-main">R$ 964<small style="font-size:13px;font-weight:600;color:var(--muted)">,19</small></div>
+        <div class="price-sub">por mês · 1 vida</div>
+        <div class="difs">
+          <div class="dif">Internação hospitalar na rede</div>
+          <div class="dif">PS: SIG 24h e Taguatinga 24h</div>
+          <div class="dif">Sabin · Oftalmed · AMB próprios</div>
+        </div>
+        <button class="card-btn" onclick="openModal('m-med-df-apt')">Ver rede credenciada →</button>
+      </div>
+
+      <div class="card c2">
+        <div class="card-op">MedSênior</div>
+        <div class="card-name">DF</div>
+        <span class="card-acom enf">Enfermaria</span>
+        <div class="card-copay copay-ok">Sem coparticipação</div>
+        <div class="copay-note">PS apenas nas unidades próprias MedSênior</div>
+        <div class="price-main">R$ 803<small style="font-size:13px;font-weight:600;color:var(--muted)">,50</small></div>
+        <div class="price-sub">por mês · 1 vida</div>
+        <div class="difs">
+          <div class="dif">Internação em enfermaria</div>
+          <div class="dif">PS: SIG 24h e Taguatinga 24h</div>
+          <div class="dif">Sabin · Oftalmed · AMB próprios</div>
+        </div>
+        <button class="card-btn" onclick="openModal('m-med-df-enf')">Ver rede credenciada →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COPARTICIPAÇÕES ===== -->
+<div class="tab-content" id="tab-copart">
+
+  <div class="slabel">Cenário 1 — Coparticipações por procedimento</div>
+
+  <div class="cards" style="margin-bottom:24px">
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--white);margin-bottom:12px">Plenum Saúde · Ômega PJ</div>
+      <table class="copt">
+        <thead><tr><th>Procedimento</th><th class="c">Valor</th></tr></thead>
+        <tbody>
+          <tr><td class="proc">Atendimentos APS Digital</td><td class="c free">Não cobra</td></tr>
+          <tr><td class="proc">Consultas eletivas</td><td class="c val">R$ 25,00</td></tr>
+          <tr><td class="proc">Pronto-socorro</td><td class="c val">R$ 50,00</td></tr>
+          <tr><td class="proc">Pronto-atendimento</td><td class="c val">R$ 50,00</td></tr>
+          <tr><td class="proc">Exames simples</td><td class="c val">R$ 6,00</td></tr>
+          <tr><td class="proc">Procedimentos simples</td><td class="c val">R$ 6,00</td></tr>
+          <tr><td class="proc">Terapias simples</td><td class="c val">R$ 12,00</td></tr>
+          <tr><td class="proc">Terapias especiais</td><td class="c val">R$ 80,00</td></tr>
+          <tr><td class="proc">Exames especiais</td><td class="c val">R$ 100,00</td></tr>
+          <tr><td class="proc">Procedimentos especiais/PAC</td><td class="c val">R$ 100,00</td></tr>
+          <tr><td class="proc">Internações eletivas</td><td class="c free">Não cobra</td></tr>
+          <tr><td class="proc">Internações psiquiátricas</td><td class="c val">50%</td></tr>
+          <tr><td class="proc">Cirurgias eletivas</td><td class="c free">Não cobra</td></tr>
+          <tr><td class="proc">Partos a termo</td><td class="c free">Não cobra</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--white);margin-bottom:12px">Seguros Unimed · Essencial PME DF III</div>
+      <table class="copt">
+        <thead><tr><th>Procedimento</th><th class="c">Valor</th></tr></thead>
+        <tbody>
+          <tr><td class="proc">Atendimentos APS Digital</td><td class="c free">Não cobra</td></tr>
+          <tr><td class="proc">Consulta</td><td class="c val">R$ 28,00</td></tr>
+          <tr><td class="proc">Consulta P.S.</td><td class="c val">R$ 70,00</td></tr>
+          <tr><td class="proc">Exames básicos</td><td class="c val">R$ 40,00</td></tr>
+          <tr><td class="proc">Exames especiais</td><td class="c val">R$ 110,00</td></tr>
+          <tr><td class="proc">Terapias</td><td class="c val">R$ 50,00</td></tr>
+          <tr><td class="proc">Internações eletivas</td><td class="c free">Não cobra</td></tr>
+          <tr><td class="proc">Cirurgias eletivas</td><td class="c free">Não cobra</td></tr>
+          <tr class="lim"><td colspan="2" style="padding:8px 10px;color:var(--teal);font-weight:800;font-size:10px">Limite mensal por segurado: R$ 300,00 (não acumulativo)</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:9px;color:var(--muted);margin-top:8px;line-height:1.5">30% de coparticipação revertida para a seguradora, limitado aos valores acima. Atendimentos via APS Digital não geram coparticipação.</div>
+    </div>
+  </div>
+
+  <div class="slabel">Cenário 2 — MedSênior</div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;font-size:11px;color:var(--muted);line-height:1.7">
+    Todos os produtos MedSênior apresentados são <strong style="color:var(--teal)">sem coparticipação</strong>. Consultas, exames, internações e cirurgias sem custo adicional no uso.
+  </div>
+</div>
+
+<!-- ===== REDE ===== -->
+<div class="tab-content" id="tab-rede">
+  <div class="slabel">Cenário 1 — Rede credenciada no DF</div>
+
+  <div style="overflow-x:auto;margin-bottom:24px">
+  <table class="copt" style="min-width:400px">
+    <thead><tr><th>Hospital / Unidade</th><th class="c">Plenum Ômega</th><th class="c">Unimed Ess. III</th></tr></thead>
+    <tbody>
+      <tr class="sec"><td colspan="3">Asa Norte</td></tr>
+      <tr><td><div class="hn" style="font-weight:600;color:var(--white)">HOB — Asa Norte</div></td><td class="c" style="color:#D4C200;font-weight:700">H · PS¹</td><td class="c" style="color:var(--muted)">—</td></tr>
+      <tr><td><div class="hn" style="font-weight:600;color:var(--white)">Sta. Lúcia Norte</div></td><td class="c" style="color:var(--muted)">—</td><td class="c" style="color:#5ECFB8;font-weight:700">H · PS</td></tr>
+      <tr class="sec"><td colspan="3">Asa Sul / Plano Piloto</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">H Alvorada Brasília</div></td><td class="c" style="color:#5ECFB8;font-weight:700">H · PS</td><td class="c" style="color:var(--muted)">—</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">H Home</div></td><td class="c" style="color:#5ECFB8;font-weight:700">H · PS</td><td class="c" style="color:var(--muted)">—</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">HOB — Brasília</div></td><td class="c" style="color:#D4C200;font-weight:700">H · PS¹</td><td class="c" style="color:var(--muted)">—</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">Sta. Lúcia Sul</div></td><td class="c" style="color:var(--muted)">—</td><td class="c" style="color:#5ECFB8;font-weight:700">H · M · PS</td></tr>
+      <tr class="sec"><td colspan="3">Ceilândia</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">H Anchieta Ceilândia</div></td><td class="c" style="color:#5ECFB8;font-weight:700">H · M · PS</td><td class="c" style="color:#5ECFB8;font-weight:700">H · M · PA · PS</td></tr>
+      <tr class="sec"><td colspan="3">Laboratórios</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">Sabin DF</div></td><td class="c" style="color:var(--muted)">—</td><td class="c" style="color:#B080FF;font-weight:700">LAB</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="slabel">Cenário 2 — MedSênior · Rede no DF</div>
+  <div style="overflow-x:auto">
+  <table class="copt" style="min-width:500px">
+    <thead><tr><th>Hospital / Unidade</th><th class="c">Infinite</th><th class="c">Black</th><th class="c">DF APT/ENF</th></tr></thead>
+    <tbody>
+      <tr class="sec"><td colspan="4">Unidades Próprias MedSênior (PS 24h)</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">MedSênior SIG 24h</div></td><td class="c free">PS · LAB</td><td class="c free">PS · LAB</td><td class="c free">PS · LAB</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">MedSênior Taguatinga Sul</div><div style="font-size:8px;color:var(--muted)">Águas Claras</div></td><td class="c free">PS · LAB</td><td class="c free">PS · LAB</td><td class="c free">PS · LAB</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">CM MedSênior Brasília</div></td><td class="c" style="color:var(--blue);font-weight:700">AMB</td><td class="c" style="color:var(--blue);font-weight:700">AMB</td><td class="c" style="color:var(--blue);font-weight:700">AMB</td></tr>
+      <tr class="sec"><td colspan="4">Hospitais Credenciados</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">H Alvorada Brasília</div><div style="font-size:8px;color:var(--muted)">Asa Sul</div></td><td class="c free">H · PS</td><td class="c val">H</td><td class="c val">H</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">H Home</div><div style="font-size:8px;color:var(--muted)">Asa Sul</div></td><td class="c free">H · PS</td><td class="c free">H · PS</td><td class="c val">H</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">H Daher Lago Sul</div></td><td class="c free">H · PS · PS¹</td><td class="c free">H · PS¹</td><td class="c free">H · PS¹</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">Sírio Libanês Lago Sul</div></td><td class="c val">H</td><td class="c val">H</td><td class="c" style="color:var(--muted)">—</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">H Brasília Águas Claras</div></td><td class="c free">H · PS</td><td class="c val">H</td><td class="c" style="color:var(--muted)">—</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">Sta. Marta Taguatinga</div></td><td class="c free">H · PS</td><td class="c val">H</td><td class="c val">H</td></tr>
+      <tr class="sec"><td colspan="4">Laboratórios</td></tr>
+      <tr><td><div style="font-weight:600;color:var(--white)">Sabin DF</div></td><td class="c" style="color:#B080FF;font-weight:700">LAB</td><td class="c" style="color:#B080FF;font-weight:700">LAB</td><td class="c" style="color:#B080FF;font-weight:700">LAB</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div style="font-size:9px;color:var(--muted);margin-top:10px;line-height:1.5">PS¹ = Pronto-socorro com especialidade · DF3/DF4: hospitais credenciados = internação eletiva apenas, sem PS · PS disponível nas unidades próprias MedSênior</div>
+</div>
+
+<!-- ===== RECOMENDAÇÃO ===== -->
+<div class="tab-content" id="tab-rec">
+  <div class="slabel">Análise executiva</div>
+
+  <div class="insight">
+    <div class="insight-hd"><div class="idot idot-t"></div><div class="insight-title">Cenário 1 — Seguros Unimed Essencial PME DF III · R$ 1.600,18/mês</div></div>
+    <div class="insight-body">
+      Entre as duas opções do Cenário 1, o <strong>Seguros Unimed</strong> se destaca pelo <strong>limite mensal de coparticipação de R$ 300/segurado</strong> — o que garante previsibilidade de gastos mesmo com uso frequente. A rede entrega Sta. Lúcia Norte com PS e Sta. Lúcia Sul na Asa Norte/Sul, e H Anchieta Ceilândia com maternidade.
+      <div class="ihl">
+        Diferença de R$ 148,47/mês vs Plenum. Para uma empresa com 3 vidas, o limitador mensal da Unimed tende a compensar essa diferença caso haja uso regular do plano.
+      </div>
+      <strong>Plenum Ômega (R$ 1.451,71)</strong> é mais acessível e cobre HOB Asa Norte com PS — hospital que não está na Unimed. Se o acesso ao HOB for relevante para a empresa, o Plenum tem vantagem de rede nesse ponto específico.
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-hd"><div class="idot idot-g"></div><div class="insight-title">Cenário 2 — MedSênior Black · R$ 1.205,92/mês</div></div>
+    <div class="insight-body">
+      Para a sócia em plano individual, o <strong>Black</strong> entrega o melhor equilíbrio: sem coparticipação, PS no H Home, H Daher e Sta. Marta Taguatinga, além de Sírio Libanês para internações. Diferença de R$ 612,38/mês vs o Infinite — que adiciona principalmente PS no H Alvorada e H Brasília Águas Claras.
+      <div class="ihl">
+        Se o critério principal é custo com cobertura de PS adequada, o Black resolve. O Infinite faz sentido se ela frequenta hospitais específicos que só têm PS nesse produto.
+      </div>
+      <strong>MedSênior DF APT (R$ 964,19)</strong> é uma opção válida se o orçamento for o fator decisivo — mas é importante deixar claro que PS nos hospitais credenciados não está incluso, apenas nas unidades próprias MedSênior (SIG e Taguatinga 24h).
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAIS -->
+
+<!-- Plenum -->
+<div class="modal-overlay" id="m-plenum" onclick="closeOut(event,'m-plenum')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">Plenum Saúde · Ômega PJ</div><div class="modal-sub">Enfermaria · Coparticipação completa</div></div>
+      <button class="modal-close" onclick="closeModal('m-plenum')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Asa Norte · Asa Sul</div>
+      <table class="mt">
+        <tr><td><div class="hn">HOB — Asa Norte</div></td><td><span class="mp mh">H</span><span class="mp mps">PS¹</span></td></tr>
+        <tr><td><div class="hn">H Alvorada Brasília</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Home</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">HOB — Brasília</div><div class="hr">Asa Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS¹</span></td></tr>
+      </table>
+      <div class="msec">Ceilândia</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Anchieta Ceilândia</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Unimed -->
+<div class="modal-overlay" id="m-unimed" onclick="closeOut(event,'m-unimed')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">Seguros Unimed · Novo Essencial PME DF III</div><div class="modal-sub">Enfermaria · Copart. completa · Limite R$ 300/mês</div></div>
+      <button class="modal-close" onclick="closeModal('m-unimed')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Asa Norte · Asa Sul</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sta. Lúcia Norte</div><div class="hr">Asa Norte</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sta. Lúcia Sul</div><div class="hr">Asa Sul</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Visão Institutos Oftalmológicos</div></td><td><span class="mp mh">H¹</span><span class="mp mps">PS¹</span></td></tr>
+      </table>
+      <div class="msec">Ceilândia</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Anchieta Ceilândia</div></td><td><span class="mp mh">H</span><span class="mp mm">M</span><span class="mp mpa">PA</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Clin Recanto Unid Ceilândia</div></td><td><span class="mp mh">H¹</span><span class="mp mps">PS¹</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MedSênior Infinite -->
+<div class="modal-overlay" id="m-med-inf" onclick="closeOut(event,'m-med-inf')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">MedSênior · Infinite</div><div class="modal-sub">Apartamento · Sem coparticipação · PS amplo</div></div>
+      <button class="modal-close" onclick="closeModal('m-med-inf')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Unidades Próprias (PS 24h)</div>
+      <table class="mt">
+        <tr><td><div class="hn">MedSênior SIG 24h</div></td><td><span class="mp mps">PS</span><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">MedSênior Taguatinga Sul</div><div class="hr">Águas Claras</div></td><td><span class="mp mps">PS</span><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">CM MedSênior Brasília</div><div class="hr">Asa Sul</div></td><td><span class="mp mamb">AMB</span></td></tr>
+      </table>
+      <div class="msec">Hospitais Credenciados · PS incluso</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Alvorada Brasília</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Home</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span><span class="mp mps">PS¹</span></td></tr>
+        <tr><td><div class="hn">H Brasília Águas Claras</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sta. Marta Taguatinga</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">Sírio Libanês Lago Sul</div></td><td><span class="mp mh">H</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MedSênior Black -->
+<div class="modal-overlay" id="m-med-black" onclick="closeOut(event,'m-med-black')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">MedSênior · Black</div><div class="modal-sub">Apartamento · Sem coparticipação · PS nos principais</div></div>
+      <button class="modal-close" onclick="closeModal('m-med-black')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Unidades Próprias (PS 24h)</div>
+      <table class="mt">
+        <tr><td><div class="hn">MedSênior SIG 24h</div></td><td><span class="mp mps">PS</span><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">MedSênior Taguatinga Sul</div></td><td><span class="mp mps">PS</span><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">CM MedSênior Brasília</div></td><td><span class="mp mamb">AMB</span></td></tr>
+      </table>
+      <div class="msec">Hospitais Credenciados com PS</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Home</div></td><td><span class="mp mh">H</span><span class="mp mps">PS</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS¹</span></td></tr>
+        <tr><td><div class="hn">Sta. Marta Taguatinga</div></td><td><span class="mp mh">H</span></td></tr>
+        <tr><td><div class="hn">Sírio Libanês Lago Sul</div></td><td><span class="mp mh">H</span></td></tr>
+        <tr><td><div class="hn">H Alvorada Brasília</div><div class="hr">Internação apenas</div></td><td><span class="mp mh">H</span></td></tr>
+        <tr><td><div class="hn">H Brasília Águas Claras</div><div class="hr">Internação apenas</div></td><td><span class="mp mh">H</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MedSênior DF APT -->
+<div class="modal-overlay" id="m-med-df-apt" onclick="closeOut(event,'m-med-df-apt')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">MedSênior · DF Apartamento</div><div class="modal-sub">Sem coparticipação · PS apenas nas unidades próprias</div></div>
+      <button class="modal-close" onclick="closeModal('m-med-df-apt')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Unidades Próprias (PS 24h)</div>
+      <table class="mt">
+        <tr><td><div class="hn">MedSênior SIG 24h</div></td><td><span class="mp mps">PS</span><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">MedSênior Taguatinga Sul</div></td><td><span class="mp mps">PS</span><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">CM MedSênior Brasília</div></td><td><span class="mp mamb">AMB</span></td></tr>
+      </table>
+      <div class="msec">Hospitais Credenciados · Internação apenas</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Alvorada Brasília</div></td><td><span class="mp mh">H</span></td></tr>
+        <tr><td><div class="hn">H Home</div></td><td><span class="mp mh">H</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS¹</span></td></tr>
+        <tr><td><div class="hn">Sta. Marta Taguatinga</div></td><td><span class="mp mh">H</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MedSênior DF ENF -->
+<div class="modal-overlay" id="m-med-df-enf" onclick="closeOut(event,'m-med-df-enf')">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">MedSênior · DF Enfermaria</div><div class="modal-sub">Sem coparticipação · PS apenas nas unidades próprias</div></div>
+      <button class="modal-close" onclick="closeModal('m-med-df-enf')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msec">Unidades Próprias (PS 24h)</div>
+      <table class="mt">
+        <tr><td><div class="hn">MedSênior SIG 24h</div></td><td><span class="mp mps">PS</span><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">MedSênior Taguatinga Sul</div></td><td><span class="mp mps">PS</span><span class="mp mlab">LAB</span></td></tr>
+        <tr><td><div class="hn">CM MedSênior Brasília</div></td><td><span class="mp mamb">AMB</span></td></tr>
+      </table>
+      <div class="msec">Hospitais Credenciados · Internação apenas</div>
+      <table class="mt">
+        <tr><td><div class="hn">H Alvorada Brasília</div></td><td><span class="mp mh">H</span></td></tr>
+        <tr><td><div class="hn">H Home</div></td><td><span class="mp mh">H</span></td></tr>
+        <tr><td><div class="hn">H Daher Lago Sul</div></td><td><span class="mp mh">H</span><span class="mp mps">PS¹</span></td></tr>
+        <tr><td><div class="hn">Sta. Marta Taguatinga</div></td><td><span class="mp mh">H</span></td></tr>
+      </table>
+      <div class="msec">Laboratórios</div>
+      <table class="mt">
+        <tr><td><div class="hn">Sabin DF</div></td><td><span class="mp mlab">LAB</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="sticky-cta">
+  <span class="cta-txt">Dúvidas ou para avançar:</span>
+  <a href="https://wa.me/5561983016973" target="_blank">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.862L0 24l6.292-1.508A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.374l-.36-.214-3.733.894.944-3.642-.235-.374A9.818 9.818 0 1112 21.818z"/></svg>
+    Falar com Matheus Doro
+  </a>
+</div>
+
+<script>
+function showTab(n,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');
+  el.classList.add('active');
+}
+function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden'}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow=''}
+function closeOut(e,id){if(e.target===document.getElementById(id))closeModal(id)}
+</script>
+</body>
+</html>
