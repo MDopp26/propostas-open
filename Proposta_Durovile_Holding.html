@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Durovile Holding — Open Corporate</title>
+<style>
+  :root{
+    --navy:#0D1B40;
+    --navy-light:#152854;
+    --gold:#C8A951;
+    --teal:#5ECFB8;
+    --red:#F08070;
+    --purple:#534AB7;
+    --green:#0D9488;
+    --text-light:#EAEDF6;
+    --text-muted:#A7B0CC;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background:var(--navy);
+    color:var(--text-light);
+    line-height:1.5;
+  }
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:var(--navy-light);
+    border-bottom:1px solid rgba(200,169,81,0.25);
+    padding:14px 20px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .topbar .brand{font-weight:700;color:var(--gold);font-size:15px;letter-spacing:0.5px;}
+  .topbar .brand span{color:var(--text-light);font-weight:400;}
+  .wa-btn{
+    background:var(--green);color:#fff;text-decoration:none;
+    padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;
+    display:flex;align-items:center;gap:6px;white-space:nowrap;
+  }
+  .container{max-width:900px;margin:0 auto;padding:24px 20px 60px;}
+
+  .hero{
+    background:linear-gradient(135deg, var(--navy-light) 0%, var(--navy) 100%);
+    border:1px solid rgba(200,169,81,0.2);
+    border-radius:16px;padding:28px;margin-bottom:28px;
+  }
+  .hero h1{font-size:22px;color:#fff;margin-bottom:6px;}
+  .hero .sub{color:var(--text-muted);font-size:14px;margin-bottom:20px;}
+  .hero-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px;}
+  .metric{background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;}
+  .metric .label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+  .metric .value{font-size:16px;font-weight:700;color:var(--gold);}
+
+  .section-title{font-size:17px;color:#fff;margin:36px 0 16px;display:flex;align-items:center;gap:8px;}
+  .section-title .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);}
+
+  .plan-atual{
+    background:rgba(240,128,112,0.08);
+    border:1px solid var(--red);
+    border-radius:14px;padding:20px;margin-bottom:8px;
+  }
+  .plan-atual .tag{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:10px;letter-spacing:0.5px;}
+  .plan-atual h3{font-size:16px;color:#fff;margin-bottom:4px;}
+  .plan-atual .price{font-size:24px;font-weight:800;color:var(--red);margin:8px 0;}
+  .plan-atual .details{font-size:13px;color:var(--text-muted);}
+  .plan-atual .details b{color:var(--text-light);}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:16px;}
+  .card{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.08);
+    border-left:4px solid var(--gold);
+    border-radius:12px;padding:20px;position:relative;transition:transform .15s;
+  }
+  .card.recomendado{border-left-color:var(--teal);}
+  .card .badge{
+    position:absolute;top:-10px;right:16px;
+    background:var(--teal);color:var(--navy);
+    font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;letter-spacing:0.5px;
+  }
+  .card.ancora .badge{background:var(--gold);color:var(--navy);}
+  .card h3{font-size:16px;color:#fff;margin-bottom:2px;}
+  .card .operadora{font-size:12px;color:var(--text-muted);margin-bottom:12px;}
+  .card .price{font-size:26px;font-weight:800;color:var(--gold);}
+  .card.recomendado .price{color:var(--teal);}
+  .card .price small{font-size:12px;color:var(--text-muted);font-weight:400;}
+  .card ul{list-style:none;margin:14px 0;}
+  .card ul li{font-size:13px;color:var(--text-light);padding:5px 0;display:flex;gap:8px;align-items:flex-start;}
+  .card ul li::before{content:"✓";color:var(--teal);font-weight:700;flex-shrink:0;}
+  .card .rede-btn{
+    width:100%;background:rgba(255,255,255,0.06);color:var(--text-light);
+    border:1px solid rgba(255,255,255,0.12);padding:10px;border-radius:8px;
+    font-size:12px;cursor:pointer;margin-top:8px;font-weight:600;
+  }
+  .card .rede-btn:hover{background:rgba(255,255,255,0.1);}
+
+  .hospitais{
+    background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;margin-top:16px;
+  }
+  .hosp-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;}
+  .hosp-row:last-child{border-bottom:none;}
+  .hosp-status{display:flex;gap:16px;}
+  .ok{color:var(--teal);font-weight:700;}
+  .no{color:var(--red);font-weight:700;}
+
+  table.comparativo{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
+  table.comparativo th{background:rgba(255,255,255,0.06);color:var(--gold);text-align:left;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.4px;}
+  table.comparativo td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);color:var(--text-light);}
+  table.comparativo tr:last-child td{border-bottom:none;}
+  table.comparativo td.destaque{color:var(--teal);font-weight:700;}
+
+  .modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-overlay.active{display:flex;}
+  .modal{
+    background:var(--navy-light);border:1px solid rgba(200,169,81,0.3);
+    border-radius:14px;max-width:560px;width:100%;max-height:85vh;overflow-y:auto;padding:24px;position:relative;
+  }
+  .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;}
+  .modal h4{color:var(--gold);font-size:16px;margin-bottom:14px;}
+  .modal .region{margin-bottom:14px;}
+  .modal .region .rname{font-size:12px;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;}
+  .modal .region ul{list-style:none;}
+  .modal .region ul li{font-size:13px;padding:4px 0;color:var(--text-light);}
+
+  .footer{
+    margin-top:40px;padding:20px;background:rgba(255,255,255,0.02);
+    border-radius:10px;font-size:11px;color:var(--text-muted);text-align:center;line-height:1.6;
+  }
+  .footer .corretor{color:var(--gold);font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">OPEN <span>CORPORATE</span></div>
+  <a class="wa-btn" href="https://wa.me/5561983016973" target="_blank">💬 Falar com Matheus</a>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>Proposta Comercial — Durovile Holding de Participações Ltda</h1>
+    <div class="sub">Preparado para Victor Amaro de Souza Paiva · Sócio · 21 de agosto de 2026</div>
+    <div class="hero-metrics">
+      <div class="metric"><div class="label">Vidas</div><div class="value">3 vidas</div></div>
+      <div class="metric"><div class="label">Faixas etárias</div><div class="value">24-28 · 29-33 · 59+</div></div>
+      <div class="metric"><div class="label">Objetivo</div><div class="value">Acesso Sírio-Libanês / DF Star</div></div>
+      <div class="metric"><div class="label">Acomodação atual</div><div class="value">Apartamento</div></div>
+    </div>
+  </div>
+
+  <div class="section-title"><span class="dot"></span> Plano atual</div>
+  <div class="plan-atual">
+    <span class="tag">PLANO ATUAL</span>
+    <h3>SulAmérica — Direto Nacional (Apartamento)</h3>
+    <div class="price">R$ 3.443,20<small style="font-size:13px;font-weight:400;color:var(--text-muted);"> /mês (estimado)</small></div>
+    <div class="details">
+      <b>Coparticipação:</b> Não · <b>Reembolso:</b> apenas urgência/emergência (2x tabela) ·
+      <b>Rede:</b> não contempla Sírio-Libanês nem DF Star<br>
+      <span style="font-size:11px;">*Valor-base de R$ 3.079,01 (cotação 06/07/2025) corrigido pela estimativa de reajuste PME SulAmérica 2026 (11,83%).</span>
+    </div>
+  </div>
+
+  <div class="section-title"><span class="dot"></span> Opções cotadas</div>
+  <div class="cards">
+
+    <div class="card ancora">
+      <span class="badge">ÂNCORA · MAIS COMPLETO</span>
+      <h3>Bradesco Saúde</h3>
+      <div class="operadora">Nacional Plus — Quarto (Enfermaria)</div>
+      <div class="price">R$ 11.063,35<small> /mês</small></div>
+      <ul>
+        <li>Sem coparticipação</li>
+        <li>Cobre Sírio-Libanês e DF Star</li>
+        <li>Reembolso completo (4x tabela)</li>
+        <li>Concierge (RJ, SP, MG, BA)</li>
+        <li>Seguro viagem e Clube+ Saúde</li>
+      </ul>
+      <button class="rede-btn" onclick="document.getElementById('modal-bradesco').classList.add('active')">Ver rede credenciada</button>
+    </div>
+
+    <div class="card recomendado">
+      <span class="badge">RECOMENDADO</span>
+      <h3>Porto Saúde</h3>
+      <div class="operadora">Ouro Mais I Q — Apartamento</div>
+      <div class="price">R$ 5.721,83<small> /mês</small></div>
+      <ul>
+        <li>Sem coparticipação, com reembolso</li>
+        <li>Cobre Sírio-Libanês</li>
+        <li>Odontológico Bronze 10 incluso</li>
+        <li>Seguro de vida incluso</li>
+        <li>Telemedicina 24h e Clínico na Hora</li>
+      </ul>
+      <button class="rede-btn" onclick="document.getElementById('modal-porto').classList.add('active')">Ver rede credenciada</button>
+    </div>
+
+  </div>
+
+  <div class="section-title"><span class="dot"></span> Hospitais de preferência</div>
+  <div class="hospitais">
+    <div class="hosp-row">
+      <span>Hospital Sírio-Libanês (Brasília)</span>
+      <div class="hosp-status">
+        <span class="no">✗ SulAmérica</span>
+        <span class="ok">✓ Bradesco</span>
+        <span class="ok">✓ Porto</span>
+      </div>
+    </div>
+    <div class="hosp-row">
+      <span>DF Star</span>
+      <div class="hosp-status">
+        <span class="no">✗ SulAmérica</span>
+        <span class="ok">✓ Bradesco</span>
+        <span class="no">✗ Porto</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title"><span class="dot"></span> Comparativo final</div>
+  <table class="comparativo">
+    <thead>
+      <tr>
+        <th>Plano</th>
+        <th>Acomodação</th>
+        <th>Coparticipação</th>
+        <th>Sírio-Libanês</th>
+        <th>DF Star</th>
+        <th>Valor mensal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SulAmérica Direto Nacional <em>(atual, estimado)</em></td>
+        <td>Apartamento</td>
+        <td>Não</td>
+        <td>✗</td>
+        <td>✗</td>
+        <td>R$ 3.443,20</td>
+      </tr>
+      <tr>
+        <td>Porto Saúde Ouro Mais I Q</td>
+        <td>Apartamento</td>
+        <td>Não</td>
+        <td>✓</td>
+        <td>✗</td>
+        <td class="destaque">R$ 5.721,83</td>
+      </tr>
+      <tr>
+        <td>Bradesco Nacional Plus</td>
+        <td>Quarto</td>
+        <td>Não</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>R$ 11.063,35</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Proposta de caráter referencial. Valores sujeitos à análise da seguradora, vigentes na data desta simulação e podem sofrer ajustes.<br>
+    <span class="corretor">Matheus Doro</span> — Open Corretora de Seguros · (61) 98301-6973 · comercial01@opencorretoradeseguros.com
+  </div>
+
+</div>
+
+<!-- MODAL BRADESCO -->
+<div class="modal-overlay" id="modal-bradesco">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal-bradesco').classList.remove('active')">✕</button>
+    <h4>Rede Credenciada — Bradesco Nacional Plus</h4>
+    <div class="region">
+      <div class="rname">Asa Sul</div>
+      <ul>
+        <li>Hospital Sírio-Libanês</li>
+        <li>Hospital DF Star</li>
+        <li>Hospital Santa Luzia</li>
+        <li>Hospital Santa Lúcia</li>
+        <li>Hospital do Coração</li>
+        <li>Hospital Alvorada</li>
+        <li>Hospital Home</li>
+      </ul>
+    </div>
+    <div class="region">
+      <div class="rname">Asa Norte</div>
+      <ul>
+        <li>Hospital Santa Marta Norte (Hosp. Albert Sabin)</li>
+        <li>Hospital Santa Helena</li>
+        <li>Hospital Santa Lúcia Norte (Prontonorte)</li>
+      </ul>
+    </div>
+    <div class="region">
+      <div class="rname">Lago Sul</div>
+      <ul>
+        <li>Hospital Brasília</li>
+        <li>Hospital Daher</li>
+      </ul>
+    </div>
+    <div class="region">
+      <div class="rname">Taguatinga · Ceilândia · Gama · Águas Claras</div>
+      <ul>
+        <li>Hospital Anchieta (Taguatinga e Ceilândia)</li>
+        <li>Hospital Santa Marta (Taguatinga)</li>
+        <li>Hospital Santa Lúcia (Taguatinga)</li>
+        <li>Hospital Santa Lúcia / Maria Auxiliadora (Gama)</li>
+        <li>Hospital São Mateus (Cruzeiro)</li>
+        <li>Hospital Águas Claras</li>
+        <li>Maternidade Brasília (Sudoeste)</li>
+      </ul>
+    </div>
+    <div class="region">
+      <div class="rname">Laboratórios</div>
+      <ul><li>Exame</li><li>Sabin</li><li>Fleury</li></ul>
+    </div>
+    <div class="region">
+      <div class="rname">Abrangência</div>
+      <ul><li>Nacional</li></ul>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PORTO -->
+<div class="modal-overlay" id="modal-porto">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal-porto').classList.remove('active')">✕</button>
+    <h4>Rede Credenciada — Porto Saúde Ouro Mais I Q</h4>
+    <div class="region">
+      <div class="rname">Asa Sul</div>
+      <ul>
+        <li>Hospital Sírio-Libanês (Unidade IV)</li>
+        <li>Hospital Santa Lúcia</li>
+        <li>Hospital Alvorada (Américas)</li>
+        <li>CAU-Hosp Urológico de Brasília</li>
+        <li>HOB Brasília (oftalmológico)</li>
+        <li>Clínica Pacini (oftalmológico)</li>
+        <li>Clínica Oftalmed (oftalmológico)</li>
+        <li>Clínica Recanto (psiquiátrico)</li>
+      </ul>
+      <div style="margin-top:8px;font-size:12px;color:var(--red);">✗ Não cobre DF Star nem Santa Luzia (exclusivos do plano Diamante Mais I)</div>
+    </div>
+    <div class="region">
+      <div class="rname">Asa Norte</div>
+      <ul>
+        <li>Hospital Prontonorte (Sta. Lúcia)</li>
+        <li>Santa Helena (Rede D'Or)</li>
+      </ul>
+    </div>
+    <div class="region">
+      <div class="rname">Lago Sul</div>
+      <ul>
+        <li>Hospital Brasília (Dasa)</li>
+        <li>Hospital Daher Lago Sul</li>
+      </ul>
+    </div>
+    <div class="region">
+      <div class="rname">Taguatinga · Ceilândia · Gama · Águas Claras</div>
+      <ul>
+        <li>Hospital Anchieta (Taguatinga)</li>
+        <li>Hospital Santa Marta (Taguatinga)</li>
+        <li>Hospital Anna Nery (Taguatinga)</li>
+        <li>Clínica Amma (Taguatinga)</li>
+        <li>Hospital São Francisco (Ceilândia)</li>
+        <li>H. Maria Auxiliadora (Gama)</li>
+        <li>H. de Olhos do Gama (oftalmológico)</li>
+        <li>Hospital Águas Claras (Dasa)</li>
+        <li>Maternidade Brasília (Sudoeste)</li>
+      </ul>
+    </div>
+    <div class="region">
+      <div class="rname">Laboratórios</div>
+      <ul>
+        <li>Laboratório Planalto</li>
+        <li>Exato Laboratório</li>
+        <li>Santa Paula Diagnóstico</li>
+        <li>Centro Radiológico de Brasília (Sta. Lúcia)</li>
+        <li>Centro de Medicina Nuclear de Brasília</li>
+        <li>Laboratório Exame (Dasa)</li>
+        <li>Laboratório Sabin</li>
+      </ul>
+    </div>
+    <div class="region">
+      <div class="rname">Abrangência</div>
+      <ul><li>Nacional — urgência/emergência em todos os estados</li></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  overlay.addEventListener('click', e=>{
+    if(e.target === overlay) overlay.classList.remove('active');
+  });
+});
+</script>
+
+</body>
+</html>
