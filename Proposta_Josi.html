@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Josi — Open Corporate</title>
+<style>
+  :root{
+    --navy:#0D1B40;--navy-light:#152854;--gold:#C8A951;
+    --teal:#5ECFB8;--red:#F08070;--purple:#534AB7;--green:#0D9488;
+    --text-light:#EAEDF6;--text-muted:#A7B0CC;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--navy);color:var(--text-light);line-height:1.5;}
+  .topbar{position:sticky;top:0;z-index:50;background:var(--navy-light);border-bottom:1px solid rgba(200,169,81,0.25);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
+  .topbar .brand{font-weight:700;color:var(--gold);font-size:15px;}
+  .topbar .brand span{color:var(--text-light);font-weight:400;}
+  .wa-btn{background:var(--green);color:#fff;text-decoration:none;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .container{max-width:960px;margin:0 auto;padding:24px 20px 60px;}
+
+  .hero{background:linear-gradient(135deg,var(--navy-light) 0%,var(--navy) 100%);border:1px solid rgba(200,169,81,0.2);border-radius:16px;padding:26px;margin-bottom:24px;}
+  .hero h1{font-size:20px;color:#fff;margin-bottom:6px;}
+  .hero .sub{color:var(--text-muted);font-size:13px;margin-bottom:16px;}
+  .hero .note{background:rgba(94,207,184,0.1);border-left:3px solid var(--teal);padding:10px 14px;border-radius:6px;font-size:13px;color:var(--text-light);}
+  .hero-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:14px;}
+  .metric{background:rgba(255,255,255,0.04);border-radius:10px;padding:12px;}
+  .metric .label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+  .metric .value{font-size:14px;font-weight:700;color:var(--gold);}
+
+  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab-btn{flex:1;min-width:150px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);padding:12px 10px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:.15s;}
+  .tab-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+  .scenario{display:none;}
+  .scenario.active{display:block;}
+  .scenario-title{font-size:16px;color:#fff;margin-bottom:4px;}
+  .scenario-desc{font-size:13px;color:var(--text-muted);margin-bottom:18px;}
+
+  table.comparativo{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13px;}
+  table.comparativo th{background:rgba(255,255,255,0.06);color:var(--gold);text-align:left;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.4px;}
+  table.comparativo td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);color:var(--text-light);}
+  table.comparativo tr:last-child td{border-bottom:none;}
+  table.comparativo tr.recomendado{background:rgba(94,207,184,0.08);}
+  table.comparativo td.valor{font-weight:800;color:var(--gold);font-size:14px;}
+  table.comparativo tr.recomendado td.valor{color:var(--teal);}
+  .ok{color:var(--teal);font-weight:700;}
+  .parcial{color:var(--gold);font-weight:700;}
+
+  @media (max-width:680px){
+    table.comparativo thead{display:none;}
+    table.comparativo, table.comparativo tbody, table.comparativo tr, table.comparativo td{display:block;width:100%;}
+    table.comparativo tr{margin-bottom:14px;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 4px;background:rgba(255,255,255,0.02);}
+    table.comparativo tr.recomendado{border-color:var(--teal);}
+    table.comparativo td{border:none;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:right;}
+    table.comparativo td::before{content:attr(data-label);font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;text-align:left;flex-shrink:0;}
+    table.comparativo td.valor{font-size:16px;}
+    table.comparativo tr td:first-child{font-weight:700;color:#fff;font-size:14px;padding-top:10px;}
+    table.comparativo tr td:first-child::before{content:'';}
+  }
+
+  .rede-btn{background:rgba(255,255,255,0.06);color:var(--text-light);border:1px solid rgba(255,255,255,0.12);padding:6px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;white-space:nowrap;}
+  .rede-btn:hover{background:rgba(255,255,255,0.1);}
+  @media (max-width:680px){.rede-btn{width:100%;margin-top:2px;}}
+
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.active{display:flex;}
+  .modal{background:var(--navy-light);border:1px solid rgba(200,169,81,0.3);border-radius:14px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;padding:24px;position:relative;}
+  .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;}
+  .modal h4{color:var(--gold);font-size:15px;margin-bottom:14px;padding-right:24px;}
+  .modal ul{list-style:none;}
+  .modal ul li{font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--text-light);display:flex;justify-content:space-between;gap:10px;}
+  .modal ul li .cov{color:var(--text-muted);font-size:11px;white-space:nowrap;}
+
+  .info{background:rgba(255,255,255,0.03);border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;color:var(--text-light);}
+  .info b{color:var(--gold);}
+  .calc{background:rgba(94,207,184,0.06);border:1px solid var(--teal);border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;}
+  .calc b{color:var(--teal);}
+  .calc-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px;}
+  .calc-row.total{border-top:1px solid rgba(255,255,255,0.15);margin-top:6px;padding-top:8px;font-weight:700;color:var(--teal);}
+
+  .footer{margin-top:36px;padding:20px;background:rgba(255,255,255,0.02);border-radius:10px;font-size:11px;color:var(--text-muted);text-align:center;line-height:1.6;}
+  .footer .corretor{color:var(--gold);font-weight:600;}
+
+  /* PROTÓTIPO: cards de valor (Cenário 1) — diferencial primeiro, preço por último */
+  .value-cards{display:grid;gap:14px;margin-bottom:16px;}
+  .value-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px;}
+  .value-card.recomendado{border-color:var(--teal);background:rgba(94,207,184,0.06);}
+  .value-card .vc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;}
+  .value-card h3{font-size:16px;color:#fff;}
+  .value-card .vc-sub{font-size:12px;color:var(--text-muted);}
+  .vc-badge-rec{background:var(--teal);color:var(--navy);font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.3px;white-space:nowrap;}
+  .vc-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+  .vc-badge{background:rgba(200,169,81,0.12);color:var(--gold);border:1px solid rgba(200,169,81,0.3);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;}
+  .vc-why{font-size:13px;color:var(--text-light);margin-bottom:14px;line-height:1.5;}
+  .vc-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);flex-wrap:wrap;}
+  .vc-price{font-size:15px;font-weight:700;color:var(--text-muted);}
+  .vc-price b{font-size:19px;color:var(--gold);font-weight:800;}
+  .value-card.recomendado .vc-price b{color:var(--teal);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">OPEN <span>CORPORATE</span></div>
+  <a class="wa-btn" href="https://wa.me/5561983016973" target="_blank">💬 Falar com Matheus</a>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>Sua Proposta de Plano de Saúde</h1>
+    <div class="sub">Preparado por Matheus Doro para Josi · 22 de agosto de 2026</div>
+    <div class="hero-metrics">
+      <div class="metric"><div class="label">Sua família</div><div class="value">Você, seu marido e seus dois filhos</div></div>
+      <div class="metric"><div class="label">Plano atual</div><div class="value">INAS</div></div>
+    </div>
+    <div class="note" style="margin-top:14px;">
+      Montamos 3 caminhos diferentes pra você — de acordo com o que faz mais sentido pra sua família, seja manter tudo simples ou economizar mais com um CNPJ. Veja abaixo cada um.
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab-btn active" onclick="showTab(0)">1. Vocês dois na MedSênior + filhos separados</div>
+    <div class="tab-btn" onclick="showTab(1)">2. Toda a família junta</div>
+    <div class="tab-btn" onclick="showTab(2)">3. Abrir CNPJ (PME)</div>
+  </div>
+
+  <!-- CENÁRIO 1 -->
+  <div class="scenario active" id="scenario-0">
+    <div class="scenario-title">Cenário 1 — Você e seu marido na MedSênior, seus filhos em outra operadora</div>
+    <div class="scenario-desc">Vocês dois ficam num plano PF individual mais forte (MedSênior), e seus filhos entram separados numa operadora de adesão. Sem precisar de CNPJ.</div>
+
+    <div class="scenario-title" style="font-size:14px;">Você e seu marido — MedSênior (individual, 2 pessoas)</div>
+    <div class="value-cards">
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>MedSênior Infinite</h3>
+            <div class="vc-sub">Apartamento · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">PS em quase toda a rede</span>
+          <span class="vc-badge">Sírio-Libanês p/ cirurgias</span>
+          <span class="vc-badge">Rede mais ampla da MedSênior</span>
+        </div>
+        <div class="vc-why">O plano mais completo da linha — pronto-socorro liberado em praticamente toda a rede credenciada, e o Sírio-Libanês entra pra cirurgias e internações.</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 4.676,67</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('ms-infinite')">Ver rede completa</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>MedSênior Black</h3>
+            <div class="vc-sub">Apartamento · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">PS: Sta Marta, Home, Daher</span>
+          <span class="vc-badge">+ unidades próprias 24h</span>
+          <span class="vc-badge">Sírio-Libanês p/ cirurgias</span>
+        </div>
+        <div class="vc-why">Mantém acesso ao Sírio-Libanês pra cirurgias e internações, com pronto-socorro em três hospitais de referência (Sta Marta Taguatinga, Home e Daher Lago Sul) além das unidades próprias 24h — ótimo equilíbrio pra quem quer rede forte com um valor mais confortável.</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 3.101,62</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('ms-black')">Ver rede completa</button>
+        </div>
+      </div>
+
+      <div class="value-card recomendado">
+        <div class="vc-top">
+          <div>
+            <h3>MedSênior DF</h3>
+            <div class="vc-sub">Apartamento · Sem coparticipação</div>
+          </div>
+          <span class="vc-badge-rec">RECOMENDADO</span>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Apartamento garantido</span>
+          <span class="vc-badge">PS nas unidades próprias 24h</span>
+          <span class="vc-badge">Cirurgias na rede toda</span>
+        </div>
+        <div class="vc-why">O melhor equilíbrio entre preço e cobertura: acomodação em apartamento, sem coparticipação, pronto-socorro nas próprias unidades MedSênior (Taguatinga e SIG) 24h, e acesso à rede completa pra cirurgias e internações.</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 2.479,90</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('ms-df-apt')">Ver rede completa</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>MedSênior DF</h3>
+            <div class="vc-sub">Enfermaria · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Sem coparticipação</span>
+          <span class="vc-badge">PS nas unidades próprias 24h</span>
+        </div>
+        <div class="vc-why">Mesma rede do MedSênior DF Apartamento — pronto-socorro nas unidades próprias (Taguatinga e SIG) e cirurgias/internações na rede completa — com acomodação em enfermaria, a opção mais econômica da MedSênior.</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 2.066,60</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('ms-df-enf')">Ver rede completa</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Best Sênior Prime</h3>
+            <div class="vc-sub">Apartamento · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">PS em toda a rede credenciada</span>
+          <span class="vc-badge">Sta Lúcia (Norte, Taguatinga, Gama)</span>
+          <span class="vc-badge">H Anchieta Ceilândia</span>
+        </div>
+        <div class="vc-why">Diferente da MedSênior, aqui o Pronto-Socorro é liberado em toda a rede credenciada, sem distinção entre unidade própria e hospital parceiro — mais simples na hora de decidir onde ir numa emergência.</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 3.082,17</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('best-prime')">Ver rede completa</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Best Sênior Platinum</h3>
+            <div class="vc-sub">Apartamento · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">PS em toda a rede credenciada</span>
+          <span class="vc-badge">Sta Lúcia Sul (Asa Sul)</span>
+          <span class="vc-badge">H Anchieta Taguatinga</span>
+        </div>
+        <div class="vc-why">Mesma vantagem da Prime — PS liberado em toda a rede — com dois hospitais a mais na cobertura: Sta Lúcia Sul e H Anchieta Taguatinga.</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 3.732,85</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('best-platinum')">Ver rede completa</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="info" style="font-size:11px;">🧪 Este bloco está em formato de teste — o diferencial de cada plano aparece antes do preço. Os demais cenários abaixo seguem no formato de tabela original, pra você comparar os dois estilos.</div>
+
+    <div class="scenario-title" style="font-size:14px;margin-top:20px;">Seus filhos — Adesão, separados (2 pessoas)</div>
+    <table class="comparativo">
+      <thead><tr><th>Plano</th><th>Coparticipação</th><th>Valor/mês (filhos)</th><th>Rede</th></tr></thead>
+      <tbody>
+        <tr>
+          <td data-label="Plano">Amil Bronze DF</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Valor/mês (filhos)" class="valor">R$ 1.008,92</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('amil-bronze-adesao')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Proasa T ADV 300 DF</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Valor/mês (filhos)" class="valor">R$ 816,85</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('proasa-tadv-filhos')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Plenum E Ômega</td><td data-label="Coparticipação" class="parcial">Completa</td>
+          <td data-label="Valor/mês (filhos)" class="valor">R$ 674,78</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('plenum-omega-completa')">Ver rede</button></td>
+        </tr>
+        <tr class="recomendado">
+          <td data-label="Plano">Plenum E Delta</td><td data-label="Coparticipação" class="parcial">Completa</td>
+          <td data-label="Valor/mês (filhos)" class="valor">R$ 607,28</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('plenum-delta-completa')">Ver rede</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="calc">
+      <b>Combinação recomendada:</b> MedSênior DF (Apartamento) pra vocês dois + seus filhos na Plenum E Delta
+      <div class="calc-row"><span>Você e seu marido — MedSênior DF (Apto)</span><span>R$ 2.479,90</span></div>
+      <div class="calc-row"><span>Seus filhos — Plenum E Delta</span><span>R$ 607,28</span></div>
+      <div class="calc-row total"><span>Total da sua família</span><span>R$ 3.087,18/mês</span></div>
+    </div>
+
+    <div class="info">
+      Essa combinação te dá o melhor custo-benefício: você e seu marido num plano premium sem coparticipação, e seus filhos numa cobertura sólida por menos de R$ 610/mês.
+    </div>
+  </div>
+
+  <!-- CENÁRIO 2 -->
+  <div class="scenario" id="scenario-1">
+    <div class="scenario-title">Cenário 2 — Toda a família junta (coletivo por adesão)</div>
+    <div class="scenario-desc">Você, seu marido e seus dois filhos no mesmo plano. Mais simples de administrar (uma fatura só), sem precisar de CNPJ.</div>
+
+    <table class="comparativo">
+      <thead><tr><th>Plano</th><th>Coparticipação</th><th>Valor/mês (família)</th><th>Rede</th></tr></thead>
+      <tbody>
+        <tr>
+          <td data-label="Plano">Amil Bronze DF</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Valor/mês (família)" class="valor">R$ 4.826,90</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('amil-bronze-familia')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Proasa T ADV 300 DF</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Valor/mês (família)" class="valor">R$ 4.141,20</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('proasa-tadv-familia')">Ver rede</button></td>
+        </tr>
+        <tr class="recomendado">
+          <td data-label="Plano">Plenum E Ômega</td><td data-label="Coparticipação" class="parcial">Completa</td>
+          <td data-label="Valor/mês (família)" class="valor">R$ 2.864,05</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('plenum-omega-familia')">Ver rede</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info">
+      <b>Por que a Plenum E Ômega se destaca aqui:</b> é quase R$ 2.000 mais barata por mês que a Amil, com uma rede que já cobre os principais pontos de Brasília, Ceilândia, Taguatinga e Lago Sul. Como você não tem tratamento em andamento hoje, o modelo de coparticipação completa tende a pesar pouco no seu bolso no dia a dia.
+    </div>
+  </div>
+
+  <!-- CENÁRIO 3 -->
+  <div class="scenario" id="scenario-2">
+    <div class="scenario-title">Cenário 3 — Abrir CNPJ (plano PME)</div>
+    <div class="scenario-desc">Abrindo um CNPJ (MEI), toda a sua família entra num plano PME — que costuma trazer os melhores valores e planos sem coparticipação.</div>
+
+    <table class="comparativo">
+      <thead><tr><th>Plano</th><th>Coparticipação</th><th>Valor/mês (família)</th><th>Rede</th></tr></thead>
+      <tbody>
+        <tr>
+          <td data-label="Plano">Amil Prata (PME)</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Valor/mês (família)" class="valor">R$ 5.007,40</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('amil-prata-pme')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Amil Bronze DF (PME)</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Valor/mês (família)" class="valor">R$ 3.885,76</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('amil-bronze-pme')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Porto Prata Brasília Pro</td><td data-label="Coparticipação" class="ok">Não</td>
+          <td data-label="Valor/mês (família)" class="valor">R$ 3.392,06</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('porto-prata-pme')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Plenum Ômega PJ</td><td data-label="Coparticipação" class="ok">Não</td>
+          <td data-label="Valor/mês (família)" class="valor">R$ 3.151,03</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('plenum-omega-pj')">Ver rede</button></td>
+        </tr>
+        <tr class="recomendado">
+          <td data-label="Plano">Porto Bronze Brasília Pro</td><td data-label="Coparticipação" class="ok">Não</td>
+          <td data-label="Valor/mês (família)" class="valor">R$ 3.061,66</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('porto-bronze-pme')">Ver rede</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info">
+      <b>Sobre abrir o CNPJ (MEI):</b> a abertura é <b>totalmente gratuita</b>, feita direto pelo Portal do Empreendedor (gov.br). O único custo é a manutenção mensal — o DAS — que em 2026 fica entre <b>R$ 82,05 e R$ 87,05/mês</b>, dependendo da atividade escolhida. Esse valor já garante acesso a benefícios do INSS, como aposentadoria e auxílio-doença.
+    </div>
+
+    <div class="calc">
+      <b>Custo total real (plano + DAS mensal)</b>
+      <div class="calc-row"><span>Porto Bronze Brasília Pro (recomendado, sem coparticipação)</span><span>R$ 3.061,66</span></div>
+      <div class="calc-row"><span>DAS mensal (manutenção do MEI)</span><span>R$ 87,05</span></div>
+      <div class="calc-row total"><span>Total mensal real</span><span>R$ 3.148,71/mês</span></div>
+    </div>
+
+    <div class="info">
+      Mesmo somando o DAS, esse cenário fica mais barato que o Cenário 2 (Amil e Proasa) e bem mais barato que qualquer combinação do Cenário 1 — e ainda sem coparticipação, o que dá mais previsibilidade no seu orçamento.
+    </div>
+  </div>
+
+  <div class="footer">
+    Proposta de caráter referencial. Valores sujeitos à análise da seguradora e podem sofrer ajustes.<br>
+    <span class="corretor">Matheus Doro</span> — Open Corretora de Seguros · (61) 98301-6973 · comercial01@opencorretoradeseguros.com
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="modal-rede">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal-rede').classList.remove('active')">✕</button>
+    <h4 id="modal-rede-title">Rede Credenciada</h4>
+    <ul id="modal-rede-list"></ul>
+  </div>
+</div>
+
+<script>
+const redeData = {
+  'ms-infinite': {
+    title: 'MedSênior Infinite — Apartamento',
+    hospitais: [
+      ['MedSênior Taguatinga Sul (própria, Águas Claras)', 'Lab, PS'],
+      ['CM MedSênior Brasília (Asa Sul)', 'Ambulatório'],
+      ['CM MedSênior Taguatinga Norte', 'Ambulatório'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['Oftalmed - Asa Sul', 'Ambulatório, Lab'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['Sírio-Libanês (Lago Sul)', 'Cirurgias e internações (sem PS)'],
+      ['CO MedSênior - Águas Claras', 'Ambulatório'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['Sta Marta - Taguatinga', 'H, PS'],
+      ['MedSênior SIG (própria, Zona Industrial)', 'Lab, PS'],
+      ['Clima Clínica', 'H, PS'],
+      ['Exame / Lapac / Sabin - DF', 'Laboratórios'],
+    ]
+  },
+  'ms-black': {
+    title: 'MedSênior Black — Apartamento',
+    hospitais: [
+      ['MedSênior Taguatinga Sul (própria, Águas Claras)', 'Lab, PS'],
+      ['CM MedSênior Brasília / Taguatinga Norte', 'Ambulatório'],
+      ['H Alvorada - Brasília', 'Cirurgias e internações (sem PS)'],
+      ['H Home', 'H, PS'],
+      ['Oftalmed - Asa Sul', 'Ambulatório, Lab'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['Sírio-Libanês (Lago Sul)', 'Cirurgias e internações (sem PS)'],
+      ['CO MedSênior - Águas Claras', 'Ambulatório'],
+      ['H Brasília Águas Claras', 'Cirurgias e internações (sem PS)'],
+      ['Sta Marta - Taguatinga', 'H, PS'],
+      ['MedSênior SIG (própria)', 'Lab, PS'],
+      ['Clima Clínica', 'Cirurgias e internações (sem PS)'],
+      ['Exame / Lapac / Sabin - DF', 'Laboratórios'],
+    ]
+  },
+  'ms-df-apt': {
+    title: 'MedSênior DF — Apartamento · Recomendado',
+    hospitais: [
+      ['MedSênior Taguatinga Sul (própria, Águas Claras)', 'Lab, PS'],
+      ['CM MedSênior Brasília / Taguatinga Norte', 'Ambulatório'],
+      ['H Alvorada - Brasília', 'Cirurgias e internações (sem PS)'],
+      ['H Home', 'Cirurgias e internações (sem PS)'],
+      ['Oftalmed - Asa Sul', 'Ambulatório, Lab'],
+      ['H Daher Lago Sul', 'Cirurgias e internações (sem PS)'],
+      ['CO MedSênior - Águas Claras', 'Ambulatório'],
+      ['Sta Marta - Taguatinga', 'Cirurgias e internações (sem PS)'],
+      ['MedSênior SIG (própria)', 'Lab, PS'],
+      ['Exame / Lapac / Sabin - DF', 'Laboratórios'],
+    ]
+  },
+  'ms-df-enf': {
+    title: 'MedSênior DF — Enfermaria',
+    hospitais: [
+      ['MedSênior Taguatinga Sul (própria, Águas Claras)', 'Lab, PS'],
+      ['CM MedSênior Brasília / Taguatinga Norte', 'Ambulatório'],
+      ['H Alvorada - Brasília', 'Cirurgias e internações (sem PS)'],
+      ['H Home', 'Cirurgias e internações (sem PS)'],
+      ['Oftalmed - Asa Sul', 'Ambulatório, Lab'],
+      ['H Daher Lago Sul', 'Cirurgias e internações (sem PS)'],
+      ['CO MedSênior - Águas Claras', 'Ambulatório'],
+      ['Sta Marta - Taguatinga', 'Cirurgias e internações (sem PS)'],
+      ['MedSênior SIG (própria)', 'Lab, PS'],
+      ['Exame / Lapac / Sabin - DF', 'Laboratórios'],
+    ]
+  },
+  'best-prime': {
+    title: 'Best Sênior Prime — Apartamento',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'H, PS'],
+      ['H Olhos CBV (Asa Sul)', 'H, PS'],
+      ['Sta Lúcia Taguatinga (Asa Sul)', 'H, PS'],
+      ['H Anchieta Ceilândia', 'H, PS'],
+      ['Sta Lúcia Gama', 'H, PS'],
+      ['Sabin - DF', 'Laboratório'],
+      ['Sta Paula - DF', 'Laboratório'],
+    ]
+  },
+  'best-platinum': {
+    title: 'Best Sênior Platinum — Apartamento',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'H, PS'],
+      ['H Olhos CBV (Asa Sul)', 'H, PS'],
+      ['Sta Lúcia Sul (Asa Sul)', 'H, PS'],
+      ['Sta Lúcia Taguatinga (Asa Sul)', 'H, PS'],
+      ['H Anchieta Ceilândia', 'H, PS'],
+      ['Sta Lúcia Gama', 'H, PS'],
+      ['H Anchieta - Taguatinga', 'H, PS'],
+      ['Sabin - DF', 'Laboratório'],
+      ['Sta Paula - DF', 'Laboratório'],
+    ]
+  },
+  'amil-bronze-adesao': {
+    title: 'Amil Bronze DF — Adesão (Enfermaria)',
+    hospitais: [
+      ['H Alvorada - Brasília', 'Atendimento'],
+      ['H Brasília (Lago Sul)', 'Atendimento'],
+      ['M Brasília (Sudoeste)', 'Atendimento'],
+      ['H Brasília Águas Claras', 'Atendimento'],
+      ['Exame - DF', 'Laboratório'],
+    ]
+  },
+  'proasa-tadv-filhos': {
+    title: 'Proasa T ADV 300 DF — Adesão',
+    hospitais: [
+      ['Sta Lúcia Norte', 'H, PS'],
+      ['H Brasiliense', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['H Pacini - Asa Sul', 'H¹, PS'],
+      ['Sta Lúcia Taguatinga', 'H, PS'],
+      ['Sta Lúcia Gama', 'H, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'H, PS'],
+      ['H Mantevida Taguatinga', 'H, PS'],
+      ['H N S Aparecida (Valparaíso/GO)', 'H, PS'],
+      ['Exame / Exato / Sabin / Sta Paula - DF', 'Laboratórios'],
+    ]
+  },
+  'plenum-omega-completa': {
+    title: 'Plenum E Ômega — Adesão, coparticipação Completa',
+    hospitais: [
+      ['HOB - Asa Norte', 'PS'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['HOB - Brasília', 'PS'],
+      ['Oftalmed - Asa Sul', 'PS'],
+      ['H Anchieta Ceilândia', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'PS'],
+      ['H São Mateus', 'H, PA'],
+      ['Visão H de Olhos - Taguatinga', 'PS'],
+      ['Hpaes', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'PS'],
+      ['Sta Maria (Cidade Ocidental)', 'H, PS'],
+      ['H Anchieta - Taguatinga', 'H, M, PS'],
+      ['Cerrado (Valparaíso/GO)', 'H'],
+    ]
+  },
+  'plenum-delta-completa': {
+    title: 'Plenum E Delta — Adesão, coparticipação Completa · Recomendado p/ filhos',
+    hospitais: [
+      ['Oftalmed - Asa Sul', 'PS'],
+      ['H Anchieta Ceilândia', 'H, M, PS'],
+      ['H São Mateus', 'H, PA'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS'],
+      ['Clín Recanto Unid Taguatinga', 'H¹, PS¹'],
+      ['Sta Maria (Cidade Ocidental)', 'H, PS'],
+      ['H Anchieta - Taguatinga', 'H, M, PS'],
+      ['Cerrado (Valparaíso/GO)', 'H'],
+    ]
+  },
+  'amil-bronze-familia': {
+    title: 'Amil Bronze DF — Adesão, família completa',
+    hospitais: [
+      ['H Alvorada - Brasília', 'Atendimento'],
+      ['H Brasília (Lago Sul)', 'Atendimento'],
+      ['M Brasília', 'Atendimento'],
+      ['H Brasília Águas Claras', 'Atendimento'],
+      ['Exame - DF', 'Laboratório'],
+    ]
+  },
+  'proasa-tadv-familia': {
+    title: 'Proasa T ADV 300 DF — Adesão, família completa',
+    hospitais: [
+      ['Sta Lúcia Norte', 'H, PS'],
+      ['H Brasiliense', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['H Pacini - Asa Sul', 'H¹, PS'],
+      ['Sta Lúcia Taguatinga', 'H, PS'],
+      ['Sta Lúcia Gama', 'H, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'H, PS'],
+      ['H Mantevida Taguatinga', 'H, PS'],
+      ['H N S Aparecida (Valparaíso/GO)', 'H, PS'],
+      ['Exame / Exato / Sabin / Sta Paula - DF', 'Laboratórios'],
+    ]
+  },
+  'plenum-omega-familia': {
+    title: 'Plenum E Ômega — Adesão, família completa · Recomendado',
+    hospitais: [
+      ['HOB - Asa Norte', 'PS'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['HOB - Brasília', 'PS'],
+      ['Oftalmed - Asa Sul', 'PS'],
+      ['H Anchieta Ceilândia', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'PS'],
+      ['H São Mateus', 'H, PA'],
+      ['Visão H de Olhos - Taguatinga', 'PS'],
+      ['Hpaes', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'PS'],
+      ['Sta Maria (Cidade Ocidental)', 'H, PS'],
+      ['H Anchieta - Taguatinga', 'H, M, PS'],
+      ['Cerrado (Valparaíso/GO)', 'H'],
+    ]
+  },
+  'amil-prata-pme': {
+    title: 'Amil Prata — PME, família completa',
+    hospitais: [
+      ['Sta Lúcia Norte', 'H, M, PS'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['HOB - Brasília', 'PA, PS'],
+      ['PAI / Sta Lúcia Taguatinga', 'PA'],
+      ['Sta Marta - Asa Norte', 'H, PS¹'],
+      ['Clín Estância Resiliência', 'H, PA'],
+      ['Sta Lúcia Gama', 'H, M, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['ISOB (Taguatinga)', 'H, PS'],
+      ['H Mantevida Taguatinga', 'H'],
+      ['Laboratórios', 'Base, Exame, IMEN-GO, Núcleos, Padrão-GO, Sabin-DF/GO, Uniprocto'],
+    ]
+  },
+  'amil-bronze-pme': {
+    title: 'Amil Bronze DF — PME, família completa',
+    hospitais: [
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['HOB - Brasília', 'PA, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['Exame - DF', 'Laboratório'],
+    ]
+  },
+  'porto-prata-pme': {
+    title: 'Porto Prata Brasília Pro — PME',
+    hospitais: [
+      ['HOB - Asa Norte', 'H¹'],
+      ['Sta Lúcia Norte', 'H, PS'],
+      ['HOB - Brasília', 'H¹'],
+      ['Sta Lúcia Taguatinga', 'H¹'],
+      ['H Anchieta Ceilândia', 'H, M, PS'],
+      ['Sta Lúcia Gama', 'H, M, PS'],
+      ['H Olhos de Gama', 'H¹, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'H¹'],
+      ['Sta Marta - Taguatinga', 'H, M, PS'],
+      ['Exame / Sabin - DF', 'Laboratórios'],
+    ]
+  },
+  'plenum-omega-pj': {
+    title: 'Plenum Ômega PJ — PME',
+    hospitais: [
+      ['HOB - Asa Norte', 'H¹, PS¹'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['HOB - Brasília', 'H¹, PS¹'],
+      ['H Anchieta Ceilândia', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'H¹, PS¹'],
+      ['H São Mateus', 'H, PS'],
+      ['Visão H de Olhos - Taguatinga', 'H¹, PS¹'],
+      ['Hpaes', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['M Brasília (Sudoeste)', 'H, M, PS'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['CC Amma (Taguatinga)', 'H'],
+      ['HOB - Taguatinga', 'H¹, PS¹'],
+      ['Sta Maria (Cidade Ocidental)', 'H'],
+      ['H Anchieta - Taguatinga', 'H, M, PS'],
+      ['Cerrado (Valparaíso/GO)', 'H'],
+    ]
+  },
+  'porto-bronze-pme': {
+    title: 'Porto Bronze Brasília Pro — PME · Recomendado',
+    hospitais: [
+      ['HOB - Asa Norte', 'H¹'],
+      ['HOB - Brasília', 'H¹'],
+      ['H Anchieta Ceilândia', 'H, M, PS'],
+      ['Sta Lúcia Gama', 'H, M, PS'],
+      ['H Olhos de Gama', 'H¹, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'H¹'],
+      ['Sta Marta - Taguatinga', 'H, M, PS'],
+      ['Exame / Sabin - DF', 'Laboratórios'],
+    ]
+  }
+};
+
+function openRede(key){
+  const data = redeData[key];
+  document.getElementById('modal-rede-title').textContent = data.title;
+  const list = document.getElementById('modal-rede-list');
+  list.innerHTML = '';
+  data.hospitais.forEach(([nome, cov])=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${nome}</span><span class="cov">${cov}</span>`;
+    list.appendChild(li);
+  });
+  document.getElementById('modal-rede').classList.add('active');
+}
+
+document.getElementById('modal-rede').addEventListener('click', e=>{
+  if(e.target.id === 'modal-rede') e.target.classList.remove('active');
+});
+
+function showTab(i){
+  document.querySelectorAll('.tab-btn').forEach((b,idx)=>b.classList.toggle('active', idx===i));
+  document.querySelectorAll('.scenario').forEach((s,idx)=>s.classList.toggle('active', idx===i));
+}
+</script>
+
+</body>
+</html>
