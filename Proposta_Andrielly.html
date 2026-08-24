@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Andrielly — Open Corporate</title>
+<style>
+  :root{
+    --navy:#0D1B40;--navy-light:#152854;--gold:#C8A951;
+    --teal:#5ECFB8;--red:#F08070;--purple:#534AB7;--green:#0D9488;
+    --text-light:#EAEDF6;--text-muted:#A7B0CC;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--navy);color:var(--text-light);line-height:1.5;}
+  .topbar{position:sticky;top:0;z-index:50;background:var(--navy-light);border-bottom:1px solid rgba(200,169,81,0.25);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
+  .topbar .brand{font-weight:700;color:var(--gold);font-size:15px;}
+  .topbar .brand span{color:var(--text-light);font-weight:400;}
+  .wa-btn{background:var(--green);color:#fff;text-decoration:none;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .container{max-width:920px;margin:0 auto;padding:24px 20px 60px;}
+
+  .hero{background:linear-gradient(135deg,var(--navy-light) 0%,var(--navy) 100%);border:1px solid rgba(200,169,81,0.2);border-radius:16px;padding:26px;margin-bottom:24px;}
+  .hero h1{font-size:20px;color:#fff;margin-bottom:6px;}
+  .hero .sub{color:var(--text-muted);font-size:13px;margin-bottom:16px;}
+  .hero .note{background:rgba(94,207,184,0.1);border-left:3px solid var(--teal);padding:10px 14px;border-radius:6px;font-size:13px;color:var(--text-light);}
+
+  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab-btn{flex:1;min-width:140px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);padding:12px 10px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:.15s;}
+  .tab-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+  .scenario{display:none;}
+  .scenario.active{display:block;}
+  .scenario-title{font-size:16px;color:#fff;margin-bottom:4px;}
+  .scenario-desc{font-size:13px;color:var(--text-muted);margin-bottom:18px;}
+
+  table.comparativo{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13px;}
+  table.comparativo th{background:rgba(255,255,255,0.06);color:var(--gold);text-align:left;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.4px;}
+  table.comparativo td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);color:var(--text-light);}
+  table.comparativo tr:last-child td{border-bottom:none;}
+  table.comparativo tr.recomendado{background:rgba(94,207,184,0.08);}
+  table.comparativo td.valor{font-weight:800;color:var(--gold);font-size:14px;}
+  table.comparativo tr.recomendado td.valor{color:var(--teal);}
+
+  /* Mobile: tabela vira lista de cards empilhados, sem precisar arrastar */
+  @media (max-width:680px){
+    table.comparativo thead{display:none;}
+    table.comparativo, table.comparativo tbody, table.comparativo tr, table.comparativo td{display:block;width:100%;}
+    table.comparativo tr{margin-bottom:14px;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 4px;background:rgba(255,255,255,0.02);}
+    table.comparativo tr.recomendado{border-color:var(--teal);}
+    table.comparativo td{border:none;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:right;}
+    table.comparativo td::before{content:attr(data-label);font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;text-align:left;flex-shrink:0;}
+    table.comparativo td.valor{font-size:16px;}
+    table.comparativo tr td:first-child{font-weight:700;color:#fff;font-size:14px;padding-top:10px;}
+    table.comparativo tr td:first-child::before{content:'';}
+    .rede-btn{width:100%;margin-top:2px;}
+  }
+  .ok{color:var(--teal);font-weight:700;}
+  .no{color:var(--red);font-weight:700;}
+  .parcial{color:var(--gold);font-weight:700;}
+
+  .alert{background:rgba(240,128,112,0.08);border:1px solid var(--red);border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;}
+  .alert b{color:var(--red);}
+  .info{background:rgba(255,255,255,0.03);border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;color:var(--text-light);}
+  .info b{color:var(--gold);}
+
+  table.faixas{width:100%;max-width:400px;border-collapse:collapse;font-size:12px;margin-top:6px;}
+  table.faixas th{background:rgba(255,255,255,0.06);color:var(--gold);padding:8px;font-size:10px;text-transform:uppercase;}
+  table.faixas td{padding:8px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06);}
+
+  .rede-btn{background:rgba(255,255,255,0.06);color:var(--text-light);border:1px solid rgba(255,255,255,0.12);padding:6px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;white-space:nowrap;}
+  .rede-btn:hover{background:rgba(255,255,255,0.1);}
+
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.active{display:flex;}
+  .modal{background:var(--navy-light);border:1px solid rgba(200,169,81,0.3);border-radius:14px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;padding:24px;position:relative;}
+  .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;}
+  .modal h4{color:var(--gold);font-size:15px;margin-bottom:14px;padding-right:24px;}
+  .modal ul{list-style:none;}
+  .modal ul li{font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--text-light);display:flex;justify-content:space-between;gap:10px;}
+  .modal ul li .cov{color:var(--text-muted);font-size:11px;white-space:nowrap;}
+
+  .footer{margin-top:36px;padding:20px;background:rgba(255,255,255,0.02);border-radius:10px;font-size:11px;color:var(--text-muted);text-align:center;line-height:1.6;}
+  .footer .corretor{color:var(--gold);font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">OPEN <span>CORPORATE</span></div>
+  <a class="wa-btn" href="https://wa.me/5561983016973" target="_blank">💬 Falar com Matheus</a>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>Proposta Comercial — Andrielly</h1>
+    <div class="sub">Preparado por Matheus Doro · 22 de agosto de 2026</div>
+    <div class="note">
+      Você pode contratar de 3 formas diferentes — escolha o cenário que melhor se encaixa na sua situação hoje. Explico as diferenças abaixo, de forma simples.
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab-btn active" onclick="showTab(0)">1. Só você</div>
+    <div class="tab-btn" onclick="showTab(1)">2. Você + Gabriel</div>
+    <div class="tab-btn" onclick="showTab(2)">3. Porto (+ família)</div>
+  </div>
+
+  <!-- CENÁRIO 1 -->
+  <div class="scenario active" id="scenario-0">
+    <div class="scenario-title">Cenário 1 — Plano individual (Adesão), só para você</div>
+    <div class="scenario-desc">Você entra sozinha, sem depender do Gabriel nem do CNPJ. Pode contratar já, sem esperar prazo de abertura de empresa.</div>
+
+    <table class="comparativo">
+      <thead><tr><th>Plano</th><th>Acomodação</th><th>Coparticipação</th><th>Maternidade Brasília</th><th>Valor/mês</th><th>Rede</th></tr></thead>
+      <tbody>
+        <tr>
+          <td data-label="Plano">Amil Bronze DF</td><td data-label="Acomodação">Enfermaria</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓</span> (rede parcial)</td><td data-label="Valor/mês" class="valor">R$ 682,09</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('bronze-adesao')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Amil Prata DF</td><td data-label="Acomodação">Enfermaria</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓</span> (rede parcial)</td><td data-label="Valor/mês" class="valor">R$ 853,04</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('prata-adesao')">Ver rede</button></td>
+        </tr>
+        <tr class="recomendado">
+          <td data-label="Plano">Plenum Saúde E Beta</td><td data-label="Acomodação">Apartamento</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓ Completa</span> (internação + parto)</td><td data-label="Valor/mês" class="valor">R$ 579,86</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('ebeta-adesao')">Ver rede</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info">
+      <b>Por que a Plenum E Beta é a mais indicada aqui:</b> é a mais barata das três, dá acomodação em Apartamento (a Amil só oferece Enfermaria nesse cenário) e é a única com cobertura completa confirmada de maternidade no Hospital Brasília (Setor Sudoeste) — a referência que você pediu.
+    </div>
+  </div>
+
+  <!-- CENÁRIO 2 -->
+  <div class="scenario" id="scenario-1">
+    <div class="scenario-title">Cenário 2 — Empresarial (PME), você + Gabriel</div>
+    <div class="scenario-desc">Precisa de CNPJ. Reduz o valor por vida e abre outras redes, mas exige o Gabriel também entrar no plano.</div>
+
+    <div class="alert">
+      <b>Atenção ao prazo do CNPJ:</b> sua empresa tem 2 meses de aberta. Pelo material oficial da <b>Porto Saúde</b> (que usamos no cenário 3), o prazo mínimo de constituição para PME de 3 a 19 vidas é de <b>90 dias (3 meses)</b>; se for <b>MEI</b>, sobe para <b>180 dias (6 meses)</b>. Migrando para <b>LTDA</b>, você ainda precisaria completar os 90 dias — mas já estaria bem mais perto do que os 180 do MEI.<br><br>
+      Essa regra de 90 dias é confirmada para a <b>Porto</b>. Ainda não temos confirmação se a Amil e a Plenum (usadas neste cenário 2) seguem o mesmo prazo — vale confirmar direto com as operadoras antes de fechar por aqui.
+    </div>
+
+    <table class="comparativo">
+      <thead><tr><th>Plano</th><th>Acomodação</th><th>Coparticipação</th><th>Maternidade Brasília</th><th>Valor/mês (casal)</th><th>Rede</th></tr></thead>
+      <tbody>
+        <tr>
+          <td data-label="Plano">Amil Bronze DF</td><td data-label="Acomodação">Enfermaria</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓</span> (com restrição¹)</td><td data-label="Valor/mês (casal)" class="valor">R$ 1.098,20</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('bronze-enf-pme')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Amil Prata</td><td data-label="Acomodação">Enfermaria</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓</span> (com restrição¹)</td><td data-label="Valor/mês (casal)" class="valor">R$ 1.304,58</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('prata-enf-pme')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Amil Bronze DF</td><td data-label="Acomodação">Apartamento</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓</span> (com restrição¹)</td><td data-label="Valor/mês (casal)" class="valor">R$ 1.218,98</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('bronze-enf-pme')">Ver rede</button></td>
+        </tr>
+        <tr>
+          <td data-label="Plano">Amil Prata</td><td data-label="Acomodação">Apartamento</td><td data-label="Coparticipação" class="parcial">Parcial</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓</span> (com restrição¹)</td><td data-label="Valor/mês (casal)" class="valor">R$ 1.448,15</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('prata-enf-pme')">Ver rede</button></td>
+        </tr>
+        <tr class="recomendado">
+          <td data-label="Plano">Plenum Saúde Beta PJ</td><td data-label="Acomodação">Apartamento</td><td data-label="Coparticipação" class="ok">Não</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓ Completa</span></td><td data-label="Valor/mês (casal)" class="valor">R$ 1.084,85</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('beta-pj-pme')">Ver rede</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info">
+      ¹ Nos planos Amil, o Hospital e Maternidade Brasília aparece com marcação "H,M,PS¹" — o símbolo ¹ indica internação com especialidade e/ou público-alvo diferenciado, o que precisa ser confirmado direto com a operadora antes de contar com isso como certo.<br><br>
+      <b>Recomendação:</b> Plenum Beta PJ é o mais barato do grupo, sem coparticipação, com Apartamento, e cobertura de maternidade confirmada sem ressalvas.
+    </div>
+  </div>
+
+  <!-- CENÁRIO 3 -->
+  <div class="scenario" id="scenario-2">
+    <div class="scenario-title">Cenário 3 — Porto Saúde (para avaliar incluir outros familiares)</div>
+    <div class="scenario-desc">Cobre a Maternidade Brasília, sem coparticipação, e permite avaliar incluir outros familiares enquanto o Gabriel decide — não depende só dele.</div>
+
+    <table class="comparativo">
+      <thead><tr><th>Plano</th><th>Acomodação</th><th>Coparticipação</th><th>Maternidade Brasília</th><th>Valor/mês (você + Gabriel)</th><th>Rede</th></tr></thead>
+      <tbody>
+        <tr class="recomendado">
+          <td data-label="Plano">Porto Bronze Brasília Pro</td><td data-label="Acomodação">Enfermaria</td><td data-label="Coparticipação" class="ok">Não</td>
+          <td data-label="Maternidade Brasília"><span class="ok">✓ Cobre</span></td><td data-label="Valor/mês (você + Gabriel)" class="valor">R$ 974,59</td>
+          <td data-label="Rede"><button class="rede-btn" onclick="openRede('porto-bronze')">Ver rede</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info">
+      <b>Maternidade Brasília confirmada na rede</b> (Bronze Brasília Pro) — cobertura de internação, pronto-socorro geral e ginecológico. Além dela, o plano também cobre Hospital São Francisco (Ceilândia), Sta. Lúcia Gama (H. Maria Auxiliadora) e Hospital Santa Marta (Taguatinga) para maternidade.
+    </div>
+
+    <div class="info">
+      <b>Prazo de constituição do CNPJ (regra oficial Porto Saúde):</b> mínimo de <b>90 dias (3 meses)</b> para empresas de 3 a 19 vidas. Com 2 meses de aberta, ainda faltam ~30 dias para se enquadrar aqui.<br><br>
+      <b>Quem pode entrar como dependente:</b><br>
+      • <b>Direto</b> (sem restrição): cônjuge e filhos<br>
+      • <b>Agregado</b> (mediante análise e documentação): pai, mãe, padrasto, madrasta, sogro(a), irmãos do titular, sobrinhos consanguíneos, netos, genro/nora
+    </div>
+
+    <div class="scenario-title" style="font-size:14px;margin-top:20px;">Tabela de valores por pessoa (Porto Bronze Brasília Pro)</div>
+    <table class="faixas">
+      <thead><tr><th>Faixa etária</th><th>Valor/mês</th></tr></thead>
+      <tbody>
+        <tr><td>0 a 18</td><td>R$ 310,60</td></tr>
+        <tr><td>19 a 23</td><td>R$ 376,67</td></tr>
+        <tr style="background:rgba(94,207,184,0.08);"><td>24 a 28 <em>(Andrielly)</em></td><td>R$ 454,39</td></tr>
+        <tr style="background:rgba(94,207,184,0.08);"><td>29 a 33 <em>(Gabriel)</em></td><td>R$ 520,20</td></tr>
+        <tr><td>34 a 38</td><td>R$ 563,64</td></tr>
+        <tr><td>39 a 43</td><td>R$ 582,10</td></tr>
+        <tr><td>44 a 48</td><td>R$ 695,33</td></tr>
+        <tr><td>49 a 53</td><td>R$ 748,55</td></tr>
+        <tr><td>54 a 58</td><td>R$ 924,89</td></tr>
+        <tr><td>59 ou mais</td><td>R$ 1.554,67</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">Use essa tabela para simular o custo de incluir qualquer outro familiar elegível — basta somar o valor da faixa etária da pessoa ao total do casal.</div>
+  </div>
+
+  <div class="footer">
+    Proposta de caráter referencial. Valores sujeitos à análise da seguradora e podem sofrer ajustes.<br>
+    <span class="corretor">Matheus Doro</span> — Open Corretora de Seguros · (61) 98301-6973 · comercial01@opencorretoradeseguros.com
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="modal-rede">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal-rede').classList.remove('active')">✕</button>
+    <h4 id="modal-rede-title">Rede Credenciada</h4>
+    <ul id="modal-rede-list"></ul>
+  </div>
+</div>
+
+<script>
+const redeData = {
+  'bronze-adesao': {
+    title: 'Amil Bronze DF — Adesão (Enfermaria)',
+    hospitais: [
+      ['H Alvorada - Brasília (Asa Sul)', 'H, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['M Brasília (Sudoeste)', 'atendimento — confirmar cobertura'],
+      ['Exame - DF', 'Laboratório'],
+    ]
+  },
+  'prata-adesao': {
+    title: 'Amil Prata DF — Adesão (Enfermaria)',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'atendimento'],
+      ['H Alvorada - Brasília (Asa Sul)', 'H, PS'],
+      ['PAI (Asa Sul)', 'atendimento'],
+      ['Sta Lúcia Taguatinga (Asa Sul)', 'atendimento'],
+      ['H Anchieta Ceilândia', 'atendimento'],
+      ['Sta Lúcia Gama', 'atendimento'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'atendimento'],
+      ['M Brasília (Sudoeste)', 'atendimento — confirmar cobertura'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['ISOB (Taguatinga)', 'atendimento'],
+      ['Exame - DF / Sabin - DF', 'Laboratórios'],
+    ]
+  },
+  'ebeta-adesao': {
+    title: 'Plenum Saúde E Beta — Adesão (Apartamento) · Recomendado',
+    hospitais: [
+      ['HOB - Asa Norte', 'PS'],
+      ['H Alvorada - Brasília (Asa Sul)', 'H, PS'],
+      ['H Home (Asa Sul)', 'H, PS'],
+      ['HOB - Brasília (Asa Sul)', 'PS'],
+      ['Oftalmed - Asa Sul', 'PS'],
+      ['Visão H de Olhos - Ceilândia', 'PS'],
+      ['H São Mateus (Cruzeiro Velho)', 'H, PA'],
+      ['Visão H de Olhos - Taguatinga', 'PS'],
+      ['Hpaes (São Sebastião)', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS — maternidade completa'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'PS'],
+      ['H Anchieta - Taguatinga', 'H, M, PS'],
+      ['Cerrado (Valparaíso/GO)', 'H'],
+      ['H Sta Maria (Cidade Ocidental)', 'H'],
+    ]
+  },
+  'bronze-enf-pme': {
+    title: 'Amil Bronze DF — PME (Enfermaria ou Apartamento)',
+    hospitais: [
+      ['H Alvorada - Brasília (Asa Sul)', 'H, PS'],
+      ['HOB - Brasília (Asa Sul)', 'PA, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS¹ — restrição, confirmar'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['Exame - DF', 'Laboratório'],
+    ]
+  },
+  'prata-enf-pme': {
+    title: 'Amil Prata — PME (Enfermaria ou Apartamento)',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'H, M, PS'],
+      ['H Alvorada - Brasília (Asa Sul)', 'H, PS'],
+      ['HOB - Brasília (Asa Sul)', 'PA, PS'],
+      ['PAI (Asa Sul)', 'PA'],
+      ['Sta Lúcia Taguatinga (Asa Sul)', 'PA'],
+      ['Sta Marta - Asa Norte', 'H, PS¹'],
+      ['Clín Estância Resiliência (Planaltina)', 'H, PA'],
+      ['Sta Lúcia Gama', 'H, M, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS¹ — restrição, confirmar'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['ISOB (Taguatinga)', 'H, PS'],
+      ['H Mantevida Taguatinga', 'H'],
+      ['Laboratórios', 'Base, Exame-DF, IMEN-GO, Núcleos, Padrão-GO, Sabin-DF/GO, Uniprocto'],
+    ]
+  },
+  'beta-pj-pme': {
+    title: 'Plenum Saúde Beta PJ — PME (Apartamento) · Recomendado',
+    hospitais: [
+      ['HOB - Asa Norte', 'H¹, PS¹'],
+      ['H Alvorada - Brasília (Asa Sul)', 'H, PS'],
+      ['H Home (Asa Sul)', 'H, PS'],
+      ['HOB - Brasília (Asa Sul)', 'H¹, PS¹'],
+      ['H Anchieta Ceilândia', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'H¹, PS¹'],
+      ['H São Mateus (Cruzeiro Velho)', 'H, PS'],
+      ['Visão H de Olhos - Taguatinga', 'H¹, PS¹'],
+      ['Hpaes (São Sebastião)', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['M Brasília (Sudoeste)', 'H, M, PS — maternidade completa, sem restrição'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['CC Amma (Taguatinga)', 'H'],
+      ['HOB - Taguatinga', 'H¹, PS¹'],
+      ['H Sta Maria (Cidade Ocidental)', 'H'],
+      ['H Anchieta - Taguatinga', 'H, M, PS'],
+      ['Cerrado (Valparaíso/GO)', 'H'],
+    ]
+  },
+  'porto-bronze': {
+    title: 'Porto Bronze Brasília Pro — PME (Enfermaria)',
+    hospitais: [
+      ['HOB Brasília', 'Especializado'],
+      ['Hospital Águas Claras', 'HG, PS, PS Ped'],
+      ['Maternidade Brasília', 'Maternidade, PS Ginecológico'],
+      ['Hospital Brasília', 'HG, PS, PS Ped'],
+      ['Hospital São Francisco (Ceilândia)', 'HG, Mat, PS, PS Ped, PS Orto'],
+      ['Clínica Recanto (Ceilândia)', 'Especializado'],
+      ['H. Sta Lúcia Gama (H. Maria Auxiliadora)', 'HG, Mat, PS, PS Ped'],
+      ['Hospital Santa Marta (Taguatinga)', 'HG, Mat, PS, PS Ped'],
+      ['Exame Medicina Diagnóstica', 'Laboratório'],
+      ['Sabin Diagnóstico e Saúde', 'Laboratório'],
+    ]
+  }
+};
+
+function openRede(key){
+  const data = redeData[key];
+  document.getElementById('modal-rede-title').textContent = data.title;
+  const list = document.getElementById('modal-rede-list');
+  list.innerHTML = '';
+  data.hospitais.forEach(([nome, cov])=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${nome}</span><span class="cov">${cov}</span>`;
+    list.appendChild(li);
+  });
+  document.getElementById('modal-rede').classList.add('active');
+}
+
+document.getElementById('modal-rede').addEventListener('click', e=>{
+  if(e.target.id === 'modal-rede') e.target.classList.remove('active');
+});
+
+function showTab(i){
+  document.querySelectorAll('.tab-btn').forEach((b,idx)=>b.classList.toggle('active', idx===i));
+  document.querySelectorAll('.scenario').forEach((s,idx)=>s.classList.toggle('active', idx===i));
+}
+</script>
+
+</body>
+</html>
