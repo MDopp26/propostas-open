@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta — Família Coutinho</title>
+<style>
+:root{
+  --bg:#0D1B40;
+  --bg2:#122354;
+  --gold:#C8A951;
+  --teal:#5ECFB8;
+  --white:#F4F6FB;
+  --muted:#A9B4D4;
+  --card:#152A63;
+  --card-border:#22366E;
+  --red:#E2685C;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Segoe UI',Helvetica,Arial,sans-serif;
+  line-height:1.5;
+  padding-top:64px;
+}
+h1,h2,h3,h4{font-weight:600;letter-spacing:.2px;}
+
+/* TOPBAR */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:64px;
+  background:rgba(13,27,64,.96);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--card-border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;z-index:100;
+}
+.topbar .brand{font-size:15px;letter-spacing:2px;color:var(--gold);font-weight:700;}
+.topbar .contact{font-size:13px;color:var(--muted);text-align:right;}
+.topbar .contact strong{color:var(--white);}
+
+/* HERO */
+.hero{
+  max-width:980px;margin:0 auto;padding:56px 24px 32px;
+}
+.hero .eyebrow{
+  color:var(--teal);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;
+}
+.hero h1{font-size:34px;margin-bottom:12px;}
+.hero p.lead{color:var(--muted);font-size:16px;max-width:680px;margin-bottom:28px;}
+
+.metrics{display:flex;gap:14px;flex-wrap:wrap;}
+.metric{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:10px;padding:16px 20px;min-width:150px;
+}
+.metric .num{font-size:22px;color:var(--gold);font-weight:700;}
+.metric .label{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* CONTEXT STRIP */
+.context{
+  max-width:980px;margin:0 auto;padding:0 24px 40px;
+}
+.context-box{
+  background:var(--card);border-left:3px solid var(--red);
+  border-radius:8px;padding:18px 22px;font-size:14px;color:var(--muted);
+}
+.context-box strong{color:var(--white);}
+
+/* TABS */
+.tabs-wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+.tabs{display:flex;gap:28px;border-bottom:1px solid var(--card-border);margin-bottom:32px;}
+.tab-btn{
+  background:none;border:none;color:var(--muted);font-size:15px;
+  padding:12px 2px;cursor:pointer;position:relative;font-weight:600;
+}
+.tab-btn.active{color:var(--white);}
+.tab-btn.active::after{
+  content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--gold);
+}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* CARDS */
+.section-title{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:14px;}
+
+.card{
+  background:var(--card);border:1px solid var(--card-border);border-radius:12px;
+  padding:26px;margin-bottom:22px;transition:transform .15s ease, box-shadow .15s ease;
+  border-left:3px solid var(--card-border);
+}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35);}
+.card.recommended{border-left:3px solid var(--teal);}
+.card.watch{border-left:3px solid var(--gold);}
+
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
+.card-head h3{font-size:20px;}
+.card-head .op{font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.badge{
+  font-size:11px;padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;
+}
+.badge.rec{background:rgba(94,207,184,.15);color:var(--teal);border:1px solid var(--teal);}
+.badge.watch{background:rgba(200,169,81,.15);color:var(--gold);border:1px solid var(--gold);}
+
+.price-row{display:flex;gap:24px;flex-wrap:wrap;margin:18px 0;}
+.price-box{
+  background:var(--bg2);border-radius:8px;padding:14px 18px;flex:1;min-width:190px;
+  border:1px solid var(--card-border);
+}
+.price-box.selected{border-color:var(--teal);}
+.price-box .price-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.price-box .price-value{font-size:24px;color:var(--white);font-weight:700;margin-top:4px;}
+.price-box .price-value small{font-size:12px;color:var(--muted);font-weight:400;}
+
+.toggle-group{display:flex;gap:8px;margin-bottom:8px;}
+.toggle-btn{
+  background:var(--bg2);border:1px solid var(--card-border);color:var(--muted);
+  padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;font-weight:600;
+}
+.toggle-btn.active{background:var(--teal);color:var(--bg);border-color:var(--teal);}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;}
+.chip{font-size:12px;background:var(--bg2);border:1px solid var(--card-border);padding:6px 12px;border-radius:16px;color:var(--muted);}
+
+.note{
+  font-size:13px;color:var(--muted);background:var(--bg2);border-radius:8px;padding:12px 16px;margin-top:14px;
+}
+.note.restriction{border-left:3px solid var(--red);color:#F0C4C0;}
+.note.restriction strong{color:var(--white);}
+
+.link-btn{
+  background:none;border:1px solid var(--card-border);color:var(--teal);
+  padding:9px 16px;border-radius:8px;font-size:13px;cursor:pointer;margin-top:10px;font-weight:600;
+}
+.link-btn:hover{border-color:var(--teal);}
+
+/* SIMULATOR */
+.sim{background:var(--bg2);border-radius:10px;padding:20px;margin-top:20px;border:1px solid var(--card-border);}
+.sim h4{font-size:14px;color:var(--gold);margin-bottom:4px;}
+.sim p.hint{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+.sim-field label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px;}
+.sim-field input{
+  width:100%;background:var(--bg);border:1px solid var(--card-border);border-radius:6px;
+  color:var(--white);padding:8px 10px;font-size:14px;
+}
+.sim-result{
+  margin-top:18px;padding:16px;background:var(--bg);border-radius:8px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+}
+.sim-result .sim-num{font-size:26px;color:var(--teal);font-weight:700;}
+.sim-result .sim-label{font-size:12px;color:var(--muted);}
+
+/* MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(6,12,32,.75);z-index:200;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--bg2);border:1px solid var(--card-border);border-radius:12px;
+  max-width:560px;width:100%;max-height:80vh;overflow-y:auto;padding:26px;position:relative;
+}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;}
+.modal h3{color:var(--gold);font-size:17px;margin-bottom:4px;}
+.modal .modal-sub{font-size:12px;color:var(--muted);margin-bottom:18px;}
+.modal-region{margin-bottom:16px;}
+.modal-region h5{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:8px;}
+.hosp-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--card-border);font-size:13px;}
+.hosp-row .status{font-size:11px;padding:2px 8px;border-radius:10px;}
+.status.ok{background:rgba(94,207,184,.15);color:var(--teal);}
+.status.partial{background:rgba(200,169,81,.15);color:var(--gold);}
+.status.no{background:rgba(226,104,92,.15);color:var(--red);}
+
+footer{
+  max-width:980px;margin:40px auto 0;padding:24px;border-top:1px solid var(--card-border);
+  font-size:12px;color:var(--muted);text-align:center;
+}
+
+@media(max-width:600px){
+  .hero h1{font-size:26px;}
+  .topbar .contact{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">OPEN CORRETORA</div>
+  <div class="contact">Matheus Doro &nbsp;•&nbsp; <strong>(61) 98301-6973</strong></div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">Estudo de mercado — Saúde Empresarial</div>
+  <h1>Família Coutinho</h1>
+  <p class="lead">Migração do plano Select, com rede em descredenciamento, para uma operadora sólida que mantenha o acesso aos hospitais de referência em Salvador — dentro de um orçamento realista para a faixa etária.</p>
+  <div class="metrics">
+    <div class="metric"><div class="num">3</div><div class="label">Vidas · 39, 54 e 57 anos</div></div>
+    <div class="metric"><div class="num">MEI</div><div class="label">Natureza jurídica do CNPJ</div></div>
+    <div class="metric"><div class="num">~R$ 2.500</div><div class="label">Mensalidade atual (Select)</div></div>
+    <div class="metric"><div class="num">R$ 3.047</div><div class="label">Recomendação — Amil Prata completa</div></div>
+  </div>
+</div>
+
+<div class="context">
+  <div class="context-box">
+    <strong>Situação atual:</strong> plano Select com problemas recorrentes de descredenciamento. Duas vidas com referência em Salvador/BA (uma reside em Lauro de Freitas, a trabalho — não mora lá) e uma vida em Brasília, região Sudoeste. Hospitais de referência: <strong>Hospital Santa Izabel</strong> e <strong>Hospital Português</strong>, ambos em Salvador.
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('rec')">Recomendação</button>
+    <button class="tab-btn" onclick="showTab('mkt')">Comparativo de mercado</button>
+  </div>
+
+  <!-- TAB: RECOMENDAÇÃO -->
+  <div class="tab-panel active" id="tab-rec">
+    <div class="section-title">Opção recomendada</div>
+
+    <div class="card recommended">
+      <div class="card-head">
+        <div>
+          <h3>Amil Prata</h3>
+          <div class="op">Saúde PME · Enfermaria</div>
+        </div>
+        <span class="badge rec">Recomendado</span>
+      </div>
+
+      <div class="chips">
+        <span class="chip">Aceita MEI</span>
+        <span class="chip">Aceita irmãos como agregados</span>
+        <span class="chip">Cobre Hospital Santa Izabel</span>
+      </div>
+
+      <div class="toggle-group">
+        <button class="toggle-btn active" onclick="setAmil('parcial', this)">Coparticipação parcial</button>
+        <button class="toggle-btn" onclick="setAmil('completa', this)">Coparticipação completa</button>
+      </div>
+
+      <div class="price-row">
+        <div class="price-box" id="amil-price-box">
+          <div class="price-label">Mensalidade — 3 vidas</div>
+          <div class="price-value" id="amil-price">R$ 4.063,14</div>
+        </div>
+        <div class="price-box">
+          <div class="price-label">Diferença vs. Select atual</div>
+          <div class="price-value" id="amil-diff" style="color:var(--gold);">+ R$ 1.563,14 <small>/mês</small></div>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:var(--muted);margin-top:6px;">
+        Recomendamos a coparticipação completa: a mensalidade de vocês fica R$ 1.015,72 mais baixa do que na parcial e, como o uso da família é predominantemente preventivo, sem tratamentos em curso, o valor pago em cada consulta ou exame tende a ser baixo. Compare as duas opções acima e simule abaixo, com a sua própria rotina de uso, quanto ficaria o custo real por mês.
+      </p>
+
+      <button class="link-btn" onclick="openModal('modal-amil')">Ver rede credenciada por região</button>
+
+      <div class="note">
+        <strong>Sobre o Hospital Português:</strong> não faz parte da rede do Prata — está disponível no Ouro. O Hospital Santa Izabel, referência de vocês, está coberto normalmente nesta opção. Caso o acesso ao Português seja importante, o upgrade para o Ouro está disponível a qualquer momento.
+      </div>
+
+      <div class="sim" style="margin-top:20px;">
+        <h4>Tabela de coparticipação (plano completo)</h4>
+        <p class="hint">Valor que vocês pagam a cada uso, além da mensalidade fixa — teto por procedimento.</p>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="border-bottom:1px solid var(--card-border);">
+              <th style="text-align:left;padding:8px 6px;color:var(--muted);font-weight:600;">Procedimento</th>
+              <th style="text-align:right;padding:8px 6px;color:var(--muted);font-weight:600;">Coparticipação</th>
+              <th style="text-align:right;padding:8px 6px;color:var(--muted);font-weight:600;">Valor máximo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Consultas eletivas/clínicas</td><td style="text-align:right;padding:8px 6px;">30%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 30,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Consultas PS (pronto-socorro)</td><td style="text-align:right;padding:8px 6px;">40%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 90,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Exames básicos</td><td style="text-align:right;padding:8px 6px;">30%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 25,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Exames especiais</td><td style="text-align:right;padding:8px 6px;">30%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 110,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Procedimentos básicos</td><td style="text-align:right;padding:8px 6px;">30%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 60,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Procedimentos especiais</td><td style="text-align:right;padding:8px 6px;">30%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 150,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Fisioterapia</td><td style="text-align:right;padding:8px 6px;">40%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 60,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Fonoaudiologia</td><td style="text-align:right;padding:8px 6px;">40%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 60,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Nutrição</td><td style="text-align:right;padding:8px 6px;">40%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 60,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Psicoterapia</td><td style="text-align:right;padding:8px 6px;">40%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 60,00</td></tr>
+            <tr style="border-bottom:1px solid var(--card-border);"><td style="padding:8px 6px;">Terapia ocupacional</td><td style="text-align:right;padding:8px 6px;">40%</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 60,00</td></tr>
+            <tr><td style="padding:8px 6px;">Internação</td><td style="text-align:right;padding:8px 6px;">—</td><td style="text-align:right;padding:8px 6px;color:var(--white);">R$ 220,00</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sim">
+        <h4>Simulador de coparticipação</h4>
+        <p class="hint">Os valores abaixo consideram a coparticipação completa, opção recomendada — na parcial, a mensalidade já é R$ 1.015,72 mais alta. Preencha com a rotina de uso da sua família para ver o custo real de bolso, além da mensalidade fixa. Os valores refletem o teto de coparticipação por procedimento.</p>
+        <div class="sim-grid">
+          <div class="sim-field">
+            <label>Consultas eletivas/mês</label>
+            <input type="number" min="0" value="1" data-copart="30" oninput="calcSim()">
+          </div>
+          <div class="sim-field">
+            <label>Consultas PS (pronto-socorro)/mês</label>
+            <input type="number" min="0" value="0" data-copart="90" oninput="calcSim()">
+          </div>
+          <div class="sim-field">
+            <label>Exames básicos/mês</label>
+            <input type="number" min="0" value="1" data-copart="25" oninput="calcSim()">
+          </div>
+          <div class="sim-field">
+            <label>Exames especiais/mês</label>
+            <input type="number" min="0" value="0" data-copart="110" oninput="calcSim()">
+          </div>
+          <div class="sim-field">
+            <label>Terapias (sessões/mês)</label>
+            <input type="number" min="0" value="0" data-copart="60" oninput="calcSim()">
+          </div>
+        </div>
+        <div class="sim-result">
+          <div>
+            <div class="sim-num" id="sim-total">R$ 55,00</div>
+            <div class="sim-label">estimativa de coparticipação/mês (teto por uso informado, completa)</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="sim-num" id="sim-full-total" style="color:var(--gold);">R$ 4.118,14</div>
+            <div class="sim-label">mensalidade selecionada + coparticipação estimada</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: COMPARATIVO DE MERCADO -->
+  <div class="tab-panel" id="tab-mkt">
+    <div class="section-title">Cenários de transparência — cotados, porém não implementáveis com a estrutura atual</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:22px;">Estas opções foram pesquisadas para mostrar que o mercado foi avaliado por completo. Ambas atendem melhor à preferência hospitalar, mas esbarram em regras de elegibilidade que a estrutura atual (MEI, 3 vidas, irmãos como agregados) não cumpre hoje.</p>
+
+    <div class="card watch">
+      <div class="card-head">
+        <div>
+          <h3>Bradesco Efetivo Plus</h3>
+          <div class="op">Saúde PME · Enfermaria</div>
+        </div>
+        <span class="badge watch">Não implementável agora</span>
+      </div>
+
+      <div class="price-row">
+        <div class="price-box">
+          <div class="price-label">Sem coparticipação</div>
+          <div class="price-value">R$ 5.000,47</div>
+        </div>
+        <div class="price-box">
+          <div class="price-label">Com coparticipação</div>
+          <div class="price-value">R$ 3.650,34</div>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:var(--muted);">Rede mais completa para o perfil deste grupo: cobre Hospital Português, Hospital Santa Izabel e ainda tem hospital de porte em Lauro de Freitas (H Aeroporto).</p>
+
+      <button class="link-btn" onclick="openModal('modal-bradesco')">Ver rede credenciada por região</button>
+
+      <div class="note restriction">
+        <strong>Restrição:</strong> a inclusão de irmãos como agregados nesta operadora exige contrato com no mínimo 5 vidas. Com a estrutura atual de 3 vidas, essa opção não pode ser implementada agora.
+      </div>
+    </div>
+
+    <div class="card watch">
+      <div class="card-head">
+        <div>
+          <h3>SulAmérica Direto Nacional</h3>
+          <div class="op">Saúde PME · Enfermaria</div>
+        </div>
+        <span class="badge watch">Não implementável agora</span>
+      </div>
+
+      <div class="price-row">
+        <div class="price-box">
+          <div class="price-label">Com coparticipação</div>
+          <div class="price-value">R$ 3.047,00</div>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:var(--muted);">Preço praticamente igual ao da Amil Prata completa — a diferença aqui está inteiramente na elegibilidade, não no valor.</p>
+
+      <div class="note restriction">
+        <strong>Restrição:</strong> exige CNPJ na modalidade <strong>LTDA</strong> (MEI não aceito para agregados) e, além disso, a inclusão de irmãos como dependentes exige mínimo de <strong>5 vidas oriundas de plano anterior</strong>. Duas barreiras estruturais — não implementável com o CNPJ e o número de vidas atuais.
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Informativo referencial — valores e condições determinados pelas operadoras e sujeitos a alteração até a assinatura do contrato.<br>
+  Matheus Doro · Open Corretora de Seguros · (61) 98301-6973
+</footer>
+
+<!-- MODAL: AMIL -->
+<div class="modal-overlay" id="modal-amil" onclick="closeOnOverlay(event,'modal-amil')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-amil')">✕</button>
+    <h3>Rede credenciada — Amil Prata</h3>
+    <div class="modal-sub">Principais hospitais por região</div>
+
+    <div class="modal-region">
+      <h5>Salvador — BA</h5>
+      <div class="hosp-row"><span>Hospital Santa Izabel (Nazaré)</span><span class="status ok">H · M · PS</span></div>
+      <div class="hosp-row"><span>Hospital Mater Dei</span><span class="status ok">H · M · PS</span></div>
+      <div class="hosp-row"><span>Hospital Jorge Valente (Ondina)</span><span class="status ok">H · M · PS</span></div>
+      <div class="hosp-row"><span>Hospital da Bahia (Pituba)</span><span class="status partial">H · PS</span></div>
+      <div class="hosp-row"><span>Hospital Português</span><span class="status no">Não coberto — apenas no Ouro</span></div>
+    </div>
+
+    <div class="modal-region">
+      <h5>Lauro de Freitas — BA</h5>
+      <div class="hosp-row"><span>H Oftalmoclin</span><span class="status partial">Internação</span></div>
+      <div class="hosp-row"><span>Ortra Serviços Médicos</span><span class="status partial">Pronto atendimento</span></div>
+    </div>
+
+    <div class="modal-region">
+      <h5>Brasília — DF</h5>
+      <div class="hosp-row"><span>Prontonorte</span><span class="status ok">Cobertura completa</span></div>
+      <div class="hosp-row"><span>Hospital São Francisco</span><span class="status ok">Cobertura completa</span></div>
+      <div class="hosp-row"><span>Hospital Maria Auxiliadora</span><span class="status ok">Cobertura completa</span></div>
+      <div class="hosp-row"><span>Hospital Águas Claras</span><span class="status ok">Cobertura completa</span></div>
+      <div class="hosp-row"><span>Hospital Brasília</span><span class="status ok">H · Cirurgia · PS</span></div>
+      <div class="hosp-row"><span>Hospital Daher</span><span class="status ok">H · Cirurgia · PS</span></div>
+      <div class="hosp-row"><span>ASM Hospital Alvorada</span><span class="status ok">H · Cirurgia · PS</span></div>
+      <div class="hosp-row"><span>Maternidade Brasília</span><span class="status partial">H · Maternidade · PS Obst.</span></div>
+      <div class="hosp-row"><span>ISOB</span><span class="status partial">H · PS</span></div>
+      <div class="hosp-row"><span>Hospital Anna Nery</span><span class="status partial">H · Cirurgia ortopédica</span></div>
+      <div class="hosp-row"><span>HOB</span><span class="status partial">Pronto atendimento e PS</span></div>
+      <div class="hosp-row"><span>Hospital Santa Lúcia Taguatinga</span><span class="status partial">Pronto atendimento</span></div>
+      <div class="hosp-row"><span>PAI — Pronto Atend. Infantil (DF)</span><span class="status partial">Pronto atendimento</span></div>
+      <div class="hosp-row"><span>Hospital São Mateus</span><span class="status no">Não coberto — apenas no Ouro</span></div>
+      <div class="hosp-row"><span>Hospital Santa Marta</span><span class="status no">Não coberto — apenas no Ouro</span></div>
+      <div class="hosp-row"><span>Hospital Santa Lúcia</span><span class="status no">Não coberto — apenas no Ouro</span></div>
+      <div class="hosp-row"><span>Hospital Home</span><span class="status no">Não coberto — apenas no Ouro</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: BRADESCO -->
+<div class="modal-overlay" id="modal-bradesco" onclick="closeOnOverlay(event,'modal-bradesco')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-bradesco')">✕</button>
+    <h3>Rede credenciada — Bradesco Efetivo Plus</h3>
+    <div class="modal-sub">Principais hospitais por região</div>
+
+    <div class="modal-region">
+      <h5>Salvador — BA</h5>
+      <div class="hosp-row"><span>Hospital Português</span><span class="status ok">H · M · PS</span></div>
+      <div class="hosp-row"><span>Hospital Santa Izabel</span><span class="status partial">H · PS</span></div>
+      <div class="hosp-row"><span>Hospital Mater Dei</span><span class="status partial">H · PS</span></div>
+      <div class="hosp-row"><span>Hospital Jorge Valente (Ondina)</span><span class="status partial">H · PS</span></div>
+    </div>
+
+    <div class="modal-region">
+      <h5>Lauro de Freitas — BA</h5>
+      <div class="hosp-row"><span>Hospital Aeroporto</span><span class="status ok">H · PS</span></div>
+      <div class="hosp-row"><span>Sokids</span><span class="status partial">Internação</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+const amilPrices = { completa: 3047.42, parcial: 4063.14 };
+const currentSelect = 2500;
+
+function setAmil(kind, btn){
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const price = amilPrices[kind];
+  document.getElementById('amil-price').textContent = 'R$ ' + price.toFixed(2).replace('.', ',');
+  const diff = price - currentSelect;
+  document.getElementById('amil-diff').innerHTML = (diff>=0?'+ ':'- ') + 'R$ ' + Math.abs(diff).toFixed(2).replace('.', ',') + ' <small>/mês</small>';
+  document.getElementById('amil-price-box').classList.toggle('selected', kind==='completa');
+  calcSim();
+}
+
+function calcSim(){
+  let total = 0;
+  document.querySelectorAll('.sim-field input').forEach(inp=>{
+    const qty = parseFloat(inp.value) || 0;
+    const cap = parseFloat(inp.dataset.copart) || 0;
+    total += qty * cap;
+  });
+  document.getElementById('sim-total').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+
+  const base = amilPrices.completa;
+  document.getElementById('sim-full-total').textContent = 'R$ ' + (base+total).toFixed(2).replace('.', ',');
+}
+
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function closeOnOverlay(e,id){ if(e.target.id===id) closeModal(id); }
+
+calcSim();
+</script>
+
+</body>
+</html>
