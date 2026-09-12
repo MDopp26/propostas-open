@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Ana — Open Corporate</title>
+<style>
+  :root{
+    --navy:#0D1B40;--navy-light:#152854;--gold:#C8A951;
+    --teal:#5ECFB8;--red:#F08070;--purple:#534AB7;--green:#0D9488;
+    --text-light:#EAEDF6;--text-muted:#A7B0CC;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--navy);color:var(--text-light);line-height:1.5;}
+  .topbar{position:sticky;top:0;z-index:50;background:var(--navy-light);border-bottom:1px solid rgba(200,169,81,0.25);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
+  .topbar .brand{font-weight:700;color:var(--gold);font-size:15px;}
+  .topbar .brand span{color:var(--text-light);font-weight:400;}
+  .wa-btn{background:var(--green);color:#fff;text-decoration:none;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .container{max-width:960px;margin:0 auto;padding:24px 20px 60px;}
+
+  .hero{background:linear-gradient(135deg,var(--navy-light) 0%,var(--navy) 100%);border:1px solid rgba(200,169,81,0.2);border-radius:16px;padding:26px;margin-bottom:24px;}
+  .hero h1{font-size:20px;color:#fff;margin-bottom:6px;}
+  .hero .sub{color:var(--text-muted);font-size:13px;margin-bottom:16px;}
+  .hero .note{background:rgba(94,207,184,0.1);border-left:3px solid var(--teal);padding:10px 14px;border-radius:6px;font-size:13px;color:var(--text-light);}
+  .hero-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:14px;}
+  .metric{background:rgba(255,255,255,0.04);border-radius:10px;padding:12px;}
+  .metric .label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+  .metric .value{font-size:14px;font-weight:700;color:var(--gold);}
+
+  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab-btn{flex:1;min-width:150px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);padding:12px 10px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:.15s;}
+  .tab-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+  .scenario{display:none;}
+  .scenario.active{display:block;}
+  .scenario-title{font-size:16px;color:#fff;margin-bottom:4px;}
+  .scenario-desc{font-size:13px;color:var(--text-muted);margin-bottom:18px;}
+
+  /* Cards de valor — enxutos: nome, 2 badges, preço */
+  .value-cards{display:grid;gap:10px;margin-bottom:16px;}
+  .value-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 16px;}
+  .value-card.recomendado{border-color:var(--teal);background:rgba(94,207,184,0.06);}
+  .value-card .vc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;}
+  .value-card h3{font-size:16px;color:#fff;font-weight:700;}
+  .value-card .vc-sub{font-size:12px;color:var(--text-muted);}
+  .vc-badge-rec{background:var(--teal);color:var(--navy);font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.3px;white-space:nowrap;}
+  .vc-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+  .vc-badge{background:rgba(200,169,81,0.12);color:var(--gold);border:1px solid rgba(200,169,81,0.3);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;}
+  .vc-porvida{font-size:11px;color:var(--text-muted);margin-bottom:6px;}
+  .vc-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+  .vc-price{font-size:13px;color:var(--text-muted);}
+  .vc-price b{font-size:17px;color:var(--gold);font-weight:800;}
+  .value-card.recomendado .vc-price b{color:var(--teal);}
+
+  .rede-btn{background:rgba(255,255,255,0.06);color:var(--text-light);border:1px solid rgba(255,255,255,0.12);padding:6px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;white-space:nowrap;}
+  .rede-btn:hover{background:rgba(255,255,255,0.1);}
+
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.active{display:flex;}
+  .modal{background:var(--navy-light);border:1px solid rgba(200,169,81,0.3);border-radius:14px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;padding:24px;position:relative;}
+  .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;}
+  .modal h4{color:var(--gold);font-size:15px;margin-bottom:14px;padding-right:24px;}
+  .modal ul{list-style:none;}
+  .modal ul li{font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--text-light);display:flex;justify-content:space-between;gap:10px;}
+  .modal ul li .cov{color:var(--text-muted);font-size:11px;white-space:nowrap;}
+
+  .info{background:rgba(255,255,255,0.03);border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;color:var(--text-light);}
+  .info b{color:var(--gold);}
+
+  .footer{margin-top:36px;padding:20px;background:rgba(255,255,255,0.02);border-radius:10px;font-size:11px;color:var(--text-muted);text-align:center;line-height:1.6;}
+  .footer .corretor{color:var(--gold);font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">OPEN <span>CORPORATE</span></div>
+  <a class="wa-btn" href="https://wa.me/5561983016973" target="_blank">💬 Falar com Matheus</a>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>Sua Proposta de Plano de Saúde</h1>
+    <div class="sub">Preparado por Matheus Doro para Ana · 22 de agosto de 2026</div>
+    <div class="hero-metrics">
+      <div class="metric"><div class="label">Você</div><div class="value">23 anos</div></div>
+      <div class="metric"><div class="label">Anderson</div><div class="value">33 anos</div></div>
+      <div class="metric"><div class="label">Região</div><div class="value">Sobradinho / Asa Norte</div></div>
+    </div>
+    <div class="note" style="margin-top:14px;">
+      Montamos 2 caminhos pra você comparar: incluir o Anderson com seu MEI, ou seguir só você fora do CNPJ. Nos dois, priorizamos planos com hospitais que resolvem várias especialidades no mesmo lugar — pra você não precisar circular entre clínicas diferentes.
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab-btn active" onclick="showTab(0)">1. Você + Anderson (PME via MEI)</div>
+    <div class="tab-btn" onclick="showTab(1)">2. Só você</div>
+  </div>
+
+  <!-- CENÁRIO 1 -->
+  <div class="scenario active" id="scenario-0">
+    <div class="scenario-title">Cenário 1 — Você e o Anderson juntos, plano empresarial pelo seu MEI</div>
+    <div class="scenario-desc">Você inclui o Anderson como dependente no plano PME, aproveitando o CNPJ que você já tem.</div>
+
+    <div class="value-cards">
+
+      <div class="value-card recomendado">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Amil</h3>
+            <div class="vc-sub">Produto: Prata · Enfermaria · Parcial</div>
+          </div>
+          <span class="vc-badge-rec">RECOMENDADO</span>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Rede nacional, mais ampla do grupo</span>
+          <span class="vc-badge">Atendimento centralizado</span>
+        </div>
+        <div class="vc-porvida">Você (19-23): R$ 540,43 · Anderson (29-33): R$ 791,18</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 1.331,61</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('amil-prata-pme')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Amil</h3>
+            <div class="vc-sub">Produto: Bronze DF · Enfermaria · Parcial</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">H Alvorada e H Brasília</span>
+          <span class="vc-badge">M Brasília</span>
+        </div>
+        <div class="vc-porvida">Você (19-23): R$ 467,76 · Anderson (29-33): R$ 549,10</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 1.016,86</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('amil-bronze-pme')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Plenum Saúde</h3>
+            <div class="vc-sub">Produto: Ômega PJ · Enfermaria · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">RM Sobradinho</span>
+          <span class="vc-badge">HOB Asa Norte</span>
+        </div>
+        <div class="vc-porvida">Você (19-23): R$ 412,44 · Anderson (29-33): R$ 544,42</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 956,86</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('omega-pj-casal')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Proasa Saúde</h3>
+            <div class="vc-sub">Produto: T ADV 200 DF · Apartamento · Parcial</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Apartamento</span>
+          <span class="vc-badge">Sta Lúcia Norte/Taguatinga/Gama</span>
+        </div>
+        <div class="vc-porvida">Você (19-23): R$ 401,33 · Anderson (29-33): R$ 438,89</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 840,22</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('proasa-200')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Proasa Saúde</h3>
+            <div class="vc-sub">Produto: T ADV 100 DF · Enfermaria · Parcial</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Sta Lúcia Norte/Taguatinga/Gama</span>
+          <span class="vc-badge">M Brasília</span>
+        </div>
+        <div class="vc-porvida">Você (19-23): R$ 355,34 · Anderson (29-33): R$ 388,60</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 743,94</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('proasa-100')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Unity Saúde</h3>
+            <div class="vc-sub">Produto: Vida Corp · Enfermaria · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Sta Lúcia Norte completo (H, M, PS)</span>
+          <span class="vc-badge">Mais barato do grupo</span>
+        </div>
+        <div class="vc-porvida">Você (19-23): R$ 236,05 · Anderson (29-33): R$ 304,03</div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor do casal: <b>R$ 540,08</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('unity-vida-corp')">Ver rede</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="info">
+      A <b>Amil: Prata</b> é a mais robusta do grupo — plano nacional, com a rede mais ampla entre as opções, incluindo o Sta Lúcia Norte completo perto de Sobradinho. É a que melhor entrega o que você busca: resolver exames e consultas de várias especialidades sem precisar circular entre operadoras diferentes.
+    </div>
+  </div>
+
+  <!-- CENÁRIO 2 -->
+  <div class="scenario" id="scenario-1">
+    <div class="scenario-title">Cenário 2 — Só você</div>
+    <div class="scenario-desc">Você sozinha, com opções de adesão (sem precisar de CNPJ) e uma opção via CNPJ com o seu MEI, mesmo sendo 1 vida só.</div>
+
+    <div class="value-cards">
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Amil</h3>
+            <div class="vc-sub">Produto: Prata DF · Enfermaria · Parcial</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Rede mais ampla do grupo</span>
+          <span class="vc-badge">Sta Lúcia Norte completo</span>
+        </div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor: <b>R$ 699,22</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('amil-prata-adesao')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Amil</h3>
+            <div class="vc-sub">Produto: Bronze DF · Enfermaria · Parcial</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">H Alvorada Brasília</span>
+          <span class="vc-badge">M Brasília</span>
+        </div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor: <b>R$ 581,05</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('amil-bronze-adesao')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Unity Saúde</h3>
+            <div class="vc-sub">Produto: Star · Apartamento · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Apartamento</span>
+          <span class="vc-badge">+ H Olhos CBV, H Pacini, M Brasília</span>
+        </div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor: <b>R$ 459,42</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('unity-star')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card recomendado">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Plenum Saúde <span style="font-weight:400;color:var(--text-muted);font-size:12px;">(via seu MEI)</span></h3>
+            <div class="vc-sub">Produto: Ômega PJ · Enfermaria · Sem coparticipação</div>
+          </div>
+          <span class="vc-badge-rec">RECOMENDADO</span>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">RM Sobradinho + HOB Asa Norte</span>
+          <span class="vc-badge">Aproveita o MEI que você já tem</span>
+        </div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor: <b>R$ 412,44</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('omega-pj-ana')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Plenum Saúde</h3>
+            <div class="vc-sub">Produto: E Beta · Apartamento · Completa</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Apartamento</span>
+          <span class="vc-badge">H Anchieta Ceilândia</span>
+        </div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor: <b>R$ 387,38</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('beta-adesao')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Plenum Saúde</h3>
+            <div class="vc-sub">Produto: E Ômega · Enfermaria · Completa</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">HOB Asa Norte</span>
+          <span class="vc-badge">H Anchieta Ceilândia</span>
+        </div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor: <b>R$ 374,88</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('omega-adesao')">Ver rede</button>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="vc-top">
+          <div>
+            <h3>Operadora: Unity Saúde</h3>
+            <div class="vc-sub">Produto: Vida · Enfermaria · Sem coparticipação</div>
+          </div>
+        </div>
+        <div class="vc-badges">
+          <span class="vc-badge">Sta Lúcia Norte completo (H, M, PS)</span>
+          <span class="vc-badge">Mais barato do grupo</span>
+        </div>
+        <div class="vc-bottom">
+          <span class="vc-price">Valor: <b>R$ 369,24</b>/mês</span>
+          <button class="rede-btn" onclick="openRede('unity-vida')">Ver rede</button>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="info">
+      <b>Por que a Plenum: Ômega PJ é a recomendada:</b> mesmo sendo só você, esse plano permite contratação a partir de 1 vida usando o seu MEI, e cobre justamente os dois pontos mais perto de você — a unidade de reabilitação em Sobradinho e o HOB Asa Norte. Fica pouco acima da opção mais barata, mas com atendimento mais centralizado pra sua rotina.
+    </div>
+  </div>
+
+  <div class="footer">
+    Proposta de caráter referencial. Valores sujeitos à análise da seguradora e podem sofrer ajustes.<br>
+    <span class="corretor">Matheus Doro</span> — Open Corretora de Seguros · (61) 98301-6973 · comercial01@opencorretoradeseguros.com
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="modal-rede">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal-rede').classList.remove('active')">✕</button>
+    <h4 id="modal-rede-title">Rede Credenciada</h4>
+    <ul id="modal-rede-list"></ul>
+  </div>
+</div>
+
+<script>
+const redeData = {
+  'unity-vida-corp': {
+    title: 'Unity Saúde: Vida Corp — PME, casal',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'H, M, PS'],
+      ['Visão H de Olhos - Asa Norte', 'H¹, PS¹'],
+      ['H Sta Luzia (Asa Sul)', 'H, PS'],
+      ['PAI (Asa Sul)', 'PS*'],
+      ['Sta Lúcia Taguatinga', 'H, M, PS'],
+      ['H das Clín e PS de Fraturas (Ceilândia)', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'H¹, PS¹'],
+      ['H São Mateus (Cruzeiro Velho)', 'H, PS'],
+      ['Visão H de Olhos - Taguatinga', 'H¹, PS¹'],
+      ['Sta Lúcia Gama', 'H, M, PS'],
+      ['HJB Hospital', 'Internação'],
+      ['H Amma - DF (Águas Claras)', 'Internação'],
+      ['Aliança - DF', 'Laboratório'],
+    ]
+  },
+  'proasa-100': {
+    title: 'Proasa Saúde: T ADV 100 DF — PME, casal',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'H, PS'],
+      ['H Brasiliense', 'H, PS'],
+      ['Sta Lúcia Taguatinga', 'H, PS'],
+      ['H São Mateus', 'H, PS'],
+      ['Sta Lúcia Gama', 'H, PS'],
+      ['M Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['H Mantevida Taguatinga', 'H, PS'],
+      ['Exato / Sta Paula - DF', 'Laboratórios'],
+    ]
+  },
+  'proasa-200': {
+    title: 'Proasa Saúde: T ADV 200 DF — PME, casal',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'H, PS'],
+      ['H Brasiliense', 'H, PS'],
+      ['Sta Lúcia Taguatinga', 'H, PS'],
+      ['H São Mateus', 'H, PS'],
+      ['Sta Lúcia Gama', 'H, PS'],
+      ['M Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['H Mantevida Taguatinga', 'H, PS'],
+      ['Exato / Sta Paula - DF', 'Laboratórios'],
+    ]
+  },
+  'omega-pj-casal': {
+    title: 'Plenum Saúde: Ômega PJ — PME, casal',
+    hospitais: [
+      ['HOB - Asa Norte', 'H¹, PS¹'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['HOB - Brasília', 'H¹, PS¹'],
+      ['H Anchieta Ceilândia', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'H¹, PS¹'],
+      ['H São Mateus', 'H, PS'],
+      ['Visão H de Olhos - Taguatinga', 'H¹, PS¹'],
+      ['Hpaes', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['M Brasília (Sudoeste)', 'H, M, PS'],
+      ['RM Clín de Reabilitação (Sobradinho)', 'H¹, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'H¹, PS¹'],
+      ['H Anchieta - Taguatinga', 'H, M, PS'],
+    ]
+  },
+  'amil-bronze-pme': {
+    title: 'Amil: Bronze DF — PME, casal',
+    hospitais: [
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['HOB - Brasília', 'PA, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['Exame - DF', 'Laboratório'],
+    ]
+  },
+  'amil-prata-pme': {
+    title: 'Amil: Prata — PME, casal · Recomendado',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'H, M, PS'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['HOB - Brasília', 'PA, PS'],
+      ['PAI / Sta Lúcia Taguatinga', 'PA'],
+      ['Sta Marta - Asa Norte', 'H, PS¹'],
+      ['Clín Estância Resiliência (Planaltina)', 'H, PA'],
+      ['Sta Lúcia Gama', 'H, M, PS'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['ISOB (Taguatinga)', 'H, PS'],
+      ['H Mantevida Taguatinga', 'H'],
+      ['Laboratórios', 'Base, Exame-DF, IMEN-GO, Núcleos, Padrão-GO, Sabin-DF/GO, Uniprocto'],
+    ]
+  },
+  'unity-vida': {
+    title: 'Unity Saúde: Vida — Adesão, individual',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'H, M, PS'],
+      ['Visão H de Olhos - Asa Norte', 'H¹, PS¹'],
+      ['H Pai (Asa Sul)', 'PSP (pediátrico)'],
+      ['H Sta Luzia (Asa Sul)', 'H, PS'],
+      ['Oftalmed - Asa Sul', 'H¹, PS¹'],
+      ['Sta Lúcia Taguatinga', 'H, PS'],
+      ['H das Clín e PS de Fraturas (Ceilândia)', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'H¹, PS¹'],
+      ['H São Mateus', 'H, PS¹'],
+      ['Visão H de Olhos - Taguatinga', 'H¹, PS¹'],
+      ['Sta Lúcia Gama', 'H, M, PS'],
+      ['Inst São Vicente de Paulo (Formosa)', 'H, PS'],
+      ['Aliança / Bom Exame / Ceilândia / Citoprev / Lac / Sabin - DF', 'Laboratórios'],
+    ]
+  },
+  'omega-pj-ana': {
+    title: 'Plenum Saúde: Ômega PJ — via seu MEI, 1 vida · Recomendado',
+    hospitais: [
+      ['HOB - Asa Norte', 'PS'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['HOB - Brasília', 'PS'],
+      ['Oftalmed - Asa Sul', 'PS'],
+      ['H Anchieta - Ceilândia', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'PS'],
+      ['H São Mateus', 'H, PA'],
+      ['Visão H de Olhos - Taguatinga', 'PS'],
+      ['Hpaes', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS'],
+      ['RM Clín de Reabilitação (Sobradinho)', 'H¹, PS¹'],
+      ['H Brasília Águas Claras', 'H, PS'],
+      ['HOB - Taguatinga', 'PS'],
+      ['H Anchieta - Taguatinga', 'H, M, PS'],
+    ]
+  },
+  'unity-star': {
+    title: 'Unity Saúde: Star — Adesão, individual',
+    hospitais: [
+      ['Oftalmed - Taguatinga', 'H¹, PS¹'],
+      ['Sta Lúcia Norte (Asa Norte)', 'H, M, PS'],
+      ['Visão H de Olhos - Asa Norte', 'H¹, PS¹'],
+      ['H Home (Asa Sul)', 'H, PS¹'],
+      ['H Olhos CBV (Asa Sul)', 'H¹, PS¹'],
+      ['H Pacini - Asa Sul', 'H¹, PS¹'],
+      ['H Pai (Asa Sul)', 'PSP (pediátrico)'],
+      ['H Sta Luzia (Asa Sul)', 'H, PS'],
+      ['Oftalmed - Asa Sul', 'H¹, PS¹'],
+      ['Sta Lúcia Taguatinga', 'H, PS'],
+      ['H das Clín e PS de Fraturas (Ceilândia)', 'H, M, PS'],
+      ['H São Mateus', 'H, PS¹'],
+      ['Sta Lúcia Gama', 'H, M, PS'],
+      ['M Brasília (Sudoeste)', 'H, M, PS¹'],
+      ['Inst São Vicente de Paulo (Formosa)', 'H, PS'],
+      ['Laboratórios', 'Aliança, Bom Exame, Ceilândia, Citoprev, Lac, Sabin - DF'],
+    ]
+  },
+  'omega-adesao': {
+    title: 'Plenum Saúde: E Ômega — Adesão, individual',
+    hospitais: [
+      ['HOB - Asa Norte', 'PS'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['HOB - Brasília', 'PS'],
+      ['Oftalmed - Asa Sul', 'PS'],
+      ['H Anchieta - Ceilândia', 'H, M, PS'],
+      ['Visão H de Olhos - Ceilândia', 'PS'],
+      ['H São Mateus', 'H, PA'],
+      ['Visão H de Olhos - Taguatinga', 'PS'],
+      ['Hpaes', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS'],
+      ['H Brasília Águas Claras', 'H, PS'],
+    ]
+  },
+  'beta-adesao': {
+    title: 'Plenum Saúde: E Beta — Adesão, individual',
+    hospitais: [
+      ['HOB - Asa Norte', 'PS'],
+      ['H Alvorada - Brasília', 'H, PS'],
+      ['H Home', 'H, PS'],
+      ['HOB - Brasília', 'PS'],
+      ['Oftalmed - Asa Sul', 'PS'],
+      ['H São Mateus', 'H, PA'],
+      ['Visão H de Olhos - Taguatinga', 'PS'],
+      ['Hpaes', 'H'],
+      ['H Brasília (Lago Sul)', 'H, PS'],
+      ['H Daher Lago Sul', 'H, PS'],
+      ['H e Mat Brasília (Sudoeste)', 'H, M, PS'],
+      ['H Brasília Águas Claras', 'H, PS'],
+    ]
+  },
+  'amil-bronze-adesao': {
+    title: 'Amil: Bronze DF — Adesão, individual',
+    hospitais: [
+      ['H Alvorada - Brasília', 'Atendimento'],
+      ['H Brasília (Lago Sul)', 'Atendimento'],
+      ['M Brasília (Sudoeste)', 'Atendimento'],
+      ['H Brasília Águas Claras', 'Atendimento'],
+      ['Exame - DF', 'Laboratório'],
+    ]
+  },
+  'amil-prata-adesao': {
+    title: 'Amil: Prata DF — Adesão, individual',
+    hospitais: [
+      ['Sta Lúcia Norte (Asa Norte)', 'Atendimento'],
+      ['H Alvorada - Brasília', 'Atendimento'],
+      ['PAI / Sta Lúcia Taguatinga', 'Atendimento'],
+      ['H Anchieta Ceilândia', 'Atendimento'],
+      ['Sta Lúcia Gama', 'Atendimento'],
+      ['H Brasília (Lago Sul)', 'Atendimento'],
+      ['H Daher Lago Sul', 'Atendimento'],
+      ['M Brasília (Sudoeste)', 'Atendimento'],
+      ['H Brasília Águas Claras', 'Atendimento'],
+      ['ISOB (Taguatinga)', 'Atendimento'],
+      ['Exame / Sabin - DF', 'Laboratórios'],
+    ]
+  },
+};
+
+function openRede(key){
+  const data = redeData[key];
+  document.getElementById('modal-rede-title').textContent = data.title;
+  const list = document.getElementById('modal-rede-list');
+  list.innerHTML = '';
+  data.hospitais.forEach(([nome, cov])=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${nome}</span><span class="cov">${cov}</span>`;
+    list.appendChild(li);
+  });
+  document.getElementById('modal-rede').classList.add('active');
+}
+
+document.getElementById('modal-rede').addEventListener('click', e=>{
+  if(e.target.id === 'modal-rede') e.target.classList.remove('active');
+});
+
+function showTab(i){
+  document.querySelectorAll('.tab-btn').forEach((b,idx)=>b.classList.toggle('active', idx===i));
+  document.querySelectorAll('.scenario').forEach((s,idx)=>s.classList.toggle('active', idx===i));
+}
+</script>
+
+</body>
+</html>
